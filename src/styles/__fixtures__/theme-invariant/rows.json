@@ -1,0 +1,454 @@
+[
+ {
+  "id": "button-default-radius",
+  "old": [
+   "rounded-lg"
+  ],
+  "prop": "border-radius",
+  "new": [
+   "rounded-control"
+  ]
+ },
+ {
+  "id": "button-lg-radius",
+  "old": [
+   "rounded-lg"
+  ],
+  "prop": "border-radius",
+  "new": [
+   "rounded-control"
+  ]
+ },
+ {
+  "id": "button-default-height",
+  "old": [
+   "h-8"
+  ],
+  "prop": "height",
+  "new": [
+   "h-(--control-md)"
+  ]
+ },
+ {
+  "id": "button-lg-height",
+  "old": [
+   "h-9"
+  ],
+  "prop": "height",
+  "new": [
+   "h-(--control-lg)"
+  ]
+ },
+ {
+  "id": "button-sm-height",
+  "old": [
+   "h-7"
+  ],
+  "prop": "height",
+  "new": [
+   "h-(--control-sm)"
+  ]
+ },
+ {
+  "id": "button-icon-size-w",
+  "old": [
+   "size-8"
+  ],
+  "prop": "width",
+  "new": [
+   "size-(--control-md)"
+  ]
+ },
+ {
+  "id": "button-icon-size-h",
+  "old": [
+   "size-8"
+  ],
+  "prop": "height",
+  "new": [
+   "size-(--control-md)"
+  ]
+ },
+ {
+  "id": "button-icon-lg-size-w",
+  "old": [
+   "size-9"
+  ],
+  "prop": "width",
+  "new": [
+   "size-(--control-lg)"
+  ]
+ },
+ {
+  "id": "button-icon-sm-size-w",
+  "old": [
+   "size-7"
+  ],
+  "prop": "width",
+  "new": [
+   "size-(--control-sm)"
+  ]
+ },
+ {
+  "id": "button-xs-radius",
+  "old": [
+   "rounded-[min(var(--radius-md),10px)]"
+  ],
+  "prop": "border-radius",
+  "note": "M1: small variants keep min(var(--radius-md),...)"
+ },
+ {
+  "id": "button-sm-radius",
+  "old": [
+   "rounded-[min(var(--radius-md),12px)]"
+  ],
+  "prop": "border-radius",
+  "note": "M1"
+ },
+ {
+  "id": "button-xs-height",
+  "old": [
+   "h-6"
+  ],
+  "prop": "height",
+  "note": "unchanged: xs has no control token"
+ },
+ {
+  "id": "input-height",
+  "old": [
+   "h-8"
+  ],
+  "prop": "height",
+  "new": [
+   "h-(--control-md)"
+  ]
+ },
+ {
+  "id": "input-radius",
+  "old": [
+   "rounded-lg"
+  ],
+  "prop": "border-radius",
+  "new": [
+   "rounded-control"
+  ]
+ },
+ {
+  "id": "select-trigger-sm-height",
+  "old": [
+   "h-7"
+  ],
+  "prop": "height",
+  "new": [
+   "h-(--control-sm)"
+  ],
+  "note": "the data-[size=sm]: variant is attribute-driven; the bare utility is what resolves"
+ },
+ {
+  "id": "select-trigger-radius",
+  "old": [
+   "rounded-lg"
+  ],
+  "prop": "border-radius",
+  "new": [
+   "rounded-control"
+  ]
+ },
+ {
+  "id": "select-content-radius",
+  "old": [
+   "rounded-lg"
+  ],
+  "prop": "border-radius",
+  "note": "popovers keep rounded-lg"
+ },
+ {
+  "id": "select-content-shadow",
+  "old": [
+   "shadow-md",
+   "ring-1",
+   "ring-foreground/10"
+  ],
+  "prop": "box-shadow",
+  "new": [
+   "shadow-float",
+   "ring-1",
+   "ring-foreground/10"
+  ]
+ },
+ {
+  "id": "badge-radius",
+  "old": [
+   "rounded-4xl"
+  ],
+  "prop": "border-radius",
+  "new": [
+   "rounded-badge"
+  ]
+ },
+ {
+  "id": "checkbox-radius",
+  "old": [
+   "rounded-[4px]"
+  ],
+  "prop": "border-radius",
+  "new": [
+   "rounded-[min(var(--radius-control),4px)]"
+  ]
+ },
+ {
+  "id": "card-radius",
+  "old": [
+   "rounded-xl"
+  ],
+  "prop": "border-radius",
+  "new": [
+   "rounded-card"
+  ]
+ },
+ {
+  "id": "card-shadow",
+  "old": [
+   "ring-1",
+   "ring-foreground/10"
+  ],
+  "prop": "box-shadow",
+  "new": [
+   "shadow-card",
+   "ring-1",
+   "ring-foreground/10"
+  ]
+ },
+ {
+  "id": "dialog-radius",
+  "old": [
+   "rounded-xl"
+  ],
+  "prop": "border-radius",
+  "new": [
+   "rounded-modal"
+  ]
+ },
+ {
+  "id": "tabs-list-radius",
+  "old": [
+   "rounded-lg"
+  ],
+  "prop": "border-radius",
+  "new": [
+   "rounded-control"
+  ]
+ },
+ {
+  "id": "tabs-trigger-radius",
+  "old": [
+   "rounded-md"
+  ],
+  "prop": "border-radius"
+ },
+ {
+  "id": "popover-shadow",
+  "old": [
+   "shadow-md",
+   "ring-1",
+   "ring-foreground/10"
+  ],
+  "prop": "box-shadow",
+  "new": [
+   "shadow-float",
+   "ring-1",
+   "ring-foreground/10"
+  ]
+ },
+ {
+  "id": "sheet-shadow-lg",
+  "old": [
+   "shadow-lg"
+  ],
+  "prop": "box-shadow",
+  "note": "shadow-lg stays"
+ },
+ {
+  "id": "scale-rounded-sm",
+  "old": [
+   "rounded-sm"
+  ],
+  "prop": "border-radius"
+ },
+ {
+  "id": "scale-rounded-md",
+  "old": [
+   "rounded-md"
+  ],
+  "prop": "border-radius"
+ },
+ {
+  "id": "scale-rounded-lg",
+  "old": [
+   "rounded-lg"
+  ],
+  "prop": "border-radius"
+ },
+ {
+  "id": "scale-rounded-xl",
+  "old": [
+   "rounded-xl"
+  ],
+  "prop": "border-radius"
+ },
+ {
+  "id": "scale-rounded-2xl",
+  "old": [
+   "rounded-2xl"
+  ],
+  "prop": "border-radius"
+ },
+ {
+  "id": "scale-rounded-4xl",
+  "old": [
+   "rounded-4xl"
+  ],
+  "prop": "border-radius"
+ },
+ {
+  "id": "scale-shadow-sm",
+  "old": [
+   "shadow-sm"
+  ],
+  "prop": "box-shadow"
+ },
+ {
+  "id": "scale-shadow-md",
+  "old": [
+   "shadow-md"
+  ],
+  "prop": "box-shadow"
+ },
+ {
+  "id": "scale-shadow-lg",
+  "old": [
+   "shadow-lg"
+  ],
+  "prop": "box-shadow"
+ },
+ {
+  "id": "scale-shadow-2xl",
+  "old": [
+   "shadow-2xl"
+  ],
+  "prop": "box-shadow"
+ },
+ {
+  "id": "text-xs",
+  "old": [
+   "text-xs"
+  ],
+  "prop": "font-size"
+ },
+ {
+  "id": "text-xs-line-height",
+  "old": [
+   "text-xs"
+  ],
+  "prop": "line-height"
+ },
+ {
+  "id": "p-container-pad",
+  "old": [
+   "p-container-pad"
+  ],
+  "prop": "padding"
+ },
+ {
+  "id": "gap-section-gap",
+  "old": [
+   "gap-section-gap"
+  ],
+  "prop": "gap"
+ },
+ {
+  "id": "font-sans",
+  "old": [
+   "font-sans"
+  ],
+  "prop": "font-family"
+ },
+ {
+  "id": "font-mono",
+  "old": [
+   "font-mono"
+  ],
+  "prop": "font-family"
+ },
+ {
+  "id": "type-body-size",
+  "old": [
+   "type-body"
+  ],
+  "prop": "font-size"
+ },
+ {
+  "id": "type-body-family",
+  "old": [
+   "type-body"
+  ],
+  "prop": "font-family"
+ },
+ {
+  "id": "type-caption-size",
+  "old": [
+   "type-caption"
+  ],
+  "prop": "font-size"
+ },
+ {
+  "id": "type-eyebrow-transform",
+  "old": [
+   "type-eyebrow"
+  ],
+  "prop": "text-transform"
+ },
+ {
+  "id": "type-eyebrow-weight",
+  "old": [
+   "type-eyebrow"
+  ],
+  "prop": "font-weight"
+ },
+ {
+  "id": "var-duration-fast",
+  "old": [],
+  "prop": "--duration-fast",
+  "note": "literal @theme static keys / contract aliases keep their values"
+ },
+ {
+  "id": "var-duration-slower",
+  "old": [],
+  "prop": "--duration-slower",
+  "note": "literal @theme static keys / contract aliases keep their values"
+ },
+ {
+  "id": "var-spacing-container-pad",
+  "old": [],
+  "prop": "--spacing-container-pad",
+  "note": "literal @theme static keys / contract aliases keep their values"
+ },
+ {
+  "id": "var-spacing-card-pad",
+  "old": [],
+  "prop": "--spacing-card-pad",
+  "note": "literal @theme static keys / contract aliases keep their values"
+ },
+ {
+  "id": "var-container-padding",
+  "old": [],
+  "prop": "--container-padding",
+  "note": "literal @theme static keys / contract aliases keep their values"
+ },
+ {
+  "id": "var-component-gap",
+  "old": [],
+  "prop": "--component-gap",
+  "note": "literal @theme static keys / contract aliases keep their values"
+ }
+]

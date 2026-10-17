@@ -1,0 +1,624 @@
+/* Generated from design system "Civic Welcome" — do not edit. */
+/* archie theme-contract begin */
+/* archie theme-contract v1 */
+
+/* apg's dark variant, byte for byte what its theme generator emits (02-theme.ts): `dark:` follows the `.dark` class that
+   theme-provider / applyPaletteMode toggle, not prefers-color-scheme. A second identical declaration is harmless. */
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * THEME CONTRACT (apg)
+ * The tokens, utilities and variant the apg library (src/components/ui/**,
+ * src/lib/**) uses and that apg's theme generator (02-theme.ts) emits per
+ * project. NAMES are exactly 02-theme.ts's; the VALUES here are only the
+ * template's DEFAULT, derived from the template's own tokens (no brand values).
+ *
+ * A generated project theme must win without !important:
+ *  - the vars live in `@layer theme-defaults`, and an unlayered declaration
+ *    (02-theme.ts output is unlayered: `:root`, `.dark`, `[data-surface]`)
+ *    beats any layered one whatever the specificity or source order;
+ *  - the extension colours are stored as FULL colour values (`oklch(...)`), so the
+ *    `@theme inline` entries are `var(--x)` — identical text to 02-theme.ts's,
+ *    so a duplicate is a no-op in either load order;
+ *  - NO key names itself and every var() chain ends in a literal (`--radius-md: var(--theme-radius-md, 0.375rem)`, never
+ *    `--radius-md: var(--radius-md)`): Tailwind emits a theme key that a var() references into :root, and a key that
+ *    reads itself would be a cycle there;
+ *  - the `type-*` utilities are ONE `@utility` per role, written over `--type-<role>-*` vars with the template's value as
+ *    the fallback of each. apg emits an `@utility` of the same name when its design system has the role. Tailwind 4.3.3
+ *    (internal behaviour, not a documented contract) sorts same-named utilities by its property-order index list and then
+ *    merges them, so apg's declarations land last and WIN: the template's fallbacks never apply to a role apg declares.
+ *    Both read the same vars, so the result is apg's values wherever apg writes them. PQ-3 (ARCH-2390 precondition 10)
+ *    makes apg stop emitting `@utility type-<role>` for the contract's 11 roles, which removes the dependency on that sort.
+ * Guarded by src/styles/theme-contract.test.ts.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+@layer theme-defaults {
+  :root {
+    /* font roles (apg's names): the template's default stacks. They are the SOURCE of --font-sans/heading/mono (those
+       read these, ARCH-2276), so a theme or the runtime writes the role name and every consumer follows. Whoever writes
+       ONLY `--font-sans` (or heading/mono) must write the role name too (`--font-body/display/code`), or `type-*` and
+       any consumer of the role name will not follow; the runtime writes both. Never make these an alias of
+       --font-sans/heading/mono: that is a cycle. NOTE: with apg's theme, h5/h6 and `pre` follow its display/code
+       fonts (before: the template's), declared change. */
+    --font-body: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-display: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+    /* semantic spacing: apg's names over the template's (density-scaled) --spacing-*; the literal is the same value, so the
+       chain ends in a literal even where globals.css (which declares --spacing-*) is not loaded */
+    --container-padding: var(--spacing-container-pad, calc(2rem * var(--density-factor, 1)));
+    --section-gap: var(--spacing-section-gap, calc(4rem * var(--density-factor, 1)));
+    --component-gap: var(--spacing-component-gap, calc(1.5rem * var(--density-factor, 1)));
+    --card-padding: var(--spacing-card-pad, calc(1.5rem * var(--density-factor, 1)));
+    --input-padding: var(--spacing-input-pad, calc(0.75rem * var(--density-factor, 1)));
+
+    /* control heights (h-7/8/9 today), density-scaled; apg's unlayered --control-* (semantic.control) wins when the design
+       system has one. Read by h-(--control-sm|md|lg) / size-(--control-*) on the form controls. */
+    --control-sm: calc(1.75rem * var(--density-factor, 1));
+    --control-md: calc(2rem * var(--density-factor, 1));
+    --control-lg: calc(2.25rem * var(--density-factor, 1));
+
+    /* the phone bottom tab bar height (0 from md); 0 here: the template has no bottom nav of its own */
+    --bottom-nav-h: 0px;
+
+    /* what the design system has, read by @/lib/theme-mode: the template ships a .dark palette */
+    --theme-dark: 1;
+
+    /* extension colours (full colour values) */
+    --brand-accent: var(--chart-2);
+    --text-body: var(--foreground);
+    --text-muted: var(--muted-foreground);
+    --text-subtle: color-mix(in oklch, var(--muted-foreground) 70%, transparent);
+    --text-link: var(--primary);
+    --surface-sunken: var(--muted);
+    --border-strong: color-mix(in oklab, var(--border) 65%, var(--foreground));
+    --primary-hover: color-mix(in oklab, var(--primary) 88%, var(--foreground));
+    --chrome: var(--sidebar);
+    --chrome-foreground: var(--sidebar-foreground);
+    --chrome-muted: color-mix(in oklch, var(--sidebar-foreground) 70%, transparent);
+    --chrome-hover: var(--sidebar-accent);
+    --chrome-active: var(--sidebar-accent);
+    --chrome-active-bar: var(--sidebar-primary);
+    --chrome-border: var(--sidebar-border);
+
+    /* status tones: fill, ink (readable text on the soft background) and soft background */
+    --status-success: var(--success);
+    --status-success-ink: color-mix(in oklab, var(--success) 60%, var(--foreground));
+    --status-success-bg: color-mix(in oklch, var(--success) 14%, transparent);
+    --status-warning: var(--warning);
+    --status-warning-ink: color-mix(in oklab, var(--warning) 55%, var(--foreground));
+    --status-warning-bg: color-mix(in oklch, var(--warning) 16%, transparent);
+    --status-danger: var(--destructive);
+    --status-danger-ink: color-mix(in oklab, var(--destructive) 65%, var(--foreground));
+    --status-danger-bg: color-mix(in oklch, var(--destructive) 12%, transparent);
+    --status-info: var(--info);
+    --status-info-ink: color-mix(in oklab, var(--info) 60%, var(--foreground));
+    --status-info-bg: color-mix(in oklch, var(--info) 14%, transparent);
+    --status-pending: var(--primary);
+    --status-pending-ink: color-mix(in oklab, var(--primary) 65%, var(--foreground));
+    --status-pending-bg: color-mix(in oklch, var(--primary) 12%, transparent);
+    --status-neutral: var(--text-muted);
+    --status-neutral-ink: var(--text-body);
+    --status-neutral-bg: var(--muted);
+  }
+}
+
+/* Core (shadcn) colours. The palette vars in :root are FULL colours (oklch), so every utility is a plain `var(--token)`. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+}
+
+@theme inline {
+  --color-brand-accent: var(--brand-accent);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-text-link: var(--text-link);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-border-strong: var(--border-strong);
+  --color-primary-hover: var(--primary-hover);
+  --color-chrome: var(--chrome);
+  --color-chrome-foreground: var(--chrome-foreground);
+  --color-chrome-muted: var(--chrome-muted);
+  --color-chrome-hover: var(--chrome-hover);
+  --color-chrome-active: var(--chrome-active);
+  --color-chrome-active-bar: var(--chrome-active-bar);
+  --color-chrome-border: var(--chrome-border);
+  --color-status-success: var(--status-success);
+  --color-status-success-ink: var(--status-success-ink);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-ink: var(--status-warning-ink);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-ink: var(--status-danger-ink);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-info: var(--status-info);
+  --color-status-info-ink: var(--status-info-ink);
+  --color-status-info-bg: var(--status-info-bg);
+  --color-status-pending: var(--status-pending);
+  --color-status-pending-ink: var(--status-pending-ink);
+  --color-status-pending-bg: var(--status-pending-bg);
+  --color-status-neutral: var(--status-neutral);
+  --color-status-neutral-ink: var(--status-neutral-ink);
+  --color-status-neutral-bg: var(--status-neutral-bg);
+}
+
+/* Sinks. The VALUE of every key below is a `--theme-*` var (written by apg's theme, or by the template's own globals.css
+   for the radius scale) that ENDS IN A LITERAL, so with no theme the utility is what Tailwind ships. No key names
+   itself: `--radius-md: var(--radius-md)` would be a cycle once Tailwind emits the key into :root.
+   `--font-display` is deliberately NOT a theme key: `font-display: var(--font-display)` would name itself and nothing in
+   the library uses a `font-display` utility (the role name is read directly by `type-*` and the base layer). */
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-display);
+  --font-mono: var(--font-code);
+
+  --radius-sm: var(--theme-radius-sm, 0.25rem);
+  --radius-md: var(--theme-radius-md, 0.375rem);
+  --radius-lg: var(--theme-radius-lg, 0.5rem);
+  --radius-xl: var(--theme-radius-xl, 0.75rem);
+  --radius-2xl: var(--theme-radius-2xl, 1rem);
+  --radius-3xl: var(--theme-radius-3xl, 1.5rem);
+  --radius-4xl: var(--theme-radius-4xl, 2rem);
+
+  /* semantic radii: control (buttons, inputs, selects, toggles, tabs), card, modal (dialog, drawer), badge */
+  --radius-control: var(--theme-radius-control, var(--theme-radius-lg, 0.5rem));
+  --radius-card: var(--theme-radius-card, var(--theme-radius-xl, 0.75rem));
+  --radius-modal: var(--theme-radius-modal, var(--theme-radius-xl, 0.75rem));
+  --radius-badge: var(--theme-radius-badge, var(--theme-radius-4xl, 2rem));
+
+  /* Shadows: apg writes --theme-shadow-<k> on `*` (each layer's colour through --tw-shadow-color), so the fallback wraps
+     the colour the same way (`shadow-red-500` still recolours) and keeps the Polish "shadow strength" multiplier. */
+  --shadow-2xs: var(--theme-shadow-2xs, 0 1px var(--tw-shadow-color, rgb(0 0 0 / calc(0.05 * var(--shadow-strength, 1)))));
+  --shadow-xs: var(--theme-shadow-xs, 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / calc(0.05 * var(--shadow-strength, 1)))));
+  --shadow-sm: var(--theme-shadow-sm, 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)))), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)))));
+  --shadow-md: var(--theme-shadow-md, 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)))), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)))));
+  --shadow-lg: var(--theme-shadow-lg, 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)))), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)))));
+  --shadow-xl: var(--theme-shadow-xl, 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)))), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)))));
+  --shadow-2xl: var(--theme-shadow-2xl, 0 25px 50px -12px var(--tw-shadow-color, rgb(0 0 0 / calc(0.25 * var(--shadow-strength, 1)))));
+
+  /* card shadow: `0 0 #0000`, never `none` (none would kill the ring-1 on the same box-shadow list); float = popovers/menus */
+  --shadow-card: var(--theme-shadow-card, 0 0 #0000);
+  --shadow-float: var(--theme-shadow-float, var(--theme-shadow-md, 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)))), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1))))));
+}
+
+
+/* Typography roles: ONE `@utility type-<role>` per role, over `--type-<role>-*` (apg writes them per design system),
+   falling back to the template's scale step. The size also reads `--type-<role>-size` first (the runtime writes that).
+   apg emits an `@utility` of the same name for a role its design system has. Tailwind 4.3.3 (internal, undocumented)
+   sorts same-named utilities by its property-order index list and merges them, so apg's declarations land last and win;
+   the template's fallbacks never apply to a role apg declares. Here every rule reads the SAME var names (apg's six
+   properties) plus a seventh (`font-style`, `inherit` = no change), so the merge is harmless in either load order and reads
+   apg's values wherever apg writes them. PQ-3 (ARCH-2390 precondition 10) makes apg stop emitting `@utility type-<role>`
+   for the contract's 11 roles. `inherit` is apg's own
+   fallback for a property a role does not set; the template keeps its literal where it had one. page-title, section,
+   metric and stat are apg's golden roles that the template did not have; their fallbacks are scale steps (template choice). */
+@utility type-eyebrow {
+  font-family: var(--type-eyebrow-font-family, var(--font-body));
+  font-size: var(--type-eyebrow-size, var(--type-eyebrow-font-size, var(--text-xs)));
+  line-height: var(--type-eyebrow-line-height, var(--text-xs--line-height));
+  font-weight: var(--type-eyebrow-font-weight, 600);
+  letter-spacing: var(--type-eyebrow-letter-spacing, var(--tracking-widest));
+  text-transform: var(--type-eyebrow-text-transform, uppercase);
+  font-style: var(--type-eyebrow-font-style, inherit);
+}
+@utility type-caption {
+  font-family: var(--type-caption-font-family, var(--font-body));
+  font-size: var(--type-caption-size, var(--type-caption-font-size, var(--text-xs)));
+  line-height: var(--type-caption-line-height, var(--text-xs--line-height));
+  font-weight: var(--type-caption-font-weight, 400);
+  letter-spacing: var(--type-caption-letter-spacing, inherit);
+  text-transform: var(--type-caption-text-transform, inherit);
+  font-style: var(--type-caption-font-style, inherit);
+}
+@utility type-meta {
+  font-family: var(--type-meta-font-family, var(--font-body));
+  font-size: var(--type-meta-size, var(--type-meta-font-size, var(--text-sm)));
+  line-height: var(--type-meta-line-height, var(--text-sm--line-height));
+  font-weight: var(--type-meta-font-weight, 400);
+  letter-spacing: var(--type-meta-letter-spacing, inherit);
+  text-transform: var(--type-meta-text-transform, inherit);
+  font-style: var(--type-meta-font-style, inherit);
+}
+@utility type-row-title {
+  font-family: var(--type-row-title-font-family, var(--font-body));
+  font-size: var(--type-row-title-size, var(--type-row-title-font-size, var(--text-sm)));
+  line-height: var(--type-row-title-line-height, var(--text-sm--line-height));
+  font-weight: var(--type-row-title-font-weight, 500);
+  letter-spacing: var(--type-row-title-letter-spacing, inherit);
+  text-transform: var(--type-row-title-text-transform, inherit);
+  font-style: var(--type-row-title-font-style, inherit);
+}
+@utility type-mono-id {
+  font-family: var(--type-mono-id-font-family, var(--font-code));
+  font-size: var(--type-mono-id-size, var(--type-mono-id-font-size, var(--text-xs)));
+  line-height: var(--type-mono-id-line-height, var(--text-xs--line-height));
+  font-weight: var(--type-mono-id-font-weight, 400);
+  letter-spacing: var(--type-mono-id-letter-spacing, inherit);
+  text-transform: var(--type-mono-id-text-transform, inherit);
+  font-style: var(--type-mono-id-font-style, inherit);
+}
+@utility type-card-title {
+  font-family: var(--type-card-title-font-family, var(--font-display));
+  font-size: var(--type-card-title-size, var(--type-card-title-font-size, var(--text-base)));
+  line-height: var(--type-card-title-line-height, var(--text-base--line-height));
+  font-weight: var(--type-card-title-font-weight, 600);
+  letter-spacing: var(--type-card-title-letter-spacing, inherit);
+  text-transform: var(--type-card-title-text-transform, inherit);
+  font-style: var(--type-card-title-font-style, inherit);
+}
+@utility type-body {
+  font-family: var(--type-body-font-family, var(--font-body));
+  font-size: var(--type-body-size, var(--type-body-font-size, var(--text-base)));
+  line-height: var(--type-body-line-height, var(--text-base--line-height));
+  font-weight: var(--type-body-font-weight, 400);
+  letter-spacing: var(--type-body-letter-spacing, inherit);
+  text-transform: var(--type-body-text-transform, inherit);
+  font-style: var(--type-body-font-style, inherit);
+}
+@utility type-page-title {
+  font-family: var(--type-page-title-font-family, var(--font-display));
+  font-size: var(--type-page-title-size, var(--type-page-title-font-size, var(--text-2xl)));
+  line-height: var(--type-page-title-line-height, var(--text-2xl--line-height));
+  font-weight: var(--type-page-title-font-weight, 600);
+  letter-spacing: var(--type-page-title-letter-spacing, inherit);
+  text-transform: var(--type-page-title-text-transform, inherit);
+  font-style: var(--type-page-title-font-style, inherit);
+}
+@utility type-section {
+  font-family: var(--type-section-font-family, var(--font-display));
+  font-size: var(--type-section-size, var(--type-section-font-size, var(--text-lg)));
+  line-height: var(--type-section-line-height, var(--text-lg--line-height));
+  font-weight: var(--type-section-font-weight, 600);
+  letter-spacing: var(--type-section-letter-spacing, inherit);
+  text-transform: var(--type-section-text-transform, inherit);
+  font-style: var(--type-section-font-style, inherit);
+}
+@utility type-metric {
+  font-family: var(--type-metric-font-family, var(--font-display));
+  font-size: var(--type-metric-size, var(--type-metric-font-size, var(--text-3xl)));
+  line-height: var(--type-metric-line-height, var(--text-3xl--line-height));
+  font-weight: var(--type-metric-font-weight, 600);
+  letter-spacing: var(--type-metric-letter-spacing, inherit);
+  text-transform: var(--type-metric-text-transform, inherit);
+  font-style: var(--type-metric-font-style, inherit);
+}
+@utility type-stat {
+  font-family: var(--type-stat-font-family, var(--font-display));
+  font-size: var(--type-stat-size, var(--type-stat-font-size, var(--text-2xl)));
+  line-height: var(--type-stat-line-height, var(--text-2xl--line-height));
+  font-weight: var(--type-stat-font-weight, 600);
+  letter-spacing: var(--type-stat-letter-spacing, inherit);
+  text-transform: var(--type-stat-text-transform, inherit);
+  font-style: var(--type-stat-font-style, inherit);
+}
+
+/* apg's base layer (02-theme.ts) plus the .lucide stroke rule; no @apply. h5/h6 and `pre` stay template-side (globals.css). */
+@layer base {
+  * {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+  }
+  body {
+    background: var(--background);
+    color: var(--text-body, var(--foreground));
+    font-family: var(--font-body);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--foreground);
+  }
+  code, kbd, samp {
+    font-family: var(--font-code);
+  }
+  /* lucide-react sets stroke-width as an inline SVG attribute; a base-layer rule beats that attribute while still losing to a utility override. */
+  .lucide {
+    stroke-width: var(--icon-stroke-width, 2);
+  }
+}
+/* archie theme-contract end */
+:root {
+  --font-body: "Work Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Newsreader", ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-code: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-display);
+  --font-mono: var(--font-code);
+  --density-factor: 1;
+  --radius: 0.5rem;
+  --content-max: 82.5rem;
+  --topbar-h: 3.75rem;
+  --theme-dark: 1;
+  --rail-w: 15rem;
+  --bottom-nav-h: 3.75rem;
+  --control-sm: 1.875rem;
+  --control-md: 2.375rem;
+  --control-lg: 2.75rem;
+  --icon-stroke-width: 1.75;
+  --container-padding: calc(1.5rem * var(--density-factor, 1));
+  --section-gap: calc(3rem * var(--density-factor, 1));
+  --component-gap: calc(1rem * var(--density-factor, 1));
+  --card-padding: calc(1.5rem * var(--density-factor, 1));
+  --input-padding: calc(0.75rem * var(--density-factor, 1));
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 0.25rem);
+  --radius-xl: calc(var(--radius) + 0.5rem);
+  --radius-2xl: calc(var(--radius) + 0.75rem);
+  --radius-3xl: calc(var(--radius) + 0.75rem);
+  --radius-4xl: calc(var(--radius) + 0.75rem);
+  --theme-radius-sm: var(--radius-sm);
+  --theme-radius-md: var(--radius-md);
+  --theme-radius-lg: var(--radius-lg);
+  --theme-radius-xl: var(--radius-xl);
+  --theme-radius-2xl: var(--radius-2xl);
+  --theme-radius-3xl: var(--radius-3xl);
+  --theme-radius-4xl: var(--radius-4xl);
+  --theme-radius-control: 0.5rem;
+  --theme-radius-card: 0.75rem;
+  --theme-radius-modal: 1rem;
+  --theme-radius-badge: 9999px;
+  --type-eyebrow-font-family: var(--font-body);
+  --type-eyebrow-font-size: 0.75rem;
+  --type-eyebrow-size: var(--type-eyebrow-font-size);
+  --type-eyebrow-line-height: 1rem;
+  --type-eyebrow-font-weight: 500;
+  --type-eyebrow-letter-spacing: 0.08em;
+  --type-eyebrow-text-transform: uppercase;
+  --type-caption-font-family: var(--font-body);
+  --type-caption-font-size: 0.8125rem;
+  --type-caption-size: var(--type-caption-font-size);
+  --type-caption-line-height: 1.125rem;
+  --type-caption-font-weight: 500;
+  --type-caption-letter-spacing: 0.02em;
+  --type-meta-font-family: var(--font-body);
+  --type-meta-font-size: 0.875rem;
+  --type-meta-size: var(--type-meta-font-size);
+  --type-meta-line-height: 1.25rem;
+  --type-meta-font-weight: 400;
+  --type-meta-letter-spacing: 0;
+  --type-body-font-family: var(--font-body);
+  --type-body-font-size: 1rem;
+  --type-body-size: var(--type-body-font-size);
+  --type-body-line-height: 1.5rem;
+  --type-body-font-weight: 400;
+  --type-body-letter-spacing: 0;
+  --type-row-title-font-family: var(--font-body);
+  --type-row-title-font-size: 1rem;
+  --type-row-title-size: var(--type-row-title-font-size);
+  --type-row-title-line-height: 1.3125rem;
+  --type-row-title-font-weight: 500;
+  --type-row-title-letter-spacing: -0.01em;
+  --type-card-title-font-family: var(--font-body);
+  --type-card-title-font-size: 1.5rem;
+  --type-card-title-size: var(--type-card-title-font-size);
+  --type-card-title-line-height: 1.875rem;
+  --type-card-title-font-weight: 600;
+  --type-card-title-letter-spacing: -0.01em;
+  --type-section-font-family: var(--font-body);
+  --type-section-font-size: 2rem;
+  --type-section-size: var(--type-section-font-size);
+  --type-section-line-height: 2.375rem;
+  --type-section-font-weight: 600;
+  --type-section-letter-spacing: -0.02em;
+  --type-stat-font-family: var(--font-body);
+  --type-stat-font-size: 1.25rem;
+  --type-stat-size: var(--type-stat-font-size);
+  --type-stat-line-height: 1.4375rem;
+  --type-stat-font-weight: 600;
+  --type-stat-letter-spacing: -0.02em;
+  --type-metric-font-family: var(--font-body);
+  --type-metric-font-size: 2rem;
+  --type-metric-size: var(--type-metric-font-size);
+  --type-metric-line-height: 2.25rem;
+  --type-metric-font-weight: 600;
+  --type-metric-letter-spacing: -0.02em;
+  --type-mono-id-font-family: var(--font-code);
+  --type-mono-id-font-size: 0.8125rem;
+  --type-mono-id-size: var(--type-mono-id-font-size);
+  --type-mono-id-line-height: 1.125rem;
+  --type-mono-id-font-weight: 500;
+  --type-mono-id-letter-spacing: 0;
+  --type-page-title-font-family: var(--font-display);
+  --type-page-title-font-size: 3.5rem;
+  --type-page-title-size: var(--type-page-title-font-size);
+  --type-page-title-line-height: 4rem;
+  --type-page-title-font-weight: 600;
+  --type-page-title-letter-spacing: -0.02em;
+  --type-display-font-family: var(--font-display);
+  --type-display-font-size: 5rem;
+  --type-display-size: var(--type-display-font-size);
+  --type-display-line-height: 5.125rem;
+  --type-display-font-weight: 500;
+  --type-display-letter-spacing: -0.035em;
+  --background: oklch(1.0000 0.0000 0);
+  --foreground: oklch(0.2589 0.0253 232.32);
+  --card: oklch(1.0000 0.0000 0);
+  --card-foreground: oklch(0.2589 0.0253 232.32);
+  --popover: oklch(1.0000 0.0000 0);
+  --popover-foreground: oklch(0.2589 0.0253 232.32);
+  --primary: oklch(0.5082 0.1270 248.33);
+  --primary-foreground: oklch(1.0000 0.0000 0);
+  --secondary: oklch(0.9537 0.0085 225.08);
+  --secondary-foreground: oklch(0.2589 0.0253 232.32);
+  --muted: oklch(0.9537 0.0085 225.08);
+  --muted-foreground: oklch(0.5039 0.0298 228.46);
+  --accent: oklch(0.9537 0.0085 225.08);
+  --accent-foreground: oklch(0.2589 0.0253 232.32);
+  --destructive: oklch(0.4777 0.1518 22.80);
+  --border: oklch(0.9491 0.0126 228.93);
+  --input: oklch(0.9003 0.0121 223.54);
+  --ring: oklch(0.5082 0.1270 248.33);
+  --chart-1: oklch(0.5082 0.1270 248.33);
+  --chart-2: oklch(0.4806 0.0723 182.30);
+  --chart-3: oklch(0.4519 0.0735 220.09);
+  --chart-4: oklch(0.5005 0.1006 155.60);
+  --chart-5: oklch(0.4839 0.1028 73.45);
+  --sidebar: oklch(0.9647 0.0051 228.82);
+  --sidebar-foreground: oklch(0.2589 0.0253 232.32);
+  --sidebar-primary: oklch(0.5082 0.1270 248.33);
+  --sidebar-primary-foreground: oklch(1.0000 0.0000 0);
+  --sidebar-accent: rgba(23, 38, 46, 0.11);
+  --sidebar-accent-foreground: oklch(0.2589 0.0253 232.32);
+  --sidebar-border: rgba(23, 38, 46, 0.08);
+  --sidebar-ring: oklch(0.5082 0.1270 248.33);
+  --brand-accent: oklch(0.4806 0.0723 182.30);
+  --text-body: oklch(0.3354 0.0300 227.77);
+  --text-muted: oklch(0.4458 0.0306 224.94);
+  --text-subtle: oklch(0.5039 0.0298 228.46);
+  --text-link: oklch(0.4131 0.1214 251.38);
+  --surface-sunken: oklch(0.9537 0.0085 225.08);
+  --border-strong: oklch(0.7078 0.0162 229.07);
+  --primary-hover: oklch(0.4491 0.1258 249.62);
+  --chrome: oklch(0.9647 0.0051 228.82);
+  --chrome-foreground: oklch(0.2589 0.0253 232.32);
+  --chrome-muted: rgba(23, 38, 46, 0.64);
+  --chrome-hover: rgba(23, 38, 46, 0.09);
+  --chrome-active: rgba(23, 38, 46, 0.11);
+  --chrome-active-bar: oklch(0.5082 0.1270 248.33);
+  --chrome-border: rgba(23, 38, 46, 0.08);
+  --secondary-tone: oklch(0.4806 0.0723 182.30);
+  --secondary-tone-foreground: oklch(1.0000 0.0000 0);
+  --status-success: oklch(0.5005 0.1006 155.60);
+  --status-success-ink: oklch(0.4493 0.1005 155.49);
+  --status-success-bg: oklch(0.9503 0.0346 155.96);
+  --status-warning: oklch(0.4839 0.1028 73.45);
+  --status-warning-ink: oklch(0.4502 0.0974 70.15);
+  --status-warning-bg: oklch(0.9495 0.0357 71.44);
+  --status-danger: oklch(0.4777 0.1518 22.80);
+  --status-danger-ink: oklch(0.4503 0.1525 22.95);
+  --status-danger-bg: oklch(0.9335 0.0335 24.58);
+  --status-info: oklch(0.4519 0.0735 220.09);
+  --status-info-ink: oklch(0.4485 0.0733 220.19);
+  --status-info-bg: oklch(0.9504 0.0256 221.57);
+  --status-pending: oklch(0.4803 0.0731 300.00);
+  --status-pending-ink: oklch(0.4514 0.0726 300.24);
+  --status-pending-bg: oklch(0.9503 0.0261 300.28);
+  --status-neutral: oklch(0.5039 0.0298 228.46);
+  --status-neutral-ink: oklch(0.4505 0.0304 228.64);
+  --status-neutral-bg: oklch(0.9503 0.0101 228.89);
+}
+
+* {
+  --theme-shadow-sm: 0 1px 3px var(--tw-shadow-color,rgba(23, 38, 46, 0.08));
+  --theme-shadow-md: 0 6px 16px var(--tw-shadow-color,rgba(23, 38, 46, 0.12));
+  --theme-shadow-lg: 0 6px 16px var(--tw-shadow-color,rgba(23, 38, 46, 0.12));
+  --theme-shadow-xl: 0 16px 40px var(--tw-shadow-color,rgba(23, 38, 46, 0.18));
+  --theme-shadow-2xl: 0 16px 40px var(--tw-shadow-color,rgba(23, 38, 46, 0.18));
+}
+
+.dark {
+  --background: oklch(0.2589 0.0253 232.32);
+  --foreground: oklch(0.9704 0.0045 214.33);
+  --card: oklch(0.3134 0.0284 230.46);
+  --card-foreground: oklch(0.9704 0.0045 214.33);
+  --popover: oklch(0.3134 0.0284 230.46);
+  --popover-foreground: oklch(0.9704 0.0045 214.33);
+  --primary: oklch(0.7552 0.1017 240.64);
+  --primary-foreground: oklch(0.2450 0.0314 233.02);
+  --secondary: oklch(0.5577 0.0399 226.39);
+  --secondary-foreground: oklch(0.9977 0.0032 197.11);
+  --muted: oklch(0.3766 0.0305 226.35);
+  --muted-foreground: oklch(0.8539 0.0117 217.56);
+  --accent: oklch(0.3766 0.0305 226.35);
+  --accent-foreground: oklch(0.9704 0.0045 214.33);
+  --destructive: oklch(0.7486 0.1229 17.28);
+  --border: oklch(0.3653 0.0306 226.42);
+  --input: oklch(0.4174 0.0299 226.13);
+  --ring: oklch(0.7552 0.1017 240.64);
+  --chart-1: oklch(0.7552 0.1017 240.64);
+  --chart-2: oklch(0.7565 0.0852 175.16);
+  --chart-3: oklch(0.7911 0.0812 212.95);
+  --chart-4: oklch(0.7670 0.1128 147.15);
+  --chart-5: oklch(0.8393 0.1174 82.45);
+  --sidebar: oklch(0.2939 0.0267 228.93);
+  --sidebar-foreground: oklch(0.9704 0.0045 214.33);
+  --sidebar-primary: oklch(0.7552 0.1017 240.64);
+  --sidebar-primary-foreground: oklch(0.2450 0.0314 233.02);
+  --sidebar-accent: rgba(252, 252, 252, 0.11);
+  --sidebar-accent-foreground: oklch(0.9704 0.0045 214.33);
+  --sidebar-border: rgba(252, 252, 252, 0.08);
+  --sidebar-ring: oklch(0.7552 0.1017 240.64);
+  --brand-accent: oklch(0.7565 0.0852 175.16);
+  --text-body: oklch(0.9182 0.0115 217.55);
+  --text-muted: oklch(0.9182 0.0115 217.55);
+  --text-subtle: oklch(0.8539 0.0117 217.56);
+  --text-link: oklch(0.6543 0.1020 241.20);
+  --surface-sunken: oklch(0.3766 0.0305 226.35);
+  --border-strong: oklch(0.5825 0.0217 225.97);
+  --primary-hover: oklch(0.8143 0.1016 240.86);
+  --chrome: oklch(0.2939 0.0267 228.93);
+  --chrome-foreground: oklch(0.9704 0.0045 214.33);
+  --chrome-muted: rgba(252, 252, 252, 0.62);
+  --chrome-hover: rgba(252, 252, 252, 0.09);
+  --chrome-active: rgba(252, 252, 252, 0.11);
+  --chrome-active-bar: oklch(0.7552 0.1017 240.64);
+  --chrome-border: rgba(252, 252, 252, 0.08);
+  --secondary-tone: oklch(0.7565 0.0852 175.16);
+  --secondary-tone-foreground: oklch(0.2589 0.0253 232.32);
+  --status-success: oklch(0.7670 0.1128 147.15);
+  --status-success-ink: oklch(0.7509 0.1138 147.40);
+  --status-success-bg: oklch(0.2506 0.0405 146.70);
+  --status-warning: oklch(0.8393 0.1174 82.45);
+  --status-warning-ink: oklch(0.7803 0.1136 81.65);
+  --status-warning-bg: oklch(0.2508 0.0410 84.27);
+  --status-danger: oklch(0.7486 0.1229 17.28);
+  --status-danger-ink: oklch(0.7701 0.1220 17.13);
+  --status-danger-bg: oklch(0.2502 0.0416 18.04);
+  --status-info: oklch(0.7911 0.0812 212.95);
+  --status-info-ink: oklch(0.7507 0.0814 213.10);
+  --status-info-bg: oklch(0.2494 0.0285 214.98);
+  --status-pending: oklch(0.7796 0.0855 300.74);
+  --status-pending-ink: oklch(0.7823 0.0841 301.06);
+  --status-pending-bg: oklch(0.2494 0.0309 301.39);
+  --status-neutral: oklch(0.9182 0.0115 217.55);
+  --status-neutral-ink: oklch(0.6295 0.0126 217.60);
+  --status-neutral-bg: oklch(0.2503 0.0035 228.94);
+}
+
+@media (min-width: 48rem) {
+  :root { --bottom-nav-h: 0px; }
+}
+@theme inline {
+  --color-secondary-tone: var(--secondary-tone);
+  --color-secondary-tone-foreground: var(--secondary-tone-foreground);
+}
+@utility font-display { font-family: var(--font-display); }
+@utility type-display { font-family: var(--type-display-font-family, var(--font-body)); font-size: var(--type-display-size, var(--type-display-font-size, inherit)); line-height: var(--type-display-line-height, inherit); font-weight: var(--type-display-font-weight, inherit); letter-spacing: var(--type-display-letter-spacing, inherit); text-transform: var(--type-display-text-transform, inherit); }

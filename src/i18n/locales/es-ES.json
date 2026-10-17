@@ -1,0 +1,391 @@
+{
+  "_app": {
+    "deny-state": {
+      "desc": "No tienes permiso para ver esta pantalla.",
+      "title": "Acceso restringido"
+    },
+    "invite": {
+      "confirm": "Confirma la contraseña",
+      "desc": "Elige una contraseña para terminar de configurar tu cuenta.",
+      "invalid": "Este enlace de invitación ya no es válido. Pide a tu administrador uno nuevo.",
+      "mismatch": "Las dos contraseñas no coinciden.",
+      "no-token": "Este enlace está incompleto. Vuelve a abrir el enlace de invitación de tu correo o pide uno nuevo a tu administrador.",
+      "password": {
+        "missing-digit": "Incluye al menos un número.",
+        "missing-lowercase": "Incluye al menos una letra minúscula.",
+        "missing-special": "Incluye al menos un carácter especial.",
+        "missing-uppercase": "Incluye al menos una letra mayúscula.",
+        "policy": "Tu contraseña no cumple los requisitos.",
+        "too-long": "Usa una contraseña más corta.",
+        "too-short": "Usa una contraseña más larga."
+      },
+      "password-label": "Contraseña",
+      "rate-limited": "Demasiados intentos. Inténtalo de nuevo en unos minutos.",
+      "sign-in": "Iniciar sesión",
+      "submit": "Guardar contraseña",
+      "success": "Tu contraseña quedó guardada. Ya puedes iniciar sesión.",
+      "title": "Define tu contraseña",
+      "unavailable": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "load-state": {
+      "desc": "Hubo un problema al contactar el servidor. Revisa tu conexión e inténtalo de nuevo.",
+      "retry": "Reintentar",
+      "title": "No se pudo cargar esta pantalla"
+    },
+    "login": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión…",
+      "title": "Iniciar sesión"
+    },
+    "no-data-state": {
+      "desc": "Se diseñó antes de que su información existiera en el backend, así que todavía no hay nada que mostrar.",
+      "title": "Esta pantalla todavía no tiene datos detrás"
+    },
+    "not-found": {
+      "desc": "Puede que se haya eliminado o que el enlace que te trajo esté incompleto.",
+      "title": "Este registro no está disponible"
+    },
+    "pending": {
+      "auth-unsupported": {
+        "note": "Las invitaciones y la verificación en dos pasos aún no están disponibles",
+        "sub": "El backend de la app todavía no ofrece aceptar invitaciones ni verificación en dos pasos; el resto de pantallas funciona con normalidad."
+      },
+      "error": {
+        "note": "Esta pantalla no se pudo convertir.",
+        "sub": "La conversión de esta pantalla falló, así que se reemplazó por un marcador de posición; las demás se convirtieron con normalidad."
+      },
+      "skeleton": {
+        "note": "Preparando esta pantalla…",
+        "sub": "El prototipo todavía no ha generado esta pantalla."
+      }
+    },
+    "placeholder": {
+      "desc": "Esta pantalla no pudo prepararse; las demás se convirtieron con normalidad."
+    },
+    "sessions": {
+      "cancel": "Cancelar",
+      "caption": "Dispositivos con sesión iniciada en tu cuenta",
+      "col-actions": "Acciones",
+      "col-created": "Inicio de sesión",
+      "col-device": "Dispositivo",
+      "col-last-active": "Última actividad",
+      "desc": "Dispositivos en los que has iniciado sesión en esta app.",
+      "empty": "No hay dispositivos que mostrar.",
+      "error": "No pudimos cargar tus dispositivos.",
+      "error-sign-in": "Tu sesión ha caducado. Inicia sesión de nuevo para ver tus dispositivos.",
+      "loading": "Cargando tus dispositivos…",
+      "memory": "Esta app funciona con datos de ejemplo; las sesiones solo existen cuando está conectada a su backend.",
+      "retry": "Reintentar",
+      "revoke": "Cerrar sesión",
+      "revoke-aria": "Cerrar sesión en {{device}}",
+      "revoke-confirm": "Cerrar sesión en el dispositivo",
+      "revoke-confirm-body": "Se le pedirá a {{device}} que inicie sesión de nuevo la próxima vez que se compruebe su sesión.",
+      "revoke-confirm-title": "¿Cerrar sesión en este dispositivo?",
+      "sign-out-all": "Cerrar sesión en todas partes",
+      "sign-out-all-confirm": "Cerrar sesión en todas partes",
+      "sign-out-all-confirm-body": "Se cerrará tu sesión aquí ahora, también en este dispositivo. A los demás dispositivos y pestañas abiertas se les pedirá iniciar sesión de nuevo la próxima vez que se compruebe su sesión.",
+      "sign-out-all-confirm-title": "¿Cerrar sesión en todas partes?",
+      "this-device": "Este dispositivo",
+      "title": "Tus dispositivos",
+      "toast-revoke-failed": "No pudimos cerrar la sesión de ese dispositivo. Inténtalo de nuevo.",
+      "toast-sign-out-all-failed": "No pudimos confirmar que se cerró la sesión en tus otros dispositivos. Compruébalo e inténtalo de nuevo.",
+      "unavailable": "La lista de dispositivos todavía no está disponible. Aun así puedes cerrar sesión en todas partes.",
+      "unknown-device": "Dispositivo desconocido"
+    },
+    "sign-in-required": {
+      "desc": "Esta información todavía no está disponible sin iniciar sesión.",
+      "title": "Inicia sesión para ver esto"
+    },
+    "toast": {
+      "neutral": "Esta acción todavía no está conectada"
+    },
+    "truncated": "Esta lista está truncada: se muestran las primeras {{limit}} filas.",
+    "unscoped": "No se pueden mostrar algunos datos: no están disponibles para tu cuenta.",
+    "write-error": {
+      "denied": "No tienes permiso para hacer este cambio.",
+      "failed": "No pudimos guardar los cambios. Inténtalo de nuevo."
+    }
+  },
+  "_reason": {
+    "escritura-campos-faltantes": "Esta acción necesita datos que esta pantalla todavía no recoge.",
+    "escritura-no-disponible": "Esta acción no está disponible por ahora.",
+    "sesion-no-identificada": "No pudimos identificar tu sesión, por lo que esta acción no está disponible.",
+    "valor-sin-equivalente": "Este valor no tiene equivalente en tus datos, por lo que no se puede guardar."
+  },
+  "auth": {
+    "b2c357ca": "Navegador Escolar de Miami-Dade",
+    "c887f134": "Saltar al contenido principal"
+  },
+  "explore": {
+    "024057f3": "Desglose de coincidencias",
+    "0844df8f": "peso",
+    "0ecb624c": "Busca escuelas cerca de ti, con fuentes",
+    "0f21801b": "Ninguna escuela coincide con estos filtros. Prueba a cambiar un filtro o buscar otra dirección.",
+    "16b5719d": "Mostrar opciones de educación temprana",
+    "1c65d7b1": "Escuelas en el mapa",
+    "28391d3b": "de",
+    "29a390f9": "Borrar todo",
+    "33bcd6d4": "Mostrar en el mapa",
+    "3c61f87e": {
+      "data-label": "Tipo de escuela",
+      "filterselect-attr-label": "Tipo de escuela"
+    },
+    "3f2adc4e": "Distancia desde casa: no aplicable, no hay dirección de casa en el mapa",
+    "421480b3": {
+      "button": "Pregunta a Navi",
+      "label": "Pregunta a Navi"
+    },
+    "423eb135": "Busca el nombre de una escuela o una dirección",
+    "45d41cc0": "Abrir escuela",
+    "49c266ba": "Buscar",
+    "517966a4": "Explora las escuelas de Miami-Dade",
+    "51b79abd": "Mostrar escuelas primarias",
+    "546ebb8e": "Filtros",
+    "54ac2d97": "Crea un plan para guardar escuelas y seguir las fechas clave de solicitud.",
+    "55ef341d": "puntos ponderados según los filtros que elijas.",
+    "5c62cdfd": "Zona de asistencia indicada:",
+    "67b4a299": "conjunto de filtros",
+    "6b3bacc7": "Entrada de una escuela de un vecindario de Miami-Dade con luz de la mañana",
+    "75bf476c": "No hay métricas registradas para esta escuela. Pregunta a la escuela: ¿cuáles son sus últimos resultados estatales y dónde se publican?",
+    "770ca9a4": "Elige una escuela para ver sus métricas",
+    "799f66d2": "Crea tu plan",
+    "7df58f7e": "Escribe el nombre de una escuela o una calle",
+    "8e1fbd92": {
+      "data-label": "Grados que ofrece",
+      "filterselect-attr-label": "Grados que ofrece"
+    },
+    "8f7086d1": "Mostrar escuelas magnet",
+    "90920d93": {
+      "data-label": "Programa",
+      "filterselect-attr-label": "Programa"
+    },
+    "98abff28": {
+      "p": "Coincidencias",
+      "span": "Coincidencias"
+    },
+    "9ca32316": "Pide a Navi que reduzca la lista",
+    "a52ace42": "Todas",
+    "a607ae71": "Busca por nombre de escuela o dirección",
+    "a6393670": "No se indica una zona de asistencia. Pregunta a la escuela cómo asigna las plazas.",
+    "ae7e3f9d": "No aplicable: no",
+    "ba8f9478": "No hay filtros definidos, así que aún no hay puntuación de coincidencia.",
+    "bf802d2c": "Ninguna escuela coincide",
+    "c9ba775e": "No coincide",
+    "ca184496": "No disponible",
+    "cc22b2db": "Los recuentos se reducen de izquierda a derecha. Los filtros leen el registro de cada escuela: pueden mostrar la etapa, el tipo, los grados y el programa, pero no si tu dirección está asignada a una escuela.",
+    "d220fa38": "Navi busca en los registros de esta página. Cada respuesta remite a su fuente.",
+    "d604310a": "Mostrando",
+    "dbe42b97": "Guardar esta escuela",
+    "de22447d": "Borrar todos los filtros",
+    "de838855": {
+      "data-label": "Etapa",
+      "filterselect-attr-label": "Etapa"
+    },
+    "ec189624": "escuelas por nombre o dirección, y luego verifica cada dato con su fuente. Los datos que faltan aparecen como no disponibles.",
+    "f79e2ecc": "escuelas",
+    "fc2b6c26": "quedan",
+    "fee8c1df": "Lo que sabemos sobre"
+  },
+  "family-home": {
+    "70982635": "Fuente no disponible",
+    "80533212": "Niño",
+    "0caf1dd0": "Aún no hay niños en tu plan",
+    "0feb6016": "Abrir el planificador",
+    "10c22bcf": "para",
+    "1c34f887": "verificadas",
+    "2149fb7c": "Añade un niño para ver las fechas clave y las escuelas guardadas que le corresponden.",
+    "3229d16c": {
+      "badge": "Sin confirmar",
+      "data-label": "Sin confirmar"
+    },
+    "3e95716f": "Pregunta a la escuela o al distrito cuándo abre.",
+    "3f2036b0": "Todos los niños",
+    "4acf47fb": "Las solicitudes se tramitan en paralelo: el planificador muestra cada vía una al lado de la otra",
+    "4f51fc58": "Mi plan ·",
+    "50ccfdd7": ". Su fecha no está disponible.",
+    "5361696e": "Revisa las escuelas guardadas de cada niño",
+    "5693e770": "Siguiente:",
+    "66d05020": "Consulta qué vence primero",
+    "688dcc5a": "confirmadas por una fuente oficial,",
+    "6cd2e331": "Escuela",
+    "711bb4d8": "Las próximas cinco fechas clave, en orden cronológico, cada una con su fuente.",
+    "74cd3594": "Aún no hay escuelas guardadas. Explora opciones y guarda escuelas para compararlas más tarde.",
+    "74e31328": "No hay fechas clave próximas",
+    "9068f761": "todavía sin confirmar.",
+    "9464fe53": "No hay fechas clave próximas para el niño seleccionado.",
+    "9e420391": "Fecha no disponible.",
+    "aaf23206": "título",
+    "c11a6354": "aún no verificadas",
+    "c4b5c6c1": "Fechas clave en una línea de tiempo",
+    "d64debd9": "escuela",
+    "d81c55f4": "guardadas",
+    "e2d59707": "Revisa qué normas están confirmadas",
+    "f79e2ecc": "escuelas",
+    "fe00b67b": {
+      "badge": "Confirmado",
+      "data-label": "Confirmado"
+    },
+    "fe24b674": "Guarda una escuela para este niño y aquí aparecerán las fechas que le correspondan."
+  },
+  "family-profile": {
+    "04eb364b": "Guardar niño",
+    "0c8209e7": "Guardar perfil",
+    "0fd38be8": "Introduce la dirección desde la que tu hijo viajará.",
+    "1509f561": "Guardar",
+    "16178f90": "Nacimiento",
+    "18a975ce": "Mostrar solo opciones gratuitas",
+    "19766ed6": "Cancelar",
+    "1d9149c2": "Elige el idioma en el que quieres leer.",
+    "24f9dab5": "Introduce un apellido familiar, por ejemplo familia Gómez.",
+    "351ffc2a": "Elige un curso",
+    "3583a358": "Hijos",
+    "37e90a8a": "Preferencias de búsqueda",
+    "39b7370f": "Edad",
+    "464c4ffd": {
+      "button": "Editar",
+      "button-attr-aria-label": "Editar"
+    },
+    "5164b245": "Fecha de nacimiento",
+    "61a27ddb": "Introduce el nombre de pila de tu hijo.",
+    "6249cbe9": "Intereses prioritarios",
+    "63ab85ee": "Dirección de casa",
+    "67595aa3": "La dirección y el código postal indican al navegador dónde buscar. Nunca se muestran a las escuelas.",
+    "69d2a210": "Editar niño",
+    "6c15a146": "Excluye las escuelas que cobran matrícula.",
+    "6f5545e5": "Curso actual",
+    "702ef921": "Nombre",
+    "785a7a2b": "Añade un niño para ver qué niveles escolares y fechas clave le corresponden. Aun así puedes explorar escuelas sin hacerlo.",
+    "85137b2c": "El curso de cada niño determina qué niveles escolares y plazos le corresponden.",
+    "875fc5ab": "La fecha de nacimiento no puede ser futura. Revisa el año e inténtalo de nuevo.",
+    "876dba20": "Volver a Pathway",
+    "888a13d3": "Las preferencias de gratuidad e intereses prioritarios cambian qué escuelas aparecen en la búsqueda.",
+    "8a079c55": "explorar escuelas cerca de",
+    "8ac8fb16": "Perfil guardado. Ahora puedes",
+    "95c87fe3": "Código postal",
+    "97813fc2": "No se han añadido intereses. La búsqueda usará tus otros ajustes.",
+    "97929eab": "Elige el curso actual de tu hijo.",
+    "97fd942c": "Añadir niño",
+    "9eaeefb5": "Introduce un código postal de Miami-Dade de 5 dígitos, por ejemplo 33178.",
+    "a1c6c97f": "Hogar",
+    "a4fe6526": "Idioma",
+    "a50871bd": "El curso determina qué niveles escolares y plazos se aplican a este niño.",
+    "ac21e3da": "Tu perfil familiar",
+    "ac42c9a2": "Menos de 1",
+    "b3615466": "Añadir un niño",
+    "b58eb52c": "Omitir por ahora",
+    "ba6ac53f": "Por ejemplo, inmersión en dos idiomas",
+    "c3812fc4": "Quitar",
+    "d89bc0be": "Introduce una fecha de nacimiento.",
+    "daf341af": "Aún no hay niños añadidos",
+    "e19218ba": "Apellido familiar",
+    "e1f068e7": "Añadir interés",
+    "e5bc7ba4": "La configuración es opcional. Puedes explorar colegios sin ella.",
+    "f6cd88ad": "Curso no indicado",
+    "f8416d79": "Elige un idioma"
+  },
+  "family-profile-card": {
+    "1eaad172": "Distancia máxima",
+    "4895f731": "No definido",
+    "a4fe6526": "Idioma",
+    "eee1c1ad": "mi"
+  },
+  "pathway": {
+    "0323020f": "Itinerario",
+    "070f1c46": {
+      "p": "Curso no disponible",
+      "span": "Curso no disponible"
+    },
+    "0c405ca1": "de 4",
+    "146f206b": "Etapa anterior",
+    "175f6aff": "Añade un hijo en el perfil familiar para ver las etapas desde educación infantil hasta 12.º curso.",
+    "1a12fe00": " — curso o dirección",
+    "311cd603": "Sector no disponible",
+    "430264ff": "Elige un hijo",
+    "4a3aacc6": "; no es una asignación confirmada.",
+    "543e33c4": "zona",
+    "59cfd499": "Estimado a partir de zonas de asistencia que se solapan. Confírmalo con el colegio antes de planificar en función de ello.",
+    "673bb835": ". Elige una etapa para ver sus colegios.",
+    "79e2afe6": "Dirección no disponible. Consúltalo con el colegio.",
+    "8c279b58": "zonas",
+    "91766a00": "Etapa actual",
+    "9b590291": "Adscrito",
+    "aaf23206": "título",
+    "aca01a1a": "Correcto",
+    "ad350e89": "Zonas para",
+    "b034e6a7": "No figura ninguna zona de asistencia para esta etapa. Pregunta al colegio qué zona corresponde a",
+    "b152627e": "Solapamientos",
+    "b5f38825": "A partir de las zonas de asistencia de la fuente que se muestra en cada tarjeta.",
+    "b743c760": "Próximamente",
+    "b774599a": "Estimado",
+    "ba691ba0": "no disponible",
+    "c4370b2f": " — etapas",
+    "c90bd1fe": "Abrir perfil familiar",
+    "ca184496": "No disponible",
+    "d5cbe44f": "Curso escolar de la zona",
+    "d71b7a38": "· nacido el",
+    "de838855": "Etapa",
+    "eb9cb349": "Los colegios de educación infantil y primaria proceden directamente de las zonas de asistencia. Las opciones de secundaria y bachillerato se estiman donde las zonas se solapan, por lo que pueden cambiar. Los límites de zona se indican por nombre, no se dibujan, y ninguno describe una ruta.",
+    "ed302421": "Etapa actual de cada hijo",
+    "efc31118": "Aún no hay hijos en este plan",
+    "fa10cba2": "Corregir datos del hijo",
+    "ffbb9169": "Colegios para"
+  },
+  "private": {
+    "49c266ba": "Buscar",
+    "99af6606": {
+      "button-attr-aria-label": "Menú",
+      "nav-attr-aria-label": "Menú"
+    },
+    "ac576a66": "Saltar al contenido",
+    "b2c357ca": "Miami-Dade School Navigator",
+    "b79cac92": {
+      "button": "Ayuda",
+      "button-attr-aria-label": "Ayuda"
+    },
+    "eb814be3": "Principal"
+  },
+  "public": {
+    "99af6606": {
+      "button-attr-aria-label": "Menú",
+      "nav-attr-aria-label": "Menú"
+    },
+    "bfd402b2": "Iniciar sesión",
+    "c887f134": "Saltar al contenido principal",
+    "efe10c80": "Principal"
+  },
+  "saved-school-card": {
+    "5331e47d": "Tu nota",
+    "b5c120b3": "Guardado"
+  },
+  "school-card": {
+    "70982635": "Fuente no disponible",
+    "6a4e9a15": "Consulta al colegio su calificación estatal más reciente.",
+    "addc0dad": "Calificación oficial",
+    "b5c120b3": "Guardado",
+    "ca184496": "No disponible"
+  },
+  "school-map-view": {
+    "12d5da11": "Magnet",
+    "2558bb40": "colegio tiene",
+    "3a786953": "Domicilio",
+    "48468a5a": "Leyenda del mapa: sector del colegio",
+    "49c68c79": "Concertado",
+    "591935b1": "Público",
+    "6cd2e331": "Colegio",
+    "77e0ba54": "Educación infantil",
+    "82a3537f": "nombre",
+    "8458da45": "No hay colegios que mostrar en el mapa. Prueba a cambiar un filtro o a buscar otra dirección.",
+    "8653bc4c": "colegios tienen",
+    "c5d59534": "sin ubicación en el mapa.",
+    "c63eb672": "Privado"
+  },
+  "value-format": {
+    "70982635": "Fuente no disponible",
+    "3dddf7d4": "Requiere verificación",
+    "67a926f7": "No disponible",
+    "b774599a": "Estimado",
+    "f46686f6": "· Consúltalo con el colegio:"
+  }
+}

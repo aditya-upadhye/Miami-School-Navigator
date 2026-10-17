@@ -1,0 +1,17 @@
+# Bun configuration file
+# https://bun.sh/docs/cli/bunfig
+
+[install]
+# Use faster installs
+production = false
+# Auto-install peer dependencies
+peer = true
+# Lockfile format (Bun 1.2+ uses bun.lock by default, bun.lockb for older versions)
+# bun.lock = text format (JSONC) - better for version control
+# bun.lockb = binary format - faster but harder to diff
+lockfile = "bun.lock"
+
+[install.scopes]
+# Optional: configure scoped packages if needed
+
+

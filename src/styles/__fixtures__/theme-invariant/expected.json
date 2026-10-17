@@ -1,0 +1,267 @@
+{
+ "version": 1,
+ "note": "Rows whose T2 value legitimately differs from aed3a951. Every other (row, theme) pair must be IDENTICAL between the two columns. Each entry freezes BOTH values so a drift on either side fails.",
+ "declared": {
+  "button-default-height": {
+   "ds-a": {
+    "old": "32px",
+    "new": "40px",
+    "reason": "heights follow --control-sm|md|lg, which apg writes from semantic.control (ds-a: 32/40/48px; golden md 32 -> 40px)"
+   }
+  },
+  "button-lg-height": {
+   "ds-a": {
+    "old": "36px",
+    "new": "48px",
+    "reason": "heights follow --control-sm|md|lg, which apg writes from semantic.control (ds-a: 32/40/48px; golden md 32 -> 40px)"
+   }
+  },
+  "button-sm-height": {
+   "ds-a": {
+    "old": "28px",
+    "new": "32px",
+    "reason": "heights follow --control-sm|md|lg, which apg writes from semantic.control (ds-a: 32/40/48px; golden md 32 -> 40px)"
+   }
+  },
+  "button-icon-size-w": {
+   "ds-a": {
+    "old": "32px",
+    "new": "40px",
+    "reason": "heights follow --control-sm|md|lg, which apg writes from semantic.control (ds-a: 32/40/48px; golden md 32 -> 40px)"
+   }
+  },
+  "button-icon-size-h": {
+   "ds-a": {
+    "old": "32px",
+    "new": "40px",
+    "reason": "heights follow --control-sm|md|lg, which apg writes from semantic.control (ds-a: 32/40/48px; golden md 32 -> 40px)"
+   }
+  },
+  "button-icon-lg-size-w": {
+   "ds-a": {
+    "old": "36px",
+    "new": "48px",
+    "reason": "heights follow --control-sm|md|lg, which apg writes from semantic.control (ds-a: 32/40/48px; golden md 32 -> 40px)"
+   }
+  },
+  "button-icon-sm-size-w": {
+   "ds-a": {
+    "old": "28px",
+    "new": "32px",
+    "reason": "heights follow --control-sm|md|lg, which apg writes from semantic.control (ds-a: 32/40/48px; golden md 32 -> 40px)"
+   }
+  },
+  "input-height": {
+   "ds-a": {
+    "old": "32px",
+    "new": "40px",
+    "reason": "heights follow --control-sm|md|lg, which apg writes from semantic.control (ds-a: 32/40/48px; golden md 32 -> 40px)"
+   }
+  },
+  "select-trigger-sm-height": {
+   "ds-a": {
+    "old": "28px",
+    "new": "32px",
+    "reason": "heights follow --control-sm|md|lg, which apg writes from semantic.control (ds-a: 32/40/48px; golden md 32 -> 40px)"
+   }
+  },
+  "select-content-shadow": {
+   "ds-a": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1913 0.0000 0), 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1913 0.0000 0), 0 4px 8px -2px rgba(0, 0, 0, 0.12)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   },
+   "ds-b": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1448 0.0000 0), 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1448 0.0000 0), 0 10px 30px 0 rgba(15, 118, 110, 0.25)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   },
+   "ds-c": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1448 0.0000 0), 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1448 0.0000 0), 0 10px 30px 0 rgba(15, 118, 110, 0.25)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   }
+  },
+  "badge-radius": {
+   "ds-a": {
+    "old": "20px",
+    "new": "9999px",
+    "reason": "the semantic radius sink (--theme-radius-control|card|modal|badge) is now read; only a theme that carries it differs"
+   },
+   "ds-c": {
+    "old": "6px",
+    "new": "0px",
+    "reason": "the flat design system's semantic radius sink is 0px (--theme-radius-control|card|modal|badge) and is now read; a theme without the sink keeps the scale step"
+   }
+  },
+  "checkbox-radius": {
+   "ds-b": {
+    "old": "4px",
+    "new": "2px",
+    "reason": "the checkbox radius is min(var(--radius-control),4px): under --radius:0 it follows the control radius (was a fixed 4px)"
+   },
+   "ds-c": {
+    "old": "4px",
+    "new": "0px",
+    "reason": "the flat design system's semantic radius sink is 0px (--theme-radius-control|card|modal|badge) and is now read; a theme without the sink keeps the scale step"
+   }
+  },
+  "card-radius": {
+   "none": {
+    "old": "12px",
+    "new": "10px",
+    "reason": "pre-existing at ae2fcde (ARCH-2276): --radius is 0.375rem, so xl/2xl are 10/14px (were 12/16px), without a theme only"
+   },
+   "ds-a": {
+    "old": "12px",
+    "new": "16px",
+    "reason": "the semantic radius sink is now read (card sink 1rem in ds-a): --theme-radius-card wins over the scale step the component used"
+   },
+   "ds-c": {
+    "old": "4px",
+    "new": "0px",
+    "reason": "the flat design system's semantic radius sink is 0px (--theme-radius-control|card|modal|badge) and is now read; a theme without the sink keeps the scale step"
+   }
+  },
+  "card-shadow": {
+   "ds-a": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1913 0.0000 0), 0 0 #0000",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1913 0.0000 0), 0 2px 6px 0 rgba(20, 20, 20, 0.08)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   }
+  },
+  "dialog-radius": {
+   "none": {
+    "old": "12px",
+    "new": "10px",
+    "reason": "pre-existing at ae2fcde (ARCH-2276): --radius is 0.375rem, so xl/2xl are 10/14px (were 12/16px), without a theme only"
+   },
+   "ds-a": {
+    "old": "12px",
+    "new": "24px",
+    "reason": "the semantic radius sink is now read (modal sink 1.5rem in ds-a): --theme-radius-modal wins over the scale step the component used"
+   },
+   "ds-c": {
+    "old": "4px",
+    "new": "0px",
+    "reason": "the flat design system's semantic radius sink is 0px (--theme-radius-control|card|modal|badge) and is now read; a theme without the sink keeps the scale step"
+   }
+  },
+  "popover-shadow": {
+   "ds-a": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1913 0.0000 0), 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1913 0.0000 0), 0 4px 8px -2px rgba(0, 0, 0, 0.12)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   },
+   "ds-b": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1448 0.0000 0), 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1448 0.0000 0), 0 10px 30px 0 rgba(15, 118, 110, 0.25)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   },
+   "ds-c": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1448 0.0000 0), 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 0 1px oklch(0.1448 0.0000 0), 0 10px 30px 0 rgba(15, 118, 110, 0.25)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   }
+  },
+  "sheet-shadow-lg": {
+   "ds-a": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 12px 24px -6px rgba(0, 0, 0, 0.16)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   }
+  },
+  "scale-rounded-xl": {
+   "none": {
+    "old": "12px",
+    "new": "10px",
+    "reason": "pre-existing at ae2fcde (ARCH-2276): --radius is 0.375rem, so xl/2xl are 10/14px (were 12/16px), without a theme only"
+   }
+  },
+  "scale-rounded-2xl": {
+   "none": {
+    "old": "16px",
+    "new": "14px",
+    "reason": "pre-existing at ae2fcde (ARCH-2276): --radius is 0.375rem, so xl/2xl are 10/14px (were 12/16px), without a theme only"
+   }
+  },
+  "scale-shadow-sm": {
+   "ds-a": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   }
+  },
+  "scale-shadow-md": {
+   "ds-a": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 4px 8px -2px rgba(0, 0, 0, 0.12)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   },
+   "ds-b": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 10px 30px 0 rgba(15, 118, 110, 0.25)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   },
+   "ds-c": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 10px 30px 0 rgba(15, 118, 110, 0.25)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   }
+  },
+  "scale-shadow-lg": {
+   "ds-a": {
+    "old": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    "new": "0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 12px 24px -6px rgba(0, 0, 0, 0.16)",
+    "reason": "the shadow utilities read --theme-shadow-<k> / --theme-shadow-float|card (apg writes them on `*`); in a converted app apg's own tailwind half already did this for the scale, the columns here exclude that half"
+   }
+  },
+  "type-body-size": {
+   "ds-b": {
+    "old": "16px",
+    "new": "15px",
+    "reason": "pre-existing at ae2fcde (ARCH-2276): type-body reads --type-body-size, which the DS theme writes"
+   },
+   "ds-c": {
+    "old": "16px",
+    "new": "15px",
+    "reason": "pre-existing at ae2fcde (ARCH-2276): type-body reads --type-body-size, which the DS theme writes"
+   }
+  },
+  "button-default-radius": {
+   "ds-c": {
+    "old": "2px",
+    "new": "0px",
+    "reason": "the flat design system's semantic radius sink is 0px (--theme-radius-control|card|modal|badge) and is now read; a theme without the sink keeps the scale step"
+   }
+  },
+  "button-lg-radius": {
+   "ds-c": {
+    "old": "2px",
+    "new": "0px",
+    "reason": "the flat design system's semantic radius sink is 0px (--theme-radius-control|card|modal|badge) and is now read; a theme without the sink keeps the scale step"
+   }
+  },
+  "input-radius": {
+   "ds-c": {
+    "old": "2px",
+    "new": "0px",
+    "reason": "the flat design system's semantic radius sink is 0px (--theme-radius-control|card|modal|badge) and is now read; a theme without the sink keeps the scale step"
+   }
+  },
+  "select-trigger-radius": {
+   "ds-c": {
+    "old": "2px",
+    "new": "0px",
+    "reason": "the flat design system's semantic radius sink is 0px (--theme-radius-control|card|modal|badge) and is now read; a theme without the sink keeps the scale step"
+   }
+  },
+  "tabs-list-radius": {
+   "ds-c": {
+    "old": "2px",
+    "new": "0px",
+    "reason": "the flat design system's semantic radius sink is 0px (--theme-radius-control|card|modal|badge) and is now read; a theme without the sink keeps the scale step"
+   }
+  }
+ }
+}

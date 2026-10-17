@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miami-Dade School Navigator</title>
+  <!-- archie:theme-init -->
+  <script>
+    /* Applies the saved colour mode BEFORE first paint (no flash on reload). Key precedence: a valid <html data-theme-key="<id>.theme">
+       first (apg prototypes), else `<VITE_ARCHIE_PROJECT_ID>.theme` through Vite's HTML env substitution (left as the literal placeholder
+       when unset, so the fallback id applies), else `app.theme`. Default mode: data-theme-default (light|dark|system), else system. Same
+       rules as src/lib/theme-key.ts (a test runs this script against it). Browser-only, no server state. */
+    (function () {
+      try {
+        var d = document.documentElement;
+        var raw = "%VITE_ARCHIE_PROJECT_ID%";
+        var attr = d.getAttribute("data-theme-key");
+        var key = attr && /^[A-Za-z0-9_-]{1,64}\.theme$/.test(attr) ? attr : (/^[A-Za-z0-9_-]{1,64}$/.test(raw) ? raw : "app") + ".theme";
+        var ok = function (v) { return v === "light" || v === "dark" || v === "system"; };
+        var m = null;
+        try {
+          m = localStorage.getItem(key);
+          if (!ok(m)) {
+            m = null;
+            var legacy = ["archie-ui-theme", "archie-theme-mode"];
+            for (var i = 0; i < legacy.length && !m; i++) {
+              var v = localStorage.getItem(legacy[i]);
+              if (ok(v)) { m = v; try { localStorage.setItem(key, v); } catch (e) {} }
+            }
+          }
+        } catch (e) { m = null; }
+        if (!m) m = d.getAttribute("data-theme-default") || "system";
+        if (!ok(m)) m = "system";
+        var dark = m === "dark" || (m === "system" && !!window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+        d.classList.remove("light", "dark");
+        d.classList.add(dark ? "dark" : "light");
+      } catch (e) {}
+    })();
+  </script>
+  <!-- /archie:theme-init -->
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

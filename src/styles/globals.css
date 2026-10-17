@@ -1,0 +1,305 @@
+@import "./fonts.css";
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./safelist.css";
+
+/**
+ * DESIGN TOKEN SYSTEM
+ *
+ * This file is the SINGLE SOURCE OF TRUTH for design tokens.
+ * The DesignSystemGenerator in archie-code-genesis will REPLACE
+ * the :root / .dark values with those from blueprint.uxUi at generation time.
+ *
+ * Architecture (Tailwind v4 + shadcn/ui):
+ * - :root / .dark declare COLOR tokens as FULL colour values, `oklch(L C H)` —
+ *   the shadcn v4 format, and exactly what apg's generated per-project theme
+ *   (02-theme.ts `compileTheme()`) emits. NEVER bare HSL triplets: a consumer
+ *   reads them as `var(--token)` (translucent: `color-mix(in oklch,
+ *   var(--token) 60%, transparent)`), so any full colour (oklch, hsl, rgb, hex)
+ *   written by a theme or by `src/lib/archie-design-runtime.ts` just works.
+ *   The defaults are the exact numeric conversion of the former HSL palette.
+ * - @theme inline maps --color-* to `var(--token)` for Tailwind utilities
+ * - NEVER use raw Tailwind colors (bg-green-500, text-blue-600)
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * LIGHT MODE TOKENS
+ * Generated from: blueprint.uxUi.theme.light.palette
+ *
+ * Values are FULL colours (`oklch(L C H)`), so the `@theme inline` block
+ * below maps them as plain `var(--token)` and any live re-theme write is a
+ * full colour too. The Genesis bridge (`wave1/design-tokens.gen.ts`)
+ * patches these :root / .dark blocks at generation time when the blueprint
+ * provides palette, sidebar, gradients, glassmorphism, spacing, or
+ * accessibility overrides. Any patcher MUST now write FULL colours (oklch(),
+ * hsl, or hex colour functions), never bare triplets. A gv2 lane pinned to an older template
+ * commit still writes triplets: that is safe only on its pin, not on this one.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --background: oklch(1.0000 0.0000 0);
+  --foreground: oklch(0.1371 0.0360 258.53);
+  --card: oklch(1.0000 0.0000 0);
+  --card-foreground: oklch(0.1371 0.0360 258.53);
+  --popover: oklch(1.0000 0.0000 0);
+  --popover-foreground: oklch(0.1371 0.0360 258.53);
+  --primary: oklch(0.5460 0.2153 262.87);
+  --primary-foreground: oklch(0.9838 0.0035 247.86);
+  --secondary: oklch(0.9684 0.0068 247.9);
+  --secondary-foreground: oklch(0.2079 0.0399 265.73);
+  --muted: oklch(0.9684 0.0068 247.9);
+  --muted-foreground: oklch(0.5547 0.0407 257.44);
+  --accent: oklch(0.9684 0.0068 247.9);
+  --accent-foreground: oklch(0.2079 0.0399 265.73);
+  --destructive: oklch(0.6368 0.2078 25.33);
+  --destructive-foreground: oklch(0.9838 0.0035 247.86);
+  --border: oklch(0.9290 0.0126 255.53);
+  --input: oklch(0.9290 0.0126 255.53);
+  --ring: oklch(0.5460 0.2153 262.87);
+
+  --success: oklch(0.6230 0.1688 149.18);
+  --success-foreground: oklch(1.0000 0.0000 0);
+  --warning: oklch(0.7697 0.1645 70.61);
+  --warning-foreground: oklch(0.0000 0.0000 0);
+  --info: oklch(0.6776 0.1481 238.1);
+  --info-foreground: oklch(1.0000 0.0000 0);
+
+  --sidebar: oklch(0.9848 0.0000 0);
+  --sidebar-foreground: oklch(0.3705 0.0120 285.8);
+  --sidebar-primary: oklch(0.2103 0.0059 285.88);
+  --sidebar-primary-foreground: oklch(0.9848 0.0000 0);
+  --sidebar-accent: oklch(0.9676 0.0013 286.38);
+  --sidebar-accent-foreground: oklch(0.2103 0.0059 285.88);
+  --sidebar-border: oklch(0.9278 0.0058 264.53);
+  --sidebar-ring: oklch(0.6232 0.1879 259.8);
+
+  --chart-1: oklch(0.5460 0.2153 262.87);
+  --chart-2: oklch(0.6230 0.1688 149.18);
+  --chart-3: oklch(0.7697 0.1645 70.61);
+  --chart-4: oklch(0.6776 0.1481 238.1);
+  --chart-5: oklch(0.6368 0.2078 25.33);
+
+  /* Radius (ARCH-2276): ONE knob, with apg's convention: `--radius` is the MEDIUM radius (apg's fixture: --radius 4px,
+     sm 2 / md 4 / lg 6 / xl 8 / 2xl 12), NOT shadcn's `--radius` = lg. A write to `--radius` (apg's theme) re-rounds
+     every `rounded-*`. The scale lives in `--theme-radius-<k>` (what the contract's `--radius-<k>` keys read, each with
+     Tailwind's own literal as the last fallback); `--radius-<k>` is the same value for the components that read
+     `var(--radius-md)` directly (button/toggle small variants, calendar). Both are unlayered, so apg's later
+     `--theme-radius-<k>` / `--radius-<k>` win, and neither names itself. Without a theme `--radius` is 0.375rem, so
+     sm/md/lg stay 4/6/8px as before; DECLARED CHANGE, only without a theme: xl/2xl are 10/14px (were 12/16px). */
+  --radius: 0.375rem;
+  --theme-radius-sm: calc(var(--radius) - 2px);
+  --theme-radius-md: var(--radius);
+  --theme-radius-lg: calc(var(--radius) + 2px);
+  --theme-radius-xl: calc(var(--radius) + 4px);
+  --theme-radius-2xl: calc(var(--radius) + 8px);
+  --radius-sm: var(--theme-radius-sm);
+  --radius-md: var(--theme-radius-md);
+  --radius-lg: var(--theme-radius-lg);
+  --radius-xl: var(--theme-radius-xl);
+  --radius-2xl: var(--theme-radius-2xl);
+
+  /* Type scale (ARCH-2276): the Tailwind v4 defaults, so nothing changes without a theme. Tailwind's own `--text-*`
+     keys (read by `text-xs … text-3xl` as `var(--text-xs)`) are not aliased here, since a key that names itself is a
+     cycle, so `text-xs … text-3xl` follow whatever is written here (a theme, or the runtime inline). Line heights stay on Tailwind's own `--text-<k>--line-height` ratios (unitless, so they scale along). */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+
+  --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Motion amplitudes — Genesis bridge derives from designConfig.animations.level.
+     Defaults match `subtle` level so a project without overrides feels calm. */
+  --motion-amplitude-translate: 16px;
+  --motion-amplitude-scale: 0.97;
+  --motion-amplitude-blur: 4px;
+
+  /* Gradient tokens — Genesis bridge writes the full `linear-gradient(...)`
+     value when `blueprint.uxUi.designTokens.gradients` is present. Defaults
+     reference the palette vars directly (they are full colours). `--background-image-gradient-*` in @theme below turns
+     each into a `bg-gradient-*` Tailwind v4 utility. */
+  --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--accent) 100%);
+  --gradient-hero: linear-gradient(180deg, var(--background) 0%, var(--muted) 100%);
+
+  /* Glassmorphism — Genesis bridge sets these from designConfig.glassmorphism
+     + intensity. When disabled, blur collapses to 0 and saturate to 100%
+     so `.glass` / `.glass-card` utilities apply but become visually no-op. */
+  --glassmorphism-blur: 0px;
+  --glassmorphism-saturate: 100%;
+
+  /* Semantic spacing — surface-level intent rather than discrete scale.
+     Maps to Tailwind utilities `p-container-pad`, `gap-section-gap`, etc.
+     We intentionally do NOT register `--spacing-{xs,sm,md,lg,xl,2xl,3xl}`
+     because those names collide with Tailwind v4's container/sizing scale
+     (`max-w-md`, `w-xl`, `max-w-3xl`, …) and would silently shrink them
+     from their defaults (e.g. `max-w-md` would drop from `28rem` to `1rem`).
+     For numeric spacing the LLM uses Tailwind's dynamic scale (`p-4`, `gap-8`),
+     which keeps working via `--spacing` (0.25rem x the density factor, see the @theme block below).
+
+     Each is wrapped in `calc(<value> * var(--density-factor,1))` — the
+     "Density" Polish control's live multiplier (archie-design-runtime.ts,
+     clamp 0.75..1.25, same law as kit-bridge). Unset ⇒ 1 ⇒ byte-identical
+     to the literal values above. Deliberately global here (unlike
+     kit-bridge, which carves semantic spacing OUT of the live knob because
+     it is baked PER-SURFACE at generation) — this template has no
+     per-surface bake, so these tokens are the only semantic-spacing seam
+     the live control has. */
+  /* Accessibility — Genesis bridge writes from accessibility.minTouchTarget.
+     WCAG AA minimum 44px (2.75rem at 16px root). */
+  --touch-target: 2.75rem;
+}
+
+/* The shadow scale moved to the theme contract (`--shadow-<k>: var(--theme-shadow-<k>, <literal>)`). */
+@theme {
+  /* Density (ARCH-2276): every numeric utility (`p-4`, `gap-2`, `mt-6`, …) is `calc(var(--spacing) * n)`, so scaling
+     the base unit scales them all. `--density-factor` is the Polish "Density" control (written by
+     archie-design-runtime.ts, clamped 0.75..1.25); unset ⇒ 1 ⇒ 0.25rem, the Tailwind default. */
+  --spacing: calc(0.25rem * var(--density-factor, 1));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * DARK MODE TOKENS
+ * Generated from: blueprint.uxUi.theme.dark.palette
+ * ═══════════════════════════════════════════════════════════════════════════ */
+.dark {
+  --background: oklch(0.1371 0.0360 258.53);
+  --foreground: oklch(0.9838 0.0035 247.86);
+  --card: oklch(0.1371 0.0360 258.53);
+  --card-foreground: oklch(0.9838 0.0035 247.86);
+  --popover: oklch(0.1371 0.0360 258.53);
+  --popover-foreground: oklch(0.9838 0.0035 247.86);
+  --primary: oklch(0.6232 0.1879 259.8);
+  --primary-foreground: oklch(0.2079 0.0399 265.73);
+  --secondary: oklch(0.2800 0.0369 259.97);
+  --secondary-foreground: oklch(0.9838 0.0035 247.86);
+  --muted: oklch(0.2800 0.0369 259.97);
+  --muted-foreground: oklch(0.7107 0.0351 256.79);
+  --accent: oklch(0.2800 0.0369 259.97);
+  --accent-foreground: oklch(0.9838 0.0035 247.86);
+  --destructive: oklch(0.3959 0.1331 25.72);
+  --destructive-foreground: oklch(0.9838 0.0035 247.86);
+  --border: oklch(0.2800 0.0369 259.97);
+  --input: oklch(0.2800 0.0369 259.97);
+  --ring: oklch(0.4878 0.2170 264.39);
+
+  --success: oklch(0.7176 0.1902 149.6);
+  --success-foreground: oklch(1.0000 0.0000 0);
+  --warning: oklch(0.7697 0.1645 70.61);
+  --warning-foreground: oklch(0.0000 0.0000 0);
+  --info: oklch(0.6776 0.1481 238.1);
+  --info-foreground: oklch(1.0000 0.0000 0);
+
+  --sidebar: oklch(0.2103 0.0059 285.88);
+  --sidebar-foreground: oklch(0.9676 0.0013 286.38);
+  --sidebar-primary: oklch(0.4878 0.2170 264.39);
+  --sidebar-primary-foreground: oklch(1.0000 0.0000 0);
+  --sidebar-accent: oklch(0.2741 0.0055 286.03);
+  --sidebar-accent-foreground: oklch(0.9676 0.0013 286.38);
+  --sidebar-border: oklch(0.2741 0.0055 286.03);
+  --sidebar-ring: oklch(0.6232 0.1879 259.8);
+
+  --chart-1: oklch(0.6232 0.1879 259.8);
+  --chart-2: oklch(0.7176 0.1902 149.6);
+  --chart-3: oklch(0.7697 0.1645 70.61);
+  --chart-4: oklch(0.6776 0.1481 238.1);
+  --chart-5: oklch(0.3959 0.1331 25.72);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * TAILWIND v4 THEME EXTENSION (template-only keys)
+ * The colour map, radius, shadow, font and type-role keys are in theme-contract.css. NO key here names itself
+ * (`--x: var(--x)` is a cycle once Tailwind emits the key): the keys below are either `inline` aliases of a DIFFERENT
+ * var or `static` literals.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+@theme inline {
+  /* Gradients — `bg-gradient-primary`, `bg-gradient-accent`, `bg-gradient-hero`.
+     Tailwind v4 namespace `--background-image-*` maps to the `bg-*` utility. */
+  --background-image-gradient-primary: var(--gradient-primary);
+  --background-image-gradient-accent: var(--gradient-accent);
+  --background-image-gradient-hero: var(--gradient-hero);
+
+  /* Accessibility — `min-h-touch`, `min-w-touch` resolve to the WCAG AA target. */
+  --spacing-touch: var(--touch-target);
+}
+
+/* Durations and semantic spacing are literals of their own key, `static` so Tailwind always emits them to :root (where the
+   contract's `--container-padding: var(--spacing-container-pad)` and direct readers find them) and a live write still
+   beats them. `p-container-pad`, `gap-section-gap`, `duration-fast` … keep reading `var(--spacing-container-pad)`.
+   Names are intentionally NON-reserved so they don't collide with Tailwind's container/sizing scale (xs..3xl). */
+@theme static {
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 700ms;
+
+  --spacing-container-pad: calc(2rem * var(--density-factor, 1));
+  --spacing-section-gap: calc(4rem * var(--density-factor, 1));
+  --spacing-component-gap: calc(1.5rem * var(--density-factor, 1));
+  --spacing-card-pad: calc(1.5rem * var(--density-factor, 1));
+  --spacing-input-pad: calc(0.75rem * var(--density-factor, 1));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * TAILWIND v4 CONTAINER UTILITY
+ * ═══════════════════════════════════════════════════════════════════════════ */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  max-width: 1400px;
+}
+
+/* The base layer (borders, body, h1-h4, code/kbd/samp, .lucide) is in the theme contract. h5/h6 and `pre` stay template-side:
+   apg's block does not style them, and they follow the role fonts (with apg's theme: its display / code). */
+@layer base {
+  h5, h6 {
+    font-family: var(--font-display);
+  }
+  pre {
+    font-family: var(--font-code);
+  }
+}
+
+/* Density and shadow: the shadcn components this template used to ship carried `calc(...*var(--density-factor,1))` paddings
+   and `shadow-(--shadow-*)` bindings. The ui components in src/components/ui/** now come from apg (apg wins) and do NOT
+   consume them: they read the stock Tailwind shadow scale and fixed paddings. What still reaches apg's components is
+   the semantic spacing in the theme-contract layer below (--component-gap, --section-gap, ... map onto --spacing-*,
+   which keep the `--density-factor` calc). `--shadow-*` utilities (shadow-sm/md/...) read the contract's scale (`--theme-shadow-<k>` first). */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * GLASSMORPHISM UTILITIES
+ * Consumes --glassmorphism-blur and --glassmorphism-saturate (set by the
+ * Genesis bridge from designConfig.glassmorphism + intensity). When
+ * glassmorphism is disabled the bridge sets blur to 0px / saturate to 100%
+ * — these classes still apply but become visually no-op. Mirrors the
+ * `.glass` and `.glass-card` emitted by the prototype assembler so React
+ * and prototype share the same surface treatment.
+ *
+ * Palette tokens in `:root` are full colours, so the translucent fill is
+ * `color-mix(in oklch, var(--token) <alpha>%, transparent)`.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+@utility glass {
+  background-color: color-mix(in oklch, var(--background) 60%, transparent);
+  backdrop-filter: blur(var(--glassmorphism-blur)) saturate(var(--glassmorphism-saturate));
+  -webkit-backdrop-filter: blur(var(--glassmorphism-blur)) saturate(var(--glassmorphism-saturate));
+  border: 1px solid color-mix(in oklch, var(--border) 50%, transparent);
+}
+
+@utility glass-card {
+  background-color: color-mix(in oklch, var(--card) 60%, transparent);
+  backdrop-filter: blur(var(--glassmorphism-blur)) saturate(var(--glassmorphism-saturate));
+  -webkit-backdrop-filter: blur(var(--glassmorphism-blur)) saturate(var(--glassmorphism-saturate));
+  border: 1px solid color-mix(in oklch, var(--border) 50%, transparent);
+}
+
+/* The theme contract (apg): tokens, utilities and the dark variant the apg library uses. Last, and the colour map of `@theme inline`
+   stays above (Tailwind emits theme variables in declaration order), so the compiled order is the one these blocks had inline. */
+@import "./theme-contract.css";
+
+@import "./theme.css";

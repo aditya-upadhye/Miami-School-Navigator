@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "importPrefixes": [
+    "react",
+    "react/",
+    "@/components/ui/",
+    "@/lib/proto/",
+    "@/lib/utils",
+    "@/presentation/components/domain/",
+    "@/application/view-models/",
+    "@/i18n",
+    "react-i18next",
+    "react-hook-form",
+    "lucide-react",
+    "motion/react",
+    "recharts",
+    "zod"
+  ],
+  "importExact": [
+    "@hookform/resolvers/zod",
+    "@/vendor/tanstack-react-table",
+    "@/vendor/motion",
+    "@/presentation/navigation",
+    "@/lib/format",
+    "@/lib/map",
+    "@/lib/schedule",
+    "@/lib/board",
+    "@/lib/queue",
+    "@/lib/timeline",
+    "@/lib/stepper",
+    "@/lib/scene",
+    "@/lib/image",
+    "@/lib/client-only",
+    "@/lib/selectors"
+  ],
+  "importBans": {
+    "router": [
+      "react-router*",
+      "@/lib/router"
+    ],
+    "data": [
+      "@/data"
+    ],
+    "infra": [
+      "@/infrastructure",
+      "@archie/*"
+    ]
+  },
+  "hooks": [
+    "useState",
+    "useMemo",
+    "useCallback",
+    "useId",
+    "useRef",
+    "useTranslation",
+    "useForm",
+    "useFieldArray",
+    "useAppNavigate",
+    "useReactTable"
+  ],
+  "segmentGuard": "any specifier with a '.' or '..' path segment is disallowed before the allowlist"
+}

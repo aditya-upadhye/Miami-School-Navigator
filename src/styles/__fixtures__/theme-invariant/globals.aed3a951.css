@@ -1,0 +1,533 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./safelist.css";
+
+/* apg's dark variant, byte for byte what its theme generator emits (02-theme.ts): `dark:` follows the `.dark` class that
+   theme-provider / applyPaletteMode toggle, not prefers-color-scheme. A second identical declaration is harmless. */
+@custom-variant dark (&:is(.dark *));
+
+/**
+ * DESIGN TOKEN SYSTEM
+ *
+ * This file is the SINGLE SOURCE OF TRUTH for design tokens.
+ * The DesignSystemGenerator in archie-code-genesis will REPLACE
+ * the :root / .dark values with those from blueprint.uxUi at generation time.
+ *
+ * Architecture (Tailwind v4 + shadcn/ui):
+ * - :root / .dark declare COLOR tokens as FULL colour values, `oklch(L C H)` —
+ *   the shadcn v4 format, and exactly what apg's generated per-project theme
+ *   (02-theme.ts `compileTheme()`) emits. NEVER bare HSL triplets: a consumer
+ *   reads them as `var(--token)` (translucent: `color-mix(in oklch,
+ *   var(--token) 60%, transparent)`), so any full colour (oklch, hsl, rgb, hex)
+ *   written by a theme or by `src/lib/archie-design-runtime.ts` just works.
+ *   The defaults are the exact numeric conversion of the former HSL palette.
+ * - @theme inline maps --color-* to `var(--token)` for Tailwind utilities
+ * - NEVER use raw Tailwind colors (bg-green-500, text-blue-600)
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * LIGHT MODE TOKENS
+ * Generated from: blueprint.uxUi.theme.light.palette
+ *
+ * Values are FULL colours (`oklch(L C H)`), so the `@theme inline` block
+ * below maps them as plain `var(--token)` and any live re-theme write is a
+ * full colour too. The Genesis bridge (`wave1/design-tokens.gen.ts`)
+ * patches these :root / .dark blocks at generation time when the blueprint
+ * provides palette, sidebar, gradients, glassmorphism, spacing, or
+ * accessibility overrides. Any patcher MUST now write FULL colours (oklch(),
+ * hsl, or hex colour functions), never bare triplets. A gv2 lane pinned to an older template
+ * commit still writes triplets: that is safe only on its pin, not on this one.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --background: oklch(1.0000 0.0000 0);
+  --foreground: oklch(0.1371 0.0360 258.53);
+  --card: oklch(1.0000 0.0000 0);
+  --card-foreground: oklch(0.1371 0.0360 258.53);
+  --popover: oklch(1.0000 0.0000 0);
+  --popover-foreground: oklch(0.1371 0.0360 258.53);
+  --primary: oklch(0.5460 0.2153 262.87);
+  --primary-foreground: oklch(0.9838 0.0035 247.86);
+  --secondary: oklch(0.9684 0.0068 247.9);
+  --secondary-foreground: oklch(0.2079 0.0399 265.73);
+  --muted: oklch(0.9684 0.0068 247.9);
+  --muted-foreground: oklch(0.5547 0.0407 257.44);
+  --accent: oklch(0.9684 0.0068 247.9);
+  --accent-foreground: oklch(0.2079 0.0399 265.73);
+  --destructive: oklch(0.6368 0.2078 25.33);
+  --destructive-foreground: oklch(0.9838 0.0035 247.86);
+  --border: oklch(0.9290 0.0126 255.53);
+  --input: oklch(0.9290 0.0126 255.53);
+  --ring: oklch(0.5460 0.2153 262.87);
+
+  --success: oklch(0.6230 0.1688 149.18);
+  --success-foreground: oklch(1.0000 0.0000 0);
+  --warning: oklch(0.7697 0.1645 70.61);
+  --warning-foreground: oklch(0.0000 0.0000 0);
+  --info: oklch(0.6776 0.1481 238.1);
+  --info-foreground: oklch(1.0000 0.0000 0);
+
+  --sidebar: oklch(0.9848 0.0000 0);
+  --sidebar-foreground: oklch(0.3705 0.0120 285.8);
+  --sidebar-primary: oklch(0.2103 0.0059 285.88);
+  --sidebar-primary-foreground: oklch(0.9848 0.0000 0);
+  --sidebar-accent: oklch(0.9676 0.0013 286.38);
+  --sidebar-accent-foreground: oklch(0.2103 0.0059 285.88);
+  --sidebar-border: oklch(0.9278 0.0058 264.53);
+  --sidebar-ring: oklch(0.6232 0.1879 259.8);
+
+  --chart-1: oklch(0.5460 0.2153 262.87);
+  --chart-2: oklch(0.6230 0.1688 149.18);
+  --chart-3: oklch(0.7697 0.1645 70.61);
+  --chart-4: oklch(0.6776 0.1481 238.1);
+  --chart-5: oklch(0.6368 0.2078 25.33);
+
+  --radius: 0.5rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+
+  --font-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 700ms;
+  --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Motion amplitudes — Genesis bridge derives from designConfig.animations.level.
+     Defaults match `subtle` level so a project without overrides feels calm. */
+  --motion-amplitude-translate: 16px;
+  --motion-amplitude-scale: 0.97;
+  --motion-amplitude-blur: 4px;
+
+  /* Gradient tokens — Genesis bridge writes the full `linear-gradient(...)`
+     value when `blueprint.uxUi.designTokens.gradients` is present. Defaults
+     reference the palette vars directly (they are full colours). `--background-image-gradient-*` in @theme below turns
+     each into a `bg-gradient-*` Tailwind v4 utility. */
+  --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--accent) 100%);
+  --gradient-hero: linear-gradient(180deg, var(--background) 0%, var(--muted) 100%);
+
+  /* Glassmorphism — Genesis bridge sets these from designConfig.glassmorphism
+     + intensity. When disabled, blur collapses to 0 and saturate to 100%
+     so `.glass` / `.glass-card` utilities apply but become visually no-op. */
+  --glassmorphism-blur: 0px;
+  --glassmorphism-saturate: 100%;
+
+  /* Semantic spacing — surface-level intent rather than discrete scale.
+     Maps to Tailwind utilities `p-container-pad`, `gap-section-gap`, etc.
+     We intentionally do NOT register `--spacing-{xs,sm,md,lg,xl,2xl,3xl}`
+     because those names collide with Tailwind v4's container/sizing scale
+     (`max-w-md`, `w-xl`, `max-w-3xl`, …) and would silently shrink them
+     from their defaults (e.g. `max-w-md` would drop from `28rem` to `1rem`).
+     For numeric spacing the LLM uses Tailwind's dynamic scale (`p-4`, `gap-8`),
+     which keeps working via `--spacing: 0.25rem`.
+
+     Each is wrapped in `calc(<value> * var(--density-factor,1))` — the
+     "Density" Polish control's live multiplier (archie-design-runtime.ts,
+     clamp 0.75..1.25, same law as kit-bridge). Unset ⇒ 1 ⇒ byte-identical
+     to the literal values above. Deliberately global here (unlike
+     kit-bridge, which carves semantic spacing OUT of the live knob because
+     it is baked PER-SURFACE at generation) — this template has no
+     per-surface bake, so these tokens are the only semantic-spacing seam
+     the live control has. */
+  --spacing-container-pad: calc(2rem * var(--density-factor, 1));
+  --spacing-section-gap: calc(4rem * var(--density-factor, 1));
+  --spacing-component-gap: calc(1.5rem * var(--density-factor, 1));
+  --spacing-card-pad: calc(1.5rem * var(--density-factor, 1));
+  --spacing-input-pad: calc(0.75rem * var(--density-factor, 1));
+
+  /* Accessibility — Genesis bridge writes from accessibility.minTouchTarget.
+     WCAG AA minimum 44px (2.75rem at 16px root). */
+  --touch-target: 2.75rem;
+}
+
+/* Shadow scale: a real `@theme` block (not `:root`) so shadow-sm/md/lg
+   utilities read our values, and it also emits `:root` custom properties
+   that archie-design-runtime.ts can override live. Each alpha is wrapped
+   in `calc(<alpha> * var(--shadow-strength,1))`; unset ⇒ 1 ⇒ byte-identical
+   to Tailwind's own defaults. */
+@theme {
+  --shadow-2xs: 0 1px rgb(0 0 0 / calc(0.05 * var(--shadow-strength, 1)));
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / calc(0.05 * var(--shadow-strength, 1)));
+  --shadow-sm:
+    0 1px 3px 0 rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1))),
+    0 1px 2px -1px rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)));
+  --shadow-md:
+    0 4px 6px -1px rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1))),
+    0 2px 4px -2px rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)));
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1))),
+    0 4px 6px -4px rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)));
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1))),
+    0 8px 10px -6px rgb(0 0 0 / calc(0.1 * var(--shadow-strength, 1)));
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / calc(0.25 * var(--shadow-strength, 1)));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * DARK MODE TOKENS
+ * Generated from: blueprint.uxUi.theme.dark.palette
+ * ═══════════════════════════════════════════════════════════════════════════ */
+.dark {
+  --background: oklch(0.1371 0.0360 258.53);
+  --foreground: oklch(0.9838 0.0035 247.86);
+  --card: oklch(0.1371 0.0360 258.53);
+  --card-foreground: oklch(0.9838 0.0035 247.86);
+  --popover: oklch(0.1371 0.0360 258.53);
+  --popover-foreground: oklch(0.9838 0.0035 247.86);
+  --primary: oklch(0.6232 0.1879 259.8);
+  --primary-foreground: oklch(0.2079 0.0399 265.73);
+  --secondary: oklch(0.2800 0.0369 259.97);
+  --secondary-foreground: oklch(0.9838 0.0035 247.86);
+  --muted: oklch(0.2800 0.0369 259.97);
+  --muted-foreground: oklch(0.7107 0.0351 256.79);
+  --accent: oklch(0.2800 0.0369 259.97);
+  --accent-foreground: oklch(0.9838 0.0035 247.86);
+  --destructive: oklch(0.3959 0.1331 25.72);
+  --destructive-foreground: oklch(0.9838 0.0035 247.86);
+  --border: oklch(0.2800 0.0369 259.97);
+  --input: oklch(0.2800 0.0369 259.97);
+  --ring: oklch(0.4878 0.2170 264.39);
+
+  --success: oklch(0.7176 0.1902 149.6);
+  --success-foreground: oklch(1.0000 0.0000 0);
+  --warning: oklch(0.7697 0.1645 70.61);
+  --warning-foreground: oklch(0.0000 0.0000 0);
+  --info: oklch(0.6776 0.1481 238.1);
+  --info-foreground: oklch(1.0000 0.0000 0);
+
+  --sidebar: oklch(0.2103 0.0059 285.88);
+  --sidebar-foreground: oklch(0.9676 0.0013 286.38);
+  --sidebar-primary: oklch(0.4878 0.2170 264.39);
+  --sidebar-primary-foreground: oklch(1.0000 0.0000 0);
+  --sidebar-accent: oklch(0.2741 0.0055 286.03);
+  --sidebar-accent-foreground: oklch(0.9676 0.0013 286.38);
+  --sidebar-border: oklch(0.2741 0.0055 286.03);
+  --sidebar-ring: oklch(0.6232 0.1879 259.8);
+
+  --chart-1: oklch(0.6232 0.1879 259.8);
+  --chart-2: oklch(0.7176 0.1902 149.6);
+  --chart-3: oklch(0.7697 0.1645 70.61);
+  --chart-4: oklch(0.6776 0.1481 238.1);
+  --chart-5: oklch(0.3959 0.1331 25.72);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * TAILWIND v4 THEME EXTENSION
+ * Maps CSS variables → Tailwind utilities (bg-primary, text-destructive, …).
+ * `inline` lets utilities track :root / .dark token changes dynamically.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+@theme inline {
+  /* Core shadcn semantic colors — palette vars in :root are full colours
+     (oklch), so every utility is a plain `var(--token)` (shadcn v4 / apg). */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Semantic state colors */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Font families */
+  --font-family-sans: var(--font-sans);
+  --font-family-heading: var(--font-heading);
+  --font-family-mono: var(--font-mono);
+
+  /* Border radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  /* Animation durations */
+  --duration-fast: var(--duration-fast);
+  --duration-normal: var(--duration-normal);
+  --duration-slow: var(--duration-slow);
+  --duration-slower: var(--duration-slower);
+
+  /* Gradients — `bg-gradient-primary`, `bg-gradient-accent`, `bg-gradient-hero`.
+     Tailwind v4 namespace `--background-image-*` maps to the `bg-*` utility. */
+  --background-image-gradient-primary: var(--gradient-primary);
+  --background-image-gradient-accent: var(--gradient-accent);
+  --background-image-gradient-hero: var(--gradient-hero);
+
+  /* Semantic spacing — `p-container-pad`, `gap-section-gap` etc.
+     Names are intentionally NON-reserved so they don't collide with
+     Tailwind's container/sizing scale (xs..3xl, see :root comment above). */
+  --spacing-container-pad: var(--spacing-container-pad);
+  --spacing-section-gap: var(--spacing-section-gap);
+  --spacing-component-gap: var(--spacing-component-gap);
+  --spacing-card-pad: var(--spacing-card-pad);
+  --spacing-input-pad: var(--spacing-input-pad);
+
+  /* Accessibility — `min-h-touch`, `min-w-touch` resolve to the WCAG AA target. */
+  --spacing-touch: var(--touch-target);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * TAILWIND v4 CONTAINER UTILITY
+ * ═══════════════════════════════════════════════════════════════════════════ */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  max-width: 1400px;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+  code, pre, kbd, samp {
+    font-family: var(--font-mono);
+  }
+  /* lucide-react sets stroke-width as an inline SVG attribute; a base-layer
+     rule beats that attribute while still losing to a utility override. */
+  .lucide {
+    stroke-width: var(--icon-stroke-width, 2);
+  }
+}
+
+/* Density and shadow: the shadcn components this template used to ship carried `calc(...*var(--density-factor,1))` paddings
+   and `shadow-(--shadow-*)` bindings. The ui components in src/components/ui/** now come from apg (apg wins) and do NOT
+   consume them: they read the stock Tailwind shadow scale and fixed paddings. What still reaches apg's components is
+   the semantic spacing in the theme-contract layer below (--component-gap, --section-gap, ... map onto --spacing-*,
+   which keep the `--density-factor` calc). `--shadow-*` utilities (shadow-sm/md/...) still read the @theme scale above. */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * GLASSMORPHISM UTILITIES
+ * Consumes --glassmorphism-blur and --glassmorphism-saturate (set by the
+ * Genesis bridge from designConfig.glassmorphism + intensity). When
+ * glassmorphism is disabled the bridge sets blur to 0px / saturate to 100%
+ * — these classes still apply but become visually no-op. Mirrors the
+ * `.glass` and `.glass-card` emitted by the prototype assembler so React
+ * and prototype share the same surface treatment.
+ *
+ * Palette tokens in `:root` are full colours, so the translucent fill is
+ * `color-mix(in oklch, var(--token) <alpha>%, transparent)`.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+@utility glass {
+  background-color: color-mix(in oklch, var(--background) 60%, transparent);
+  backdrop-filter: blur(var(--glassmorphism-blur)) saturate(var(--glassmorphism-saturate));
+  -webkit-backdrop-filter: blur(var(--glassmorphism-blur)) saturate(var(--glassmorphism-saturate));
+  border: 1px solid color-mix(in oklch, var(--border) 50%, transparent);
+}
+
+@utility glass-card {
+  background-color: color-mix(in oklch, var(--card) 60%, transparent);
+  backdrop-filter: blur(var(--glassmorphism-blur)) saturate(var(--glassmorphism-saturate));
+  -webkit-backdrop-filter: blur(var(--glassmorphism-blur)) saturate(var(--glassmorphism-saturate));
+  border: 1px solid color-mix(in oklch, var(--border) 50%, transparent);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * THEME CONTRACT (apg)
+ * The tokens, utilities and variant the apg library (src/components/ui/**,
+ * src/lib/**) uses and that apg's theme generator (02-theme.ts) emits per
+ * project. NAMES are exactly 02-theme.ts's; the VALUES here are only the
+ * template's DEFAULT, derived from the template's own tokens (no brand values).
+ *
+ * A generated project theme must win without !important:
+ *  - the vars live in `@layer theme-defaults`, and an unlayered declaration
+ *    (02-theme.ts output is unlayered: `:root`, `.dark`, `[data-surface]`)
+ *    beats any layered one whatever the specificity or source order;
+ *  - the extension colours are stored as FULL colour values (`oklch(...)`), so the
+ *    `@theme inline` entries are `var(--x)` — identical text to 02-theme.ts's,
+ *    so a duplicate is a no-op in either load order;
+ *  - the `type-*` utilities are plain @utility rules over vars; an apg
+ *    `@utility type-*` with the same name is emitted after and overrides them.
+ * Guarded by src/styles/theme-contract.test.ts.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+@layer theme-defaults {
+  :root {
+    /* font roles: apg's names over the template's families */
+    --font-body: var(--font-sans);
+    --font-display: var(--font-heading);
+    --font-code: var(--font-mono);
+
+    /* semantic spacing: apg's names over the template's (density-scaled) --spacing-* */
+    --container-padding: var(--spacing-container-pad);
+    --section-gap: var(--spacing-section-gap);
+    --component-gap: var(--spacing-component-gap);
+    --card-padding: var(--spacing-card-pad);
+    --input-padding: var(--spacing-input-pad);
+
+    /* the phone bottom tab bar height (0 from md); 0 here: the template has no bottom nav of its own */
+    --bottom-nav-h: 0px;
+
+    /* what the design system has, read by @/lib/theme-mode: the template ships a .dark palette */
+    --theme-dark: 1;
+
+    /* extension colours (full colour values) */
+    --brand-accent: var(--chart-2);
+    --text-body: var(--foreground);
+    --text-muted: var(--muted-foreground);
+    --text-subtle: color-mix(in oklch, var(--muted-foreground) 70%, transparent);
+    --text-link: var(--primary);
+    --surface-sunken: var(--muted);
+    --border-strong: color-mix(in oklab, var(--border) 65%, var(--foreground));
+    --primary-hover: color-mix(in oklab, var(--primary) 88%, var(--foreground));
+    --chrome: var(--sidebar);
+    --chrome-foreground: var(--sidebar-foreground);
+    --chrome-muted: color-mix(in oklch, var(--sidebar-foreground) 70%, transparent);
+    --chrome-hover: var(--sidebar-accent);
+    --chrome-active: var(--sidebar-accent);
+    --chrome-active-bar: var(--sidebar-primary);
+    --chrome-border: var(--sidebar-border);
+
+    /* status tones: fill, ink (readable text on the soft background) and soft background */
+    --status-success: var(--success);
+    --status-success-ink: color-mix(in oklab, var(--success) 60%, var(--foreground));
+    --status-success-bg: color-mix(in oklch, var(--success) 14%, transparent);
+    --status-warning: var(--warning);
+    --status-warning-ink: color-mix(in oklab, var(--warning) 55%, var(--foreground));
+    --status-warning-bg: color-mix(in oklch, var(--warning) 16%, transparent);
+    --status-danger: var(--destructive);
+    --status-danger-ink: color-mix(in oklab, var(--destructive) 65%, var(--foreground));
+    --status-danger-bg: color-mix(in oklch, var(--destructive) 12%, transparent);
+    --status-info: var(--info);
+    --status-info-ink: color-mix(in oklab, var(--info) 60%, var(--foreground));
+    --status-info-bg: color-mix(in oklch, var(--info) 14%, transparent);
+    --status-pending: var(--primary);
+    --status-pending-ink: color-mix(in oklab, var(--primary) 65%, var(--foreground));
+    --status-pending-bg: color-mix(in oklch, var(--primary) 12%, transparent);
+    --status-neutral: var(--text-muted);
+    --status-neutral-ink: var(--text-body);
+    --status-neutral-bg: var(--muted);
+  }
+}
+
+@theme inline {
+  --color-brand-accent: var(--brand-accent);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-text-link: var(--text-link);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-border-strong: var(--border-strong);
+  --color-primary-hover: var(--primary-hover);
+  --color-chrome: var(--chrome);
+  --color-chrome-foreground: var(--chrome-foreground);
+  --color-chrome-muted: var(--chrome-muted);
+  --color-chrome-hover: var(--chrome-hover);
+  --color-chrome-active: var(--chrome-active);
+  --color-chrome-active-bar: var(--chrome-active-bar);
+  --color-chrome-border: var(--chrome-border);
+  --color-status-success: var(--status-success);
+  --color-status-success-ink: var(--status-success-ink);
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-ink: var(--status-warning-ink);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-danger: var(--status-danger);
+  --color-status-danger-ink: var(--status-danger-ink);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-info: var(--status-info);
+  --color-status-info-ink: var(--status-info-ink);
+  --color-status-info-bg: var(--status-info-bg);
+  --color-status-pending: var(--status-pending);
+  --color-status-pending-ink: var(--status-pending-ink);
+  --color-status-pending-bg: var(--status-pending-bg);
+  --color-status-neutral: var(--status-neutral);
+  --color-status-neutral-ink: var(--status-neutral-ink);
+  --color-status-neutral-bg: var(--status-neutral-bg);
+}
+
+/* Typography roles (02-theme.ts: `@utility type-<role>`), over the template's type scale (--text-*, --tracking-*). */
+@utility type-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 600;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+}
+@utility type-caption {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 400;
+}
+@utility type-meta {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 400;
+}
+@utility type-row-title {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 500;
+}
+@utility type-mono-id {
+  font-family: var(--font-code);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 400;
+}
+@utility type-card-title {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 600;
+}
+@utility type-body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 400;
+}

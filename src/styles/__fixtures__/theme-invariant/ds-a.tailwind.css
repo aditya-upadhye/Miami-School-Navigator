@@ -1,0 +1,6 @@
+@theme inline {
+  --color-secondary-tone: var(--secondary-tone);
+  --color-secondary-tone-foreground: var(--secondary-tone-foreground);
+}
+@utility font-display { font-family: var(--font-display); }
+@utility type-display { font-family: var(--type-display-font-family, var(--font-body)); font-size: var(--type-display-size, var(--type-display-font-size, inherit)); line-height: var(--type-display-line-height, inherit); font-weight: var(--type-display-font-weight, inherit); letter-spacing: var(--type-display-letter-spacing, inherit); text-transform: var(--type-display-text-transform, inherit); }
