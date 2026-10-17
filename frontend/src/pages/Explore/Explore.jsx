@@ -42,6 +42,22 @@ export default function Explore() {
   return (
     <ThemeShell paddingBottom={96}>
       <AppHeader active="explore" showSearch compact onSearch={x.searchLocation} onAskJarvis={x.toggleChat} />
+      {x.chatNote && (
+        <p role="status" style={{ margin: 0, padding: '10px clamp(16px, 3vw, 40px)', background: 'var(--accent-tint)', color: 'var(--ink)', display: 'flex', gap: 12, alignItems: 'center' }}>
+          <span>{x.chatNote}</span>
+          <button type="button" onClick={x.dismissChatNote} aria-label={t('explore.found.dismiss')} style={{ marginLeft: 'auto', width: 32, height: 32, borderRadius: 16, border: 0, background: 'var(--glass3)', color: 'var(--ink)', cursor: 'pointer' }}>
+            ×
+          </button>
+        </p>
+      )}
+      {x.pinnedNotice && (
+        <p role="status" style={{ margin: 0, padding: '10px clamp(16px, 3vw, 40px)', background: 'var(--accent-tint)', color: 'var(--ink)', display: 'flex', flexWrap: 'wrap', gap: '4px 12px', alignItems: 'center' }}>
+          <span>{x.pinnedNotice.text}</span>
+          <button type="button" onClick={x.clearPinned} style={{ minHeight: 32, padding: '0 12px', borderRadius: 999, border: '1.5px solid var(--line2)', background: 'var(--glass)', color: 'var(--ink)', font: "600 14px 'Figtree', sans-serif", cursor: 'pointer' }}>
+            {x.pinnedNotice.back}
+          </button>
+        </p>
+      )}
       {x.searchNotice && (
         <p role="status" style={{ margin: 0, padding: '10px clamp(16px, 3vw, 40px)', background: 'var(--accent-tint)', color: 'var(--ink)', display: 'flex', flexWrap: 'wrap', gap: '4px 12px', alignItems: 'center' }}>
           <span>

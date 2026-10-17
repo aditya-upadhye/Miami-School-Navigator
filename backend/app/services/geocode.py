@@ -73,10 +73,29 @@ def _census(client: httpx.Client, q: str) -> tuple[float, float, str] | None:
     return m["coordinates"]["y"], m["coordinates"]["x"], m["matchedAddress"].title().replace("Fl,", "FL,")
 
 
+# Neighbourhood names families use, mapped to the ZIP that covers their centre (the result is a ZIP-centroid, flagged approximate like any ZIP).
+NEIGHBORHOOD_ZIPS = {
+    "wynwood": "33127", "edgewater": "33137", "design district": "33137", "midtown": "33137", "overtown": "33136", "downtown": "33130", "downtown miami": "33130",
+    "brickell": "33131", "little havana": "33135", "coral way": "33145", "coconut grove": "33133", "the grove": "33133", "coral gables": "33134",
+    "little haiti": "33138", "liberty city": "33142", "allapattah": "33142", "miami shores": "33138", "north miami": "33161", "north miami beach": "33162",
+    "aventura": "33180", "sunny isles": "33160", "miami beach": "33139", "south beach": "33139", "key biscayne": "33149", "doral": "33178", "hialeah": "33012",
+    "miami lakes": "33014", "miami springs": "33166", "kendall": "33176", "pinecrest": "33156", "south miami": "33143", "cutler bay": "33189",
+    "homestead": "33030", "florida city": "33034", "westchester": "33155", "sweetwater": "33172", "opa-locka": "33054", "opa locka": "33054", "miami gardens": "33056",
+}
+
+
+def _neighborhood_zip(q: str) -> str | None:
+    name = re.sub(r"\b(miami|fl|florida|dade|county|neighborhood|area|in|near|the)\b|[,.]", " ", q.lower())
+    name = " ".join(name.split())
+    return NEIGHBORHOOD_ZIPS.get(name) or NEIGHBORHOOD_ZIPS.get(" ".join(q.lower().replace(",", " ").split()))
+
+
 def geocode(nav: Navigator, q: str, client: httpx.Client | None = None) -> GeocodeResult:
     q = (q or "").strip()
     if len(q) < 3:
         raise ApiError(422, "query_too_short")
+    if not any(ch.isdigit() for ch in q) and (zip_ := _neighborhood_zip(q)):
+        q = zip_  # "Wynwood" -> its ZIP; the result is approximate and says so
     key = f"{current_lang()}|{q.lower()}"  # the cached result carries translated text, so the language is part of the key
     hit = _CACHE.get(key)
     if hit and time.time() - hit[0] < _TTL:

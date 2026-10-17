@@ -1,9 +1,21 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { onMapUpdate, setPendingMap } from '../../hooks/chatStore';
 import JarvisConversation from '../../components/JarvisConversation';
 import { useI18n } from '../../i18n';
 
 export default function ChatPanel() {
   const { t } = useI18n();
+  const navigate = useNavigate();
+  // When the family asks Jarvis to show the results on the map, open the map with those filters.
+  useEffect(
+    () =>
+      onMapUpdate((u) => {
+        setPendingMap(u);
+        navigate('/explore', { viewTransition: true });
+      }),
+    [navigate],
+  );
   return (
     <section
       aria-label={t('onboarding.chat.label')}
@@ -38,7 +50,7 @@ export default function ChatPanel() {
           {t('onboarding.chat.map')}
         </Link>
       </div>
-      <JarvisConversation height={380} />
+      <JarvisConversation height={380} mapNext />
     </section>
   );
 }
