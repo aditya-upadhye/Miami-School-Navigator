@@ -8,7 +8,7 @@ from datetime import date
 
 from ..domain import GRADE_ORDER, STAGES, bbox_for_radius, haversine_mi, norm_text
 from ..i18n import t as tr  # `t` is a common loop variable in this module
-from ..schemas import (ApplyStep, LookupHit, LookupResponse, Field, Nearby, Provenance, ScoreFactor, SchoolDetail, SchoolSummary, SearchMeta,
+from ..schemas import (AlsoServes, ApplyStep, LookupHit, LookupResponse, Field, Nearby, Provenance, ScoreFactor, SchoolDetail, SchoolSummary, SearchMeta,
                        SearchResponse, ZonesResult)
 from .context import Navigator
 from .errors import ApiError
@@ -351,6 +351,52 @@ def data_available(nav: Navigator) -> dict[str, bool]:
             "magnet_themes": has("magnet_themes"), "ese_signals": has("ese_signal")}
 
 
+_KIND_RANK = {"public": 0, "charter": 1, "private": 2, "early_learning": 3}
+_NAME_NOISE = {"mdcps", "m-dcps", "dcps", "headstart", "head", "start", "school", "schools", "center", "the", "of", "and", "program", "preschool", "prek", "pre-k", "vpk"}
+SAME_SITE_MI = 0.03  # about 50 m
+
+
+def _core_name(name: str) -> frozenset[str]:
+    return frozenset(w for w in norm_text(name).split() if w not in _NAME_NOISE)
+
+
+def _same_school(a: dict, b: dict) -> bool:
+    """Two records for one campus: within ~50 m and the same school name (one name inside the other: 'MDCPS Phyllis Miller Elementary Headstart'
+    inside 'Phyllis Ruth Miller Elementary'). Two different kinds at one site are one school with several programs; two of the same kind
+    are only merged when the names are identical."""
+    if haversine_mi(a["lat"], a["lon"], b["lat"], b["lon"]) > SAME_SITE_MI:
+        return False
+    x, y = _core_name(a["name"]), _core_name(b["name"])
+    if not x or not y:
+        return False
+    if a["kind"] == b["kind"]:
+        return x == y
+    common = len(x & y)
+    return x <= y or y <= x or (common >= 2 and common / min(len(x), len(y)) >= 0.5)
+
+
+def merge_same_site(scored: list) -> list:
+    """Fold records for the same campus into one entry: the school itself (public, charter, private before early learning) carries the best
+    score of the group, and the others become `also` (shown as tags on its card, never as a second card)."""
+    groups: list[list] = []
+    for item in scored:
+        for g in groups:
+            if any(_same_school(item[0], m[0]) for m in g):
+                g.append(item)
+                break
+        else:
+            groups.append([item])
+    out = []
+    for g in groups:
+        g.sort(key=lambda t: (_KIND_RANK[t[0]["kind"]], -t[2], t[1]))
+        p, d, pts, factors, reasons = g[0]
+        best = max(g, key=lambda t: t[2])
+        if best is not g[0]:
+            pts, factors, reasons = best[2], best[3], best[4]
+        out.append((p, d, pts, factors, reasons, [m[0] for m in g[1:]]))
+    return out
+
+
 def search(nav: Navigator, *, lat: float, lon: float, radius_mi: float = 3.0, kinds: list[str] | None = None,
            stages: list[str] | None = None, free_only: bool = False, grade_min: str | None = None,
            specialties: list[str] | None = None, ese: bool = False, scholarship: bool = False, sort: str = "match",
@@ -411,6 +457,7 @@ def search(nav: Navigator, *, lat: float, lon: float, radius_mi: float = 3.0, ki
     for p, d in cands:
         pts, factors, reasons = score(p, d, radius_mi, zmap.get(p["id"]), True, prio, scholarship, values)
         scored.append((p, d, pts, factors, reasons))
+    scored = merge_same_site(scored)
     if sort == "distance":
         scored.sort(key=lambda t: (is_online(t[0]), t[1], t[0]["name"]))  # online schools have no campus: never "closest"
     elif sort == "grade":
@@ -423,9 +470,10 @@ def search(nav: Navigator, *, lat: float, lon: float, radius_mi: float = 3.0, ki
         raise ApiError(422, "bad_sort")
 
     results = []
-    for p, d, pts, factors, reasons in scored[:limit]:
+    for p, d, pts, factors, reasons, also in scored[:limit]:
         s = summarize(nav, p, origin=(lat, lon), zoned_map=zmap)
         s.match_score, s.score_breakdown, s.reasons = pts, factors, reasons
+        s.also_serves = [AlsoServes(id=o["id"], kind=o["kind"], name=o["name"]) for o in also]
         results.append(s)
 
     notes: list[str] = []

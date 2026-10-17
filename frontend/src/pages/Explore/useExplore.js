@@ -28,6 +28,8 @@ const SPECIALTIES = ['STEM', 'Arts', 'Bilingual', 'IB'];
 // The filter fields a chat answer may change, remembered so a change that empties the map can be undone (see the guard in useExplore).
 const FILTER_KEYS = ['view', 'kid', 'radius', 'freeOnly', 'kinds', 'spec', 'onlySpec', 'priorities', 'values', 'ese', 'gradeB'];
 const pickFilters = (st) => Object.fromEntries(FILTER_KEYS.map((k) => [k, st[k]]));
+/** "Public + Early learning": one card for a campus that has more than one kind of program. */
+const kindLabel = (sc) => [...new Set([sc.kind, ...(sc.also_serves ?? []).map((a) => a.kind)])].map((k) => KIND_LABEL[k]).join(' + ');
 const pickLocation = (p) => ({ lat: p.lat, lon: p.lon, address: p.address, matchedAddress: p.matchedAddress, precision: p.precision });
 
 const initialFilters = (profile) => ({
@@ -44,6 +46,9 @@ const initialFilters = (profile) => ({
   gradeB: false,
 });
 
+
+const VERIFICATION_LEVELS = ['confirmed_district_source', 'other_district_policies', 'single_secondary_source', 'unconfirmed_project_spec'];
+const verificationLevel = (method = '') => VERIFICATION_LEVELS.find((k) => method.includes(k));
 
 /** State, live data and derived view values for the Explore screen. Search, compare and dates come from the backend. */
 export function useExplore() {
@@ -124,7 +129,7 @@ export function useExplore() {
   const toggleCmp = (id) =>
     setState((st) => {
       if (st.compare.includes(id)) return { compare: st.compare.filter((x) => x !== id), cmpFull: false };
-      if (st.compare.length >= 3) return { cmpFull: true };
+      if (st.compare.length >= 3) return { cmpFull: true, cmpFullAt: Date.now() };
       return { compare: [...st.compare, id], cmpFull: false };
     });
   // Put one school on the map and open its card. With no address yet, the school's own address becomes the starting point.
@@ -303,7 +308,7 @@ export function useExplore() {
     pop = {
       id: sel.id,
       name: sel.name,
-      type: KIND_LABEL[sel.kind],
+      type: kindLabel(sel),
       grades: text(sel.grades, t('explore.gradesNotListed')),
       distLabel: sel.flags?.includes('online_school') ? t('explore.online') : miles(sel.distance_mi),
       money: tuition(sel.tuition),
@@ -368,7 +373,7 @@ export function useExplore() {
       id: sc.id,
       rank: i + 1,
       name: sc.name,
-      type: KIND_LABEL[sc.kind],
+      type: kindLabel(sc),
       grades: text(sc.grades, t('explore.gradesNotListed')),
       dist: sc.flags?.includes('online_school') ? t('explore.dist.online') : miles(sc.distance_mi),
       chips,
@@ -674,6 +679,8 @@ export function useExplore() {
     hasCmp: !!cmpData && cmpRows.length > 0,
     noCmp: cmpIds.length === 0,
     cmpFull: s.cmpFull,
+    cmpFullAt: s.cmpFullAt ?? 0,
+    dismissCmpFull: () => setState({ cmpFull: false }),
     cmpMessage,
     cmpCountLabel: t('explore.cmp.count', { n: cmpIds.length }),
     clearCmp: () => setState({ compare: [], cmpFull: false }),
@@ -695,7 +702,14 @@ export function useExplore() {
 
     // dates (from the curated rules file, each with its verification level)
     dates: (dates.data?.dates ?? []).map((d) => {
+      const level = verificationLevel(d.field?.method);
       return {
+        level,
+        levelLabel: level ? t(`verify.${level}.label`) : '',
+        note: level ? t(`dates.verify.${level}`) : '',
+        source: d.field?.source ?? '',
+        url: d.field?.url ?? '',
+        asOf: d.field?.as_of ? date(d.field.as_of.slice(0, 10)) : '',
         when: shortDate(d.date, lang),
         what: d.label,
         who: `${date(d.date)}${d.approximate ? ` ${t('dates.approx')}` : ''} · ${

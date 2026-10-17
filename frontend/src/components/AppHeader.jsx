@@ -90,7 +90,7 @@ export default function AppHeader({ active, showSearch = false, compact = false,
         {!compact && <BackButton fallback="/explore" />}
         <BrandLogo />
         {!compact && (
-        <nav aria-label={t('nav.main')} style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+        <nav aria-label={t('nav.main')} className="app-nav" style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
           {NAV.map((item) => {
             const isActive = item.key === active;
             const style = navLinkStyle(isActive);

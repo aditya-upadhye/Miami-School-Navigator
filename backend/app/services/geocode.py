@@ -84,18 +84,26 @@ NEIGHBORHOOD_ZIPS = {
 }
 
 
-def _neighborhood_zip(q: str) -> str | None:
-    name = re.sub(r"\b(miami|fl|florida|dade|county|neighborhood|area|in|near|the)\b|[,.]", " ", q.lower())
-    name = " ".join(name.split())
-    return NEIGHBORHOOD_ZIPS.get(name) or NEIGHBORHOOD_ZIPS.get(" ".join(q.lower().replace(",", " ").split()))
+def _neighborhood(q: str) -> str | None:
+    """The neighbourhood name in `q` ("brickell, Miami" -> "brickell"), if it is one we know."""
+    whole = " ".join(q.lower().replace(",", " ").split())
+    core = " ".join(re.sub(r"\b(miami|fl|florida|dade|county|neighborhood|area|in|near|the)\b|[,.]", " ", q.lower()).split())
+    return next((n for n in (core, whole) if n in NEIGHBORHOOD_ZIPS), None)
 
 
 def geocode(nav: Navigator, q: str, client: httpx.Client | None = None) -> GeocodeResult:
     q = (q or "").strip()
+    if len(q) >= 3 and not any(ch.isdigit() for ch in q) and (hood := _neighborhood(q)):
+        # "Wynwood" -> its ZIP centroid (approximate, flagged like any ZIP), labelled with the neighbourhood: "Wynwood (ZIP 33127)"
+        zip_ = NEIGHBORHOOD_ZIPS[hood]
+        g = _geocode(nav, zip_, client)
+        return g.model_copy(update={"matched_address": f"{hood.title()} (ZIP {zip_})"})
+    return _geocode(nav, q, client)
+
+
+def _geocode(nav: Navigator, q: str, client: httpx.Client | None = None) -> GeocodeResult:
     if len(q) < 3:
         raise ApiError(422, "query_too_short")
-    if not any(ch.isdigit() for ch in q) and (zip_ := _neighborhood_zip(q)):
-        q = zip_  # "Wynwood" -> its ZIP; the result is approximate and says so
     key = f"{current_lang()}|{q.lower()}"  # the cached result carries translated text, so the language is part of the key
     hit = _CACHE.get(key)
     if hit and time.time() - hit[0] < _TTL:

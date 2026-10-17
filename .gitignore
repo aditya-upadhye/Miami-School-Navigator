@@ -5,3 +5,6 @@ ARCHIE_PROMPT.md
 backend/data/outcomes/fldoe/
 backend/data/outcomes/federal/
 backend/data/outcomes/notable_alumni_cache/
+
+# macOS folder metadata
+.DS_Store

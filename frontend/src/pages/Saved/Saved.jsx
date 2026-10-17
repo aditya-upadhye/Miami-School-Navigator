@@ -23,7 +23,7 @@ export default function Saved() {
       saved.map((s) =>
         api
           .school(s.id, profile.lat, profile.lon)
-          .then((d) => [s.id, d])
+          .then((d) => [s.id, d.school ?? d]) // the detail response wraps the school: { school, how_to_apply, ... }
           .catch(() => [s.id, null]),
       ),
     ).then((rows) => live && setDetails(Object.fromEntries(rows)));

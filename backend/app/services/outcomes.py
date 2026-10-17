@@ -16,7 +16,8 @@ from pathlib import Path
 
 from ..config import get_settings
 from ..i18n import t
-from ..schemas import AlumniGroup, AlumniPerson, CollegeYear, OutcomeSource, OutcomesResponse, ReadinessMetric, ReadinessYear
+from ..schemas import (AlumniGroup, AlumniPerson, CollegeYear, LinkedinAlumni, OfficialOutcomes, OutcomeSource, OutcomesResponse, RankedCount, ReadinessMetric,
+                       ReadinessYear)
 from .context import Navigator
 from .schools import get_place
 
@@ -65,6 +66,13 @@ def _data():
     return fl, fed, alumni
 
 
+@lru_cache(maxsize=1)
+def _enriched() -> dict[str, dict]:
+    """Alumni research per school id (built by scripts/merge_alumni_enriched.py)."""
+    path = get_settings().data_dir / "outcomes" / "alumni_enriched.json"
+    return json.loads(path.read_text(encoding="utf-8")).get("schools", {}) if path.exists() else {}
+
+
 def _pct(value, denominator) -> float | None:
     return round(100 * value / denominator, 1) if value is not None and denominator else None
 
@@ -111,6 +119,10 @@ def outcomes(nav: Navigator, place_id: str) -> OutcomesResponse:
     fl, fed, alumni = _data()
     levels = set(p["stages"])
     applies = p["kind"] in ("public", "charter", "private") and bool(levels & {"elementary", "middle", "high"})
+    rec = _enriched().get(p["id"]) or {}
+    official = OfficialOutcomes(**rec["official"]) if rec.get("official") else None
+    li = rec.get("linkedin")  # shown only when the school's LinkedIn page was matched with confidence
+    linkedin = LinkedinAlumni(**li, confidence=rec["confidence"]) if li and rec.get("confidence") in ("match", "likely") else None
     college, readiness = _college(fl.get(p["id"], {})), _readiness(fed.get(p["id"], {}), high="high" in levels)
     people = sorted(alumni.get(p["id"], []), key=lambda r: (r["occupation_group"] == "other", r.get("birth_decade") or 9999, r["person_name"]))
     groups = Counter(r["occupation_group"] for r in people)
@@ -119,12 +131,16 @@ def outcomes(nav: Navigator, place_id: str) -> OutcomesResponse:
         sources.append(OutcomeSource(key="fldoe", name=t("outcomes.src.fldoe"), url=FLDOE_URL, years=f"{college[0].year}-{college[-1].year}", note=t("outcomes.note.college")))
     if readiness:
         sources.append(OutcomeSource(key="crdc", name=t("outcomes.src.crdc"), url=CRDC_URL, years=f"{readiness[0].year} to {readiness[-1].year}", note=t("outcomes.note.readiness")))
+    if official:
+        sources.append(OutcomeSource(key="official", name=t("outcomes.src.official"), url=(official.sources[0] if official.sources else FLDOE_URL), years=official.fetpip_year or official.grad_rate_year, note=t("outcomes.note.official")))
+    if linkedin:
+        sources.append(OutcomeSource(key="linkedin", name=t("outcomes.src.linkedin"), url=linkedin.url or "https://www.linkedin.com", years=None, note=t("outcomes.note.linkedin")))
     if people:
         sources.append(OutcomeSource(key="wikidata", name=t("outcomes.src.wikidata"), url=WIKIDATA_URL, years=None, note=t("outcomes.note.alumni")))
     empty = None
-    if applies and not (college or readiness or people):
+    if applies and not (college or readiness or people or official or linkedin):
         empty = t("outcomes.empty.private" if p["kind"] == "private" else "outcomes.empty.public" if "high" in levels else "outcomes.empty.lower")
     return OutcomesResponse(
-        place_id=p["id"], applies=applies, empty_reason=empty, college=college, readiness=readiness, sources=sources,
+        place_id=p["id"], applies=applies, empty_reason=empty, college=college, readiness=readiness, official=official, linkedin=linkedin, sources=sources,
         alumni_total=len(people), alumni_groups=[AlumniGroup(group=g, count=n) for g, n in groups.most_common()],
         alumni=[AlumniPerson(name=r["person_name"], group=r["occupation_group"], birth_decade=r.get("birth_decade"), url=r.get("source_url")) for r in people[:MAX_PEOPLE]])

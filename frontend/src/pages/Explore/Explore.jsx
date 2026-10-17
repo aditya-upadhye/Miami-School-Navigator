@@ -5,6 +5,7 @@ import ThemeShell from '../../components/ThemeShell';
 import { useI18n } from '../../i18n';
 import ComparePanel from './ComparePanel';
 import { CompareTray } from './CompareTray';
+import CompareLimitToast from './CompareLimitToast';
 import DatesList from './DatesList';
 import ExplorePanel from './ExplorePanel';
 import MapStage from './MapStage';
@@ -12,7 +13,7 @@ import JarvisChat from './JarvisChat';
 import { useExplore } from './useExplore';
 
 /** Map first: a fixed slim header, the map filling the screen, and one side panel (matches + filters) that can be hidden.
- *  Compare and key dates sit below the map. Talk to Jarvis is in the header's top-right corner; Back floats at the bottom-left. */
+ *  Compare, then key dates (last), sit below the map. Talk to Jarvis is in the header's top-right corner; Back floats at the bottom-left. */
 export default function Explore() {
   const x = useExplore();
   const { t } = useI18n();
@@ -138,10 +139,18 @@ export default function Explore() {
         )}
       </main>
       <div style={{ paddingTop: 24 }}>
-        <DatesList dates={x.dates} />
         <ComparePanel {...cmpProps} />
+        <DatesList dates={x.dates} />
       </div>
-      <div style={{ position: 'fixed', left: 16, bottom: 16, zIndex: 60 }}>
+      <CompareLimitToast
+        at={x.cmpFull ? x.cmpFullAt : 0}
+        onDismiss={x.dismissCmpFull}
+        onGo={() => {
+          x.dismissCmpFull();
+          document.getElementById('compare')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }}
+      />
+      <div className="explore-back" style={{ position: 'fixed', left: 16, bottom: 16, zIndex: 60 }}>
         <BackButton fallback="/" />
       </div>
       {!x.noCmp && !tableInView && (

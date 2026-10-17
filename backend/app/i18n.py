@@ -734,6 +734,10 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
     "outcomes.src.fldoe": ("Florida Dept. of Education, graduate placement (FETPIP)", "Departamento de Educación de Florida, colocación de graduados (FETPIP)", "Depatman Edikasyon Florid, plasman gradye (FETPIP)"),
     "outcomes.src.crdc": ("U.S. Dept. of Education, Civil Rights Data Collection", "Departamento de Educación de EE. UU., Recopilación de Datos de Derechos Civiles", "Depatman Edikasyon Etazini, Koleksyon Done Dwa Sivil"),
     "outcomes.src.wikidata": ("Wikidata (people with a public page)", "Wikidata (personas con página pública)", "Wikidata (moun ki gen yon paj piblik)"),
+    "outcomes.src.official": ("FLDOE and NCES school files (grades, graduation rate, graduate outcomes)", "Archivos escolares de FLDOE y NCES (calificaciones, graduación, resultados de graduados)", "Dosye lekòl FLDOE ak NCES (nòt, to gradyasyon, rezilta gradye yo)"),
+    "outcomes.src.linkedin": ("LinkedIn school page (people who list this school)", "Página de la escuela en LinkedIn (personas que la indican)", "Paj lekòl la sou LinkedIn (moun ki mansyone lekòl sa a)"),
+    "outcomes.note.official": ("Official figures from state and federal files. A figure missing here was not reported for this school.", "Cifras oficiales de archivos estatales y federales. Una cifra ausente no se informó para esta escuela.", "Chif ofisyèl ki soti nan dosye eta ak federal yo. Yon chif ki pa la a pa t rapòte pou lekòl sa a."),
+    "outcomes.note.linkedin": ("Only people who joined LinkedIn and named this school, so it is a sample, not a count of all graduates. Self-reported and not checked.", "Solo personas que se unieron a LinkedIn e indicaron esta escuela: es una muestra, no un recuento de todos los graduados. Autoinformado y sin verificar.", "Se sèlman moun ki rantre sou LinkedIn epi ki mansyone lekòl sa a: se yon echantiyon, pa yon kantite tout gradye yo. Yo rapòte l yo menm e pa verifye l."),
     "outcomes.empty.private": (
         "No public data. Private schools do not report where their graduates go to the state or federal government. Ask the school for its college-placement list.",
         "No hay datos públicos. Las escuelas privadas no informan al gobierno estatal ni federal a dónde van sus graduados. Pida a la escuela su lista de colocación universitaria.",
@@ -798,14 +802,14 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
     # ---- chat (warnings and replacements shown to the family; the model's own answer follows `lang` through its prompt)
     "chat.warn.unknown_citation": ("removed unknown citation {id}", "se eliminó la cita desconocida {id}", "nou retire sitasyon enkoni {id}"),
     "chat.warn.no_citations": (
-        "the answer carries no citations",
-        "la respuesta no incluye citas",
-        "repons lan pa gen okenn sitasyon",
+        "this answer has no sources attached, so treat it as general guidance",
+        "esta respuesta no tiene fuentes, así que tómela como orientación general",
+        "repons sa a pa gen sous, kidonk pran l kòm konsèy jeneral",
     ),
     "chat.warn.rules": (
-        "the answer makes application-rule claims but no rules lookup (get_dates/get_school) was made; treat them as unverified",
-        "la respuesta afirma reglas de solicitud, pero no se consultaron las reglas (get_dates/get_school); trátelas como no verificadas",
-        "repons lan fè afimasyon sou règ aplikasyon, men pa gen okenn rechèch règ (get_dates/get_school) ki fèt; konsidere yo kòm ki pa verifye",
+        "the application rules mentioned here were not checked against the district's rules, so confirm them with the district",
+        "las reglas de solicitud mencionadas no se verificaron con las reglas del distrito; confírmelas con el distrito",
+        "règ aplikasyon yo mansyone la a pa t verifye ak règ distri a; konfime yo ak distri a",
     ),
     "chat.warn.unavailable": ("AI assistant unavailable: {reason}", "Asistente de IA no disponible: {reason}", "Asistan AI pa disponib: {reason}"),
     "chat.warn.length": (
@@ -897,6 +901,16 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
         "Pruebe con '2250 NW 2nd Ave, Miami 33127' o '33127'.",
         "Eseye '2250 NW 2nd Ave, Miami 33127' oswa '33127'.",
     ),
+    "err.invalid_email.message": ("That email address does not look right.", "Esa dirección de correo no parece correcta.", "Adrès imèl sa a pa sanble kòrèk."),
+    "err.invalid_email.action": ("Check it and try again, for example name@example.com.", "Revísela e inténtelo de nuevo, por ejemplo nombre@ejemplo.com.", "Verifye l epi eseye ankò, pa egzanp non@egzanp.com."),
+    "err.not_signed_in.message": ("You are not signed in.", "No ha iniciado sesión.", "Ou pa konekte."),
+    "err.not_signed_in.action": ("Sign in and try again.", "Inicie sesión e inténtelo de nuevo.", "Konekte epi eseye ankò."),
+    "err.profile_too_large.message": ("Your profile is too large to save.", "Su perfil es demasiado grande para guardarlo.", "Pwofil ou twò gwo pou nou sove l."),
+    "err.profile_too_large.action": ("Remove some details and try again.", "Quite algunos datos e inténtelo de nuevo.", "Retire kèk detay epi eseye ankò."),
+    "err.saved_limit.message": ("You have saved the most schools allowed.", "Ya guardó el máximo de escuelas permitido.", "Ou sove kantite lekòl maksimòm yo pèmèt."),
+    "err.saved_limit.action": ("Remove a saved school to add another.", "Quite una escuela guardada para agregar otra.", "Retire yon lekòl ou sove pou ajoute yon lòt."),
+    "err.wrong_password.message": ("The current password is not correct.", "La contraseña actual no es correcta.", "Modpas aktyèl la pa kòrèk."),
+    "err.wrong_password.action": ("Check it and try again.", "Revísela e inténtelo de nuevo.", "Verifye l epi eseye ankò."),
     "err.email_taken.message": (
         "An account with this email already exists.",
         "Ya existe una cuenta con este correo electrónico.",

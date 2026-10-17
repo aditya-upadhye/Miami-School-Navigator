@@ -1321,6 +1321,36 @@
   },
   "components": {
     "schemas": {
+      "AlsoServes": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "public",
+              "charter",
+              "private",
+              "early_learning"
+            ],
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "name"
+        ],
+        "title": "AlsoServes",
+        "description": "Another record for the same school site (for example the early-learning program inside a public school), shown on one card."
+      },
       "AlumniGroup": {
         "properties": {
           "group": {
@@ -2663,6 +2693,71 @@
         ],
         "title": "KeyDate"
       },
+      "LinkedinAlumni": {
+        "properties": {
+          "page": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "alumni_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alumni Count"
+          },
+          "studied": {
+            "items": {
+              "$ref": "#/components/schemas/RankedCount"
+            },
+            "type": "array",
+            "title": "Studied",
+            "default": []
+          },
+          "does": {
+            "items": {
+              "$ref": "#/components/schemas/RankedCount"
+            },
+            "type": "array",
+            "title": "Does",
+            "default": []
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "match",
+              "likely"
+            ],
+            "title": "Confidence",
+            "default": "match"
+          }
+        },
+        "type": "object",
+        "title": "LinkedinAlumni",
+        "description": "What people who list this school on LinkedIn studied and do now. Self-reported, a sample of those on LinkedIn, not a statistic."
+      },
       "LoginRequest": {
         "properties": {
           "email": {
@@ -2816,6 +2911,186 @@
         ],
         "title": "Nearby"
       },
+      "OfficialOutcomes": {
+        "properties": {
+          "school_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "School Type"
+          },
+          "grades": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grades"
+          },
+          "enrollment": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrollment"
+          },
+          "enrollment_year": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrollment Year"
+          },
+          "grad_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grad Rate"
+          },
+          "grad_rate_year": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grad Rate Year"
+          },
+          "school_grade": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "School Grade"
+          },
+          "school_grade_year": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "School Grade Year"
+          },
+          "fetpip_year": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fetpip Year"
+          },
+          "pct_continuing_ed": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pct Continuing Ed"
+          },
+          "pct_employed": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pct Employed"
+          },
+          "pct_military": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pct Military"
+          },
+          "earnings": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Earnings"
+          },
+          "program_focus": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Program Focus"
+          },
+          "sources": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sources",
+            "default": []
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "title": "OfficialOutcomes",
+        "description": "Figures from FLDOE / NCES files for one school, each of which may be missing; `sources` lists the files they came from."
+      },
       "OutcomeSource": {
         "properties": {
           "key": {
@@ -2823,7 +3098,9 @@
             "enum": [
               "fldoe",
               "crdc",
-              "wikidata"
+              "wikidata",
+              "official",
+              "linkedin"
             ],
             "title": "Key"
           },
@@ -2899,6 +3176,28 @@
             "type": "array",
             "title": "Readiness",
             "default": []
+          },
+          "official": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OfficialOutcomes"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Graduation rate, school grade, what graduates did next and program focus from FLDOE/NCES files, when researched for this school."
+          },
+          "linkedin": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LinkedinAlumni"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "LinkedIn alumni sample (counts of fields studied and jobs). Shown only for schools whose LinkedIn page was matched with confidence."
           },
           "alumni_total": {
             "type": "integer",
@@ -3430,6 +3729,24 @@
         ],
         "title": "Provenance"
       },
+      "RankedCount": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "count"
+        ],
+        "title": "RankedCount"
+      },
       "ReadinessMetric": {
         "properties": {
           "metric": {
@@ -3696,6 +4013,14 @@
           },
           "website": {
             "$ref": "#/components/schemas/Field"
+          },
+          "also_serves": {
+            "items": {
+              "$ref": "#/components/schemas/AlsoServes"
+            },
+            "type": "array",
+            "title": "Also Serves",
+            "description": "Other records at the same site and under the same school name or program (e.g. early learning inside a public school), merged into this card."
           },
           "proficiency_ela": {
             "$ref": "#/components/schemas/Field"

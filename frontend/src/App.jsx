@@ -41,6 +41,15 @@ function DocumentTitle() {
   return null;
 }
 
+/** /login and /signup are the Account page's two tabs (links across the app use them); the query string, e.g. ?next=, is kept. */
+function AuthRedirect({ signup = false }) {
+  const { search } = useLocation();
+  const p = new URLSearchParams(search);
+  if (signup) p.set('tab', 'signup');
+  const q = p.toString();
+  return <Navigate to={`/account${q ? `?${q}` : ''}`} replace />;
+}
+
 export default function App() {
   return (
     <>
@@ -56,6 +65,8 @@ export default function App() {
         <Route path="/planner" element={<Planner />} />
         <Route path="/saved" element={<Saved />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/login" element={<AuthRedirect />} />
+        <Route path="/signup" element={<AuthRedirect signup />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

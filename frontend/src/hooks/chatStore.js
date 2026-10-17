@@ -226,6 +226,10 @@ export async function sendMessage(raw, makeBody) {
     if (res.tool_calls?.some((c) => c.tool === 'compare') && res.results?.length > 1) {
       showListeners.forEach((fn) => fn({ schools: res.results, selectedId: null, filters: null, origin: null, compare: true }));
     }
+    // A zoning lookup with no search: the zoned schools go on the map.
+    if (res.tool_calls?.some((c) => c.tool === 'get_zones') && !res.tool_calls.some((c) => c.tool === 'search_schools' || c.tool === 'compare') && res.results?.length) {
+      showListeners.forEach((fn) => fn({ schools: res.results, selectedId: null, filters: null, origin: null }));
+    }
     if (res.map_update) mapListeners.forEach((fn) => fn(res.map_update)); // only a live map takes it; a stale one is never replayed
   } catch (e) {
     set({ error: e });
