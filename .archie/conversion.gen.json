@@ -434,7 +434,7 @@
     "src/styles/theme-eval.ts": "96e97c00118c1bb1299194f8c0ddb3c2539a22f813ce9b1f7957707f4a09543f",
     "src/styles/theme-sinks.test.ts": "fc961622329a77dd616a53a7d24b750d48f5d65dcac52565addba3e60de8753e",
     "src/styles/theme-sync.compat.test.ts": "fa860d363a0fff7c905f66e4a3acbce42d0bdc1c92483dc6b42d4c921728d625",
-    "src/styles/theme.css": "99c24594dc158a505b80c7e145fa14161f2a5bff5e4d7f950d0a7b0017d8ab7c",
+    "src/styles/theme.css": "d016db3b2eba6e16a636d04b61d1c6ea91d87e617d1362d5dc643884e311dbf3",
     "src/template-contract.test.ts": "7d93178dea54d690bf2a93dc84f3f718ecef23fc4650c32e329dc0ee6a7d7ecc",
     "src/types/tanstack-table-meta.d.ts": "a4fdb3579233abc61d34f90a643716dd2322771934184db38e77c9d65dd140fb",
     "src/vendor/__typecheck__/es2022-lib.ts": "58616b3bc114eea8de446b864512ac1b362fb5de91888ce3427eb97d2db8e128",
