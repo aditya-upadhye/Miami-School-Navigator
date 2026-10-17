@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import NaviConversation from '../../components/NaviConversation';
+import JarvisConversation from '../../components/JarvisConversation';
 import { useI18n } from '../../i18n';
 
 export default function ChatPanel() {
@@ -31,14 +31,14 @@ export default function ChatPanel() {
         }}
       >
         <span style={{ display: 'flex', flexDirection: 'column' }}>
-          <span style={{ fontWeight: 700 }}>Navi</span>
+          <span style={{ fontWeight: 700 }}>Jarvis</span>
           <span style={{ fontSize: 13, color: 'var(--ink2)' }}>{t('onboarding.chat.intro')}</span>
         </span>
         <Link to="/explore" style={{ fontWeight: 700 }}>
           {t('onboarding.chat.map')}
         </Link>
       </div>
-      <NaviConversation height={380} blankProfile />
+      <JarvisConversation height={380} blankProfile />
     </section>
   );
 }

@@ -80,7 +80,7 @@ export default function StageOptions({ panel }) {
                       borderRadius: 999,
                       background: 'var(--accent-grad)',
                       boxShadow: 'var(--accent-shadow)',
-                      color: '#FFFFFF',
+                      color: 'var(--on-accent)',
                       fontSize: 12.5,
                       fontWeight: 700,
                     }}

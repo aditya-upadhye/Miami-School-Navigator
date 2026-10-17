@@ -215,30 +215,3 @@ def test_check_note_is_passed_to_the_model():
     f = Field(value="A", status="official", source="FLDOE", as_of="2026", method="State grade. Check: the state lists this as 'X'. Confirm it is the same school")
     assert book.field(f)["check"].startswith("the state lists this as 'X'")
     assert "check" not in book.field(Field(value="B", status="official", source="FLDOE", as_of="2026", method="plain"))
-
-
-# ---------------------------------------------------------------- degraded replies use what the family just typed
-def conv(*texts, **kw):
-    return ChatRequest(messages=[ChatMessage(role="user", content=t) for t in texts], **kw)
-
-
-def test_message_hints_find_zip_street_and_ages():
-    assert agent.message_hints(conv("Location 33138")) == ("33138", [])
-    assert agent.message_hints(conv("I live at 2250 NW 2nd Ave, Miami 33127 with my 7 year old and a 3-year-old")) == ("2250 NW 2nd Ave 33127", [7, 3])
-    assert agent.message_hints(conv("hola, mi hija tiene 5 años"))[1] == [5]
-    assert agent.message_hints(conv("my son is aged 12", "Location 33138")) == ("33138", [12])  # newest place wins, ages accumulate
-    assert agent.message_hints(conv("what is a magnet school?")) == (None, [])
-    assert agent.message_hints(conv("I am 45 years old")) == (None, [])  # not a school-age number
-
-
-def test_fallback_uses_a_zip_the_family_typed_when_the_profile_is_blank(bare_nav, monkeypatch):
-    clear_llm_env(monkeypatch)
-    r = agent.run_chat(bare_nav, conv("I want top schools for my child", "Location 33127", "my daughter is 7 years old"))
-    assert r.degraded and r.results and "Enter an address" not in r.answer
-    assert r.filters_applied.get("stage") in (["elementary"], "elementary") or "elementary" in json.dumps(r.filters_applied)
-
-
-def test_fallback_still_asks_for_a_location_when_none_was_given(bare_nav, monkeypatch):
-    clear_llm_env(monkeypatch)
-    r = agent.run_chat(bare_nav, conv("top schools please"))
-    assert r.degraded and not r.results and "address or ZIP" in r.answer

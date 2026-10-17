@@ -21,7 +21,7 @@ log = logging.getLogger("chat")
 
 LANGUAGE = {"en": "English", "es": "Spanish (Español)", "ht": "Haitian Creole (Kreyòl ayisyen)"}
 
-SYSTEM = """You are Navi, the assistant inside the Miami-Dade School Navigator, which helps families compare schools from infant care through 12th grade (public, charter, magnet, private and early learning) in Miami-Dade County, Florida. Today is {today}.
+SYSTEM = """You are Jarvis, the assistant inside the Miami-Dade School Navigator, which helps families compare schools from infant care through 12th grade (public, charter, magnet, private and early learning) in Miami-Dade County, Florida. Today is {today}.
 
 HOW YOU WORK
 - Answer ONLY from tool results in this conversation. Never use outside knowledge for school facts, tuition, ratings, hours, addresses, dates or rules. If a tool did not return it, you do not know it.
@@ -36,7 +36,6 @@ HOW YOU WORK
 - No rankings beyond the official state A-F grade. You may explain the transparent match score using its listed reasons, but say "matches your filters", never "the best school".
 - Safety: never say a school, neighborhood or route is safe or unsafe. If asked, say you cannot assess safety from the data you have, and suggest visiting at drop-off, asking the school about its procedures, and checking official sources.
 - Zoning: report the zoned school from tool results and remind the family that boundaries can change and that magnet and charter schools need an application even when the child is zoned for another school.
-- To compare named schools side by side, first look each one up with `search_schools` (use `q` for the name; ids are in the results), then make ONE `compare` call with up to 3 ids. Do not compare by searching alone.
 - Tool budget: at most {max_calls} tool calls this turn, so plan them. `search_schools` accepts `ages` for several children in one call, and its result already includes zoning. Put wishes like STEM in `priorities`; use `specialties` only when the family says "only".
 - Reply in {language}. Keep school names and official terms (VPK, ESE, IEP, M-DCPS, magnet) as written.
 - Be concise: a short answer, a compact list for several schools, and one suggested next step.
@@ -118,45 +117,23 @@ KIND_LABEL = {  # school kinds in the plain-text list of the degraded reply (Eng
 }
 
 
-ZIP_RE = re.compile(r"\b(3[34]\d{3})\b")  # Florida ZIPs start 32-34; Miami-Dade is 330xx-331xx plus Homestead 330xx/334xx
-STREET_RE = re.compile(r"\b\d{1,5}\s+(?:[NSEW]{1,2}\.?\s+)?(?:[\w.']+\s+){0,3}?(?:st|street|ave|avenue|blvd|boulevard|dr|drive|rd|road|ct|court|ln|lane|way|pl|place|ter|terrace|pkwy|cir|hwy)\b\.?", re.I)
-AGE_RE = re.compile(r"\b(\d{1,2})\s*[- ]?\s*(?:years?|yrs?|yo|y/o|años?|ans?)(?:\s*[- ]?old)?\b|\b(?:age|aged|edad|laj)\s*:?\s*(\d{1,2})\b", re.I)
-
-
-def message_hints(req: ChatRequest) -> tuple[str | None, list[int]]:
-    """What the family typed in this conversation: the most recent street address or ZIP, and any ages ("7 years old"). Used only when the
-    AI model is down and the profile has no location, so the structured list still reflects what they just said."""
-    place, ages = None, []
-    for m in reversed([m for m in req.messages if m.role == "user"]):
-        if place is None:
-            st, zp = STREET_RE.search(m.content), ZIP_RE.search(m.content)
-            place = (f"{st.group(0)} {zp.group(1)}" if st and zp else st.group(0) if st else zp.group(1) if zp else None)
-        for a in AGE_RE.finditer(m.content):
-            age = int(a.group(1) or a.group(2))
-            if 0 <= age <= 21 and age not in ages:
-                ages.append(age)
-    return place, ages[:6]
-
-
 def fallback(nav: Navigator, req: ChatRequest, reason: str) -> ChatResponse:
     """LLM down / no key / declined: still return useful structured results, clearly marked as degraded."""
     lang = req.lang or current_lang()
     p = req.profile
     lat, lon = p.lat, p.lon
-    said_place, said_ages = message_hints(req)
     try:
-        if lat is None and (p.address or said_place):
-            g = geocode(nav, p.address or said_place)
+        if lat is None and p.address:
+            g = geocode(nav, p.address)
             lat, lon = g.lat, g.lon
     except ApiError:
         pass
     warnings = [tr("chat.warn.unavailable", reason=reason)]
     if lat is None or lon is None:
         return ChatResponse(answer=NEED_LOCATION[lang], citations=[], filters_applied={}, results=[], degraded=True, warnings=warnings)
-    ages = [c.age for c in p.children] or said_ages
-    stages = [s for s in (stage_for_age(a) for a in ages) if s]
+    stages = [s for s in (stage_for_age(c.age) for c in p.children) if s]
     resp = schools_svc.search(nav, lat=lat, lon=lon, stages=list(dict.fromkeys(stages)) or None, free_only=p.free_only,
-                              priorities=p.priorities or None, limit=6)
+                              priorities=p.priorities or None, values=[v for v in p.values if v in schools_svc.VALUES] or None, limit=6)
     lines = [f"{i}. {s.name} ({KIND_LABEL[lang][s.kind]}), {s.distance_mi.value if s.distance_mi else '?'} mi" for i, s in enumerate(resp.results, 1)]
     return ChatResponse(answer=UNAVAILABLE[lang] + ("\n" + "\n".join(lines) if lines else ""), citations=[], filters_applied=resp.meta.filters_applied,
                         results=resp.results, degraded=True, warnings=warnings)

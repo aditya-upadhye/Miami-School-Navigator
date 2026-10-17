@@ -1,73 +1,40 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/AuthProvider';
-import { initials } from '../auth/authLogic';
 import { useI18n } from '../i18n';
-import { safeNext } from '../saved/savedLogic';
+import { initials } from '../utils/initials';
 
-const itemStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  width: '100%',
-  minHeight: 44,
-  padding: '0 14px',
-  border: 0,
-  borderRadius: 10,
-  background: 'transparent',
-  color: 'var(--ink)',
-  font: "600 15px 'Figtree', sans-serif",
-  textAlign: 'left',
-  textDecoration: 'none',
-  cursor: 'pointer',
-};
-
-/** Header control: "Sign in" when signed out, otherwise an avatar button with a Saved / Account / Sign out menu. */
+/** Top-right account control. A guest sees "Sign in"; a signed-in family sees their initials on the yellow button, with a menu. */
 export default function AccountMenu() {
   const { t } = useI18n();
-  const { user, ready, logout, showNotice } = useAuth();
+  const { user, signOut } = useAuth();
   const { pathname, search } = useLocation();
   const [open, setOpen] = useState(false);
-  const wrap = useRef(null);
-  const button = useRef(null);
-  const menuId = useId();
+  const box = useRef(null);
 
-  const items = () => [...(wrap.current?.querySelectorAll('[role="menuitem"]') ?? [])];
-  const focusItem = (i) => {
-    const list = items();
-    if (list.length) list[(i + list.length) % list.length].focus();
-  };
-
-  // Close on a click or tap outside (Escape is handled on the button and the menu).
   useEffect(() => {
     if (!open) return undefined;
-    const onDown = (e) => {
-      if (!wrap.current?.contains(e.target)) setOpen(false);
-    };
-    document.addEventListener('mousedown', onDown);
-    document.addEventListener('touchstart', onDown);
+    const away = (e) => !box.current?.contains(e.target) && setOpen(false);
+    const esc = (e) => e.key === 'Escape' && setOpen(false);
+    document.addEventListener('mousedown', away);
+    document.addEventListener('keydown', esc);
     return () => {
-      document.removeEventListener('mousedown', onDown);
-      document.removeEventListener('touchstart', onDown);
+      document.removeEventListener('mousedown', away);
+      document.removeEventListener('keydown', esc);
     };
   }, [open]);
-
-  // Opening the menu moves focus to its first item.
-  useEffect(() => {
-    if (open) focusItem(0);
-  }, [open]);
-
-  if (!ready) return <span style={{ width: 44, height: 44 }} aria-hidden="true" />;
 
   if (!user) {
-    const here = safeNext(pathname + search, null);
     return (
       <Link
-        to={here && pathname !== '/' ? `/login?next=${encodeURIComponent(here)}` : '/login'}
+        to={`/account?next=${encodeURIComponent(pathname + search)}`}
+        aria-label={t('account.guestAria')}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
+          gap: 8,
           minHeight: 44,
-          padding: '0 18px',
+          padding: '0 16px 0 10px',
           borderRadius: 999,
           border: '1.5px solid var(--line2)',
           background: 'var(--glass)',
@@ -77,120 +44,80 @@ export default function AccountMenu() {
           textDecoration: 'none',
         }}
       >
-        {t('landing.signIn')}
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="10" r="3" />
+          <path d="M6.5 18.5a6.5 6.5 0 0 1 11 0" />
+        </svg>
+        {t('account.signIn')}
       </Link>
     );
   }
 
-  const close = (restoreFocus = false) => {
-    setOpen(false);
-    if (restoreFocus) button.current?.focus();
-  };
-
-  const onMenuKey = (e) => {
-    const i = items().indexOf(document.activeElement);
-    const move = { ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: -1 }[e.key];
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      close(true);
-    } else if (move !== undefined) {
-      e.preventDefault();
-      focusItem(move);
-    } else if (e.key === 'Tab') {
-      setOpen(false);
-    }
-  };
-
-  const signOut = async () => {
-    close();
-    try {
-      await logout(); // the Account page sends a signed-out visitor home by itself
-    } catch (err) {
-      showNotice(err);
-    }
-  };
-
   return (
-    <div ref={wrap} style={{ position: 'relative' }}>
+    <div ref={box} style={{ position: 'relative' }}>
       <button
-        ref={button}
         type="button"
-        data-testid="account-menu-button"
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-controls={open ? menuId : undefined}
-        aria-label={t('auth.menu.aria', { who: user.name || user.email })}
-        onClick={() => setOpen((v) => !v)}
-        onKeyDown={(e) => {
-          if (e.key === 'ArrowDown' && !open) {
-            e.preventDefault();
-            setOpen(true);
-          } else if (e.key === 'Escape' && open) {
-            e.preventDefault();
-            close(true);
-          }
-        }}
+        aria-label={t('account.menuAria', { name: user.name })}
+        title={user.name}
+        onClick={() => setOpen((o) => !o)}
         style={{
           width: 44,
           height: 44,
           borderRadius: 22,
           border: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
           background: '#F6C343',
-          fontFamily: "'Figtree', sans-serif",
-          fontSize: 15,
-          fontWeight: 700,
           color: '#1B1830',
+          font: "700 15px 'Figtree', sans-serif",
           cursor: 'pointer',
         }}
       >
-        {initials(user)}
+        {initials(user.name)}
       </button>
       {open && (
         <div
-          id={menuId}
           role="menu"
-          aria-label={t('auth.menu.label')}
-          onKeyDown={onMenuKey}
           style={{
             position: 'absolute',
             right: 0,
             top: 52,
-            zIndex: 60,
+            zIndex: 50,
             minWidth: 220,
-            maxWidth: 'calc(100vw - 32px)',
             display: 'flex',
             flexDirection: 'column',
-            gap: 2,
-            padding: 6,
+            gap: 4,
+            padding: 14,
             borderRadius: 14,
-            border: '1px solid var(--line2)',
-            background: 'var(--page)',
-            boxShadow: '0 18px 40px rgba(16,35,46,0.28)',
+            background: 'var(--panel-dark)',
+            backdropFilter: 'blur(18px) saturate(150%)',
+            WebkitBackdropFilter: 'blur(18px) saturate(150%)',
+            boxShadow: '0 14px 40px rgba(43,27,20,0.28), inset 0 1px 0 rgba(255,255,255,0.12)',
+            color: '#FFFFFF',
           }}
         >
-          <div
+          <strong style={{ overflowWrap: 'anywhere' }}>{user.name}</strong>
+          <span style={{ fontSize: 13, color: '#ECE8FA', overflowWrap: 'anywhere' }}>{user.email}</span>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              setOpen(false);
+              signOut();
+            }}
             style={{
-              padding: '8px 14px',
-              fontSize: 13,
-              color: 'var(--ink2)',
-              overflowWrap: 'anywhere',
-              borderBottom: '1px solid var(--line)',
-              marginBottom: 4,
+              marginTop: 8,
+              minHeight: 40,
+              borderRadius: 10,
+              border: '1.5px solid rgba(255,255,255,0.4)',
+              background: 'transparent',
+              color: '#FFFFFF',
+              font: "700 14px 'Figtree', sans-serif",
+              cursor: 'pointer',
             }}
           >
-            {user.email}
-          </div>
-          <Link role="menuitem" to="/saved" tabIndex={-1} onClick={() => close()} style={itemStyle}>
-            {t('nav.saved')}
-          </Link>
-          <Link role="menuitem" to="/account" tabIndex={-1} onClick={() => close()} style={itemStyle}>
-            {t('auth.account')}
-          </Link>
-          <button type="button" role="menuitem" tabIndex={-1} onClick={signOut} style={itemStyle}>
-            {t('auth.signOut')}
+            {t('account.signOut')}
           </button>
         </div>
       )}

@@ -45,9 +45,7 @@ def _bool(name: str, default: bool) -> bool:
 class Settings:
     data_dir: Path = field(default_factory=lambda: Path(os.getenv("DATA_DIR", ROOT / "data")))
     db_path: Path = field(default_factory=lambda: Path(os.getenv("DB_PATH", ROOT / "data" / "navigator.db")))
-    users_db_path: Path = field(default_factory=lambda: Path(os.getenv("USERS_DB_PATH", ROOT / "data" / "users.db")))
-    cookie_secure: bool = field(default_factory=lambda: _bool("COOKIE_SECURE", False))  # true on https deployments
-    cookie_samesite: str = field(default_factory=lambda: os.getenv("COOKIE_SAMESITE", "lax").strip().lower())  # "none" for a cross-site frontend (needs secure)
+    users_db_path: Path = field(default_factory=lambda: Path(os.getenv("USERS_DB_PATH", ROOT / "data" / "users.db")))  # family accounts; never committed
     auto_ingest: bool = field(default_factory=lambda: _bool("AUTO_INGEST", True))
     cors_origins: tuple[str, ...] = field(
         default_factory=lambda: tuple(

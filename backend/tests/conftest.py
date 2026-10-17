@@ -6,9 +6,6 @@ from __future__ import annotations
 import os
 
 os.environ["NAVIGATOR_SKIP_DOTENV"] = "1"  # tests must never pick up a real key from .env
-import tempfile
-
-os.environ["USERS_DB_PATH"] = os.path.join(tempfile.mkdtemp(prefix="users-"), "users.db")  # tests never touch a real accounts database
 
 import json
 import shutil
@@ -42,6 +39,11 @@ def bare_nav(tmp_path_factory):
     root = tmp_path_factory.mktemp("bare")
     (root / "snapshots").symlink_to(REAL_DATA / "snapshots")
     shutil.copytree(REAL_DATA / "curated", root / "curated")
+    # the shipped magnet list is real data now; the bare database must stay free of it
+    magnets_path = root / "curated" / "magnet_themes.json"
+    magnets = json.loads(magnets_path.read_text())
+    magnets["schools"] = []
+    magnets_path.write_text(json.dumps(magnets))
     s = Settings(data_dir=root, db_path=root / "bare.db")
     build_database(s)
     nav = load_navigator(s)

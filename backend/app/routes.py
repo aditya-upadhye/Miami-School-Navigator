@@ -12,7 +12,7 @@ from .services import pathway as pathway_svc
 from .services import plan as plan_svc
 from .services import schools as schools_svc
 from .services import zones as zones_svc
-from .chat.llm import describe_chain
+from .chat.llm import LlmConfig
 from .i18n import current_lang, use_lang
 from .services.context import Navigator
 from .services.errors import ApiError
@@ -34,8 +34,8 @@ def _csv(v: str | None) -> list[str]:
 @router.get("/health", tags=["meta"])
 def health(request: Request):
     nav = getattr(request.app.state, "nav", None)
-    llm = describe_chain()
-    return {"status": "ok" if nav else "degraded", "database": bool(nav), "llm_configured": llm["configured"], "llm": {k: llm[k] for k in ("provider", "model", "backups")}}
+    llm = LlmConfig.from_env().describe()
+    return {"status": "ok" if nav else "degraded", "database": bool(nav), "llm_configured": llm["configured"], "llm": {k: llm[k] for k in ("provider", "model")}}
 
 
 @router.get("/geocode", response_model=GeocodeResult, tags=["location"])
@@ -66,12 +66,13 @@ def schools(
     sort: str = Query("match", description="match | distance | grade | name"),
     limit: int = Query(20, ge=1, le=100),
     priorities: str | None = Query(None, description="csv; boosts the match score without filtering"),
+    values: str | None = Query(None, description="csv of what matters most, from academics,programs,popularity,proximity; counts those factors extra in the match score without filtering"),
     q: str | None = Query(None, description="school-name text filter (use a large radius_mi to search the whole county)"),
     nav: Navigator = Depends(get_nav),
 ):
     return schools_svc.search(nav, lat=lat, lon=lon, radius_mi=radius_mi, kinds=_csv(kinds) or None, stages=_csv(stage) or None,
                               free_only=free_only, grade_min=grade_min, specialties=_csv(specialties) or None, ese=ese,
-                              scholarship=scholarship, sort=sort, limit=limit, priorities=_csv(priorities) or None, q=q)
+                              scholarship=scholarship, sort=sort, limit=limit, priorities=_csv(priorities) or None, q=q, values=_csv(values) or None)
 
 
 @router.get("/schools/{school_id}", response_model=SchoolDetail, tags=["schools"])

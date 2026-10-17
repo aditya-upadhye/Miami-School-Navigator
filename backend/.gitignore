@@ -4,8 +4,8 @@ __pycache__/
 .env
 data/navigator.db
 data/navigator.db-*
+data/users.db*
 .pytest_cache/
 
 # raw downloads (may contain contact details)
 data/raw/
-data/users.db*

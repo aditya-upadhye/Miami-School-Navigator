@@ -14,7 +14,7 @@ export default function BrandLogo({ size = 'md' }) {
       style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', color: 'var(--ink)' }}
     >
       <svg width={s.mark} height={s.mark} viewBox="0 0 40 40" aria-hidden="true">
-        <rect width="40" height="40" rx="11" fill="#6B54C9" />
+        <rect width="40" height="40" rx="11" style={{ fill: 'var(--accent)' }} />
         <path
           d="M10 19 L20 11 L30 19"
           fill="none"

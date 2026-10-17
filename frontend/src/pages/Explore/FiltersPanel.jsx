@@ -1,4 +1,14 @@
 import { useI18n } from '../../i18n';
+
+function KeyDot({ children, dot }) {
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+      <span style={{ width: 16, height: 16, borderRadius: 8, border: '2px solid #FFFFFF', boxShadow: '0 0 0 1px var(--line2)', ...dot }} />
+      {children}
+    </span>
+  );
+}
+
 export default function FiltersPanel({
   onRadius,
   radius,
@@ -9,55 +19,15 @@ export default function FiltersPanel({
   specs,
   switches,
   toggleOnlySpec,
-  toggleChat,
   types,
+  valueChips = [],
+  zoneNote,
+  zoneToggles = [],
 }) {
   const { t } = useI18n();
   return (
-    <aside
-      aria-label={t('explore.filters.aria')}
-      style={{
-        flex: '1 1 320px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 22,
-        padding: 22,
-        borderRadius: 22,
-        border: '1px solid var(--edge)',
-        boxShadow: 'var(--shadow)',
-        background: 'var(--glass)',
-        backdropFilter: 'blur(16px) saturate(170%)',
-        WebkitBackdropFilter: 'blur(16px) saturate(170%)',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <span
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 10,
-            fontFamily: "'Outfit', sans-serif",
-            fontSize: 22,
-            fontWeight: 700,
-          }}
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#6B54C9"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            aria-hidden="true"
-          >
-            <path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1" />
-            <circle cx="15" cy="6" r="2" />
-            <circle cx="9" cy="12" r="2" />
-            <circle cx="17" cy="18" r="2" />
-          </svg>
-          {t('explore.filters.title')}
-        </span>
+    <div aria-label={t('explore.filters.aria')} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <button
           type="button"
           onClick={reset}
@@ -159,6 +129,24 @@ export default function FiltersPanel({
         </label>
         <span style={{ fontSize: 12.5, lineHeight: 1.4, color: 'var(--ink3)' }}>{specNote}</span>
       </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <span style={{ fontSize: 15, fontWeight: 700 }}>{t('values.title')}</span>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {valueChips.map((c, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-pressed={c.on}
+              title={c.tip}
+              onClick={c.pick}
+              style={{ minHeight: 40, padding: '0 14px', borderRadius: 999, border: `1.5px solid ${c.border}`, background: c.bg, color: c.fg, font: "600 14px 'Figtree', sans-serif", cursor: 'pointer' }}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+        <span style={{ fontSize: 12.5, lineHeight: 1.4, color: 'var(--ink3)' }}>{t('values.help')}</span>
+      </div>
       <div
         style={{
           display: 'flex',
@@ -230,40 +218,46 @@ export default function FiltersPanel({
           </button>
         ))}
       </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 10,
-          padding: 16,
-          borderRadius: 16,
-          background: 'var(--panel-dark)',
-          backdropFilter: 'blur(18px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(18px) saturate(150%)',
-          boxShadow: '0 14px 40px rgba(43,27,20,0.28), inset 0 1px 0 rgba(255,255,255,0.12)',
-          color: '#FFFFFF',
-        }}
-      >
-        <span style={{ fontSize: 15, fontWeight: 700 }}>{t('explore.ask.title')}</span>
-        <span style={{ fontSize: 14, lineHeight: 1.45, color: '#ECE8FA' }}>{t('explore.ask.body')}</span>
-        <button
-          type="button"
-          onClick={toggleChat}
-          style={{
-            alignSelf: 'flex-start',
-            minHeight: 44,
-            padding: '0 16px',
-            borderRadius: 12,
-            border: 0,
-            background: '#F6C343',
-            color: '#1B1830',
-            font: "700 15px 'Figtree', sans-serif",
-            cursor: 'pointer',
-          }}
-        >
-          {t('nav.ask')}
-        </button>
-      </div>
-    </aside>
+      {zoneToggles.length > 0 && (
+        <div role="group" aria-label={t('explore.zone.aria')} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
+          <span style={{ flexBasis: '100%', fontSize: 15, fontWeight: 700 }}>{t('explore.zone.heading')}</span>
+          {zoneToggles.map((z) => (
+            <button
+              key={z.level}
+              type="button"
+              aria-pressed={z.on}
+              onClick={z.toggle}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                minHeight: 40,
+                padding: '0 14px',
+                borderRadius: 999,
+                border: `2px solid ${z.color}`,
+                background: z.on ? 'var(--glass)' : 'transparent',
+                color: 'var(--ink)',
+                font: "600 14px 'Figtree', sans-serif",
+                cursor: 'pointer',
+                opacity: z.on ? 1 : 0.65,
+              }}
+            >
+              <span style={{ width: 12, height: 12, borderRadius: 3, background: z.color, opacity: z.on ? 1 : 0.4 }} />
+              {z.label}
+            </button>
+          ))}
+          <span style={{ flexBasis: '100%', fontSize: 12.5, color: 'var(--ink3)' }}>{zoneNote}</span>
+        </div>
+      )}
+      <details>
+        <summary style={{ cursor: 'pointer', fontSize: 15, fontWeight: 700 }}>{t('menu.panel.key')}</summary>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 10, fontSize: 14, color: 'var(--ink2)' }}>
+          <KeyDot dot={{ background: 'var(--accent-grad)' }}>{t('explore.legend.match')}</KeyDot>
+          <KeyDot dot={{ background: '#F6C343' }}>{t('explore.legend.cmp')}</KeyDot>
+          <KeyDot dot={{ background: 'var(--ink)' }}>{t('explore.legend.selected')}</KeyDot>
+          <KeyDot dot={{ background: '#DC2626' }}>{t('explore.legend.home')}</KeyDot>
+        </div>
+      </details>
+    </div>
   );
 }

@@ -34,7 +34,7 @@ export function usePathway() {
     free_only: !!profile.freeOnly,
   };
   const { data, error, loading } = useApi((signal) => api.pathway(body, { signal }), [JSON.stringify(body)], {
-    enabled: children.length > 0,
+    enabled: children.length > 0 && profile.hasLocation,
   });
 
   const idx = Math.min(childIdx, Math.max(children.length - 1, 0));
@@ -57,7 +57,7 @@ export function usePathway() {
       name: st.label,
       ages: st.ages,
       figH: `${FIGURE_HEIGHT[st.stage]}px`,
-      fig: current ? '#F6C343' : past ? '#9A8FCC' : '#6B54C9',
+      fig: current ? '#F6C343' : past ? '#9A8FCC' : 'var(--accent)',
       bagOp: i >= 2 ? 1 : 0,
       capOp: 0,
       briefOp: 0,

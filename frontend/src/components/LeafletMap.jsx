@@ -20,6 +20,9 @@ import {
  *        fitKey (changes when the view should be re-framed: new location, radius or result set; not on selection),
  *        zones (GeoJSON FeatureCollection | null), zoneLevels (levels to draw), onPick(id), onTilesFailed(bool)
  */
+// The whole county, shown until the family enters where they live.
+const COUNTY_CENTER = [25.7617, -80.1918];
+
 const LeafletMap = forwardRef(function LeafletMap(
   { home, radiusMi, pins, pinsKey, fitKey, zones, zoneLevels, onPick, onTilesFailed },
   ref,
@@ -59,7 +62,8 @@ const LeafletMap = forwardRef(function LeafletMap(
       }
     });
     layers.current = { zones: L.layerGroup().addTo(m), pins: L.layerGroup().addTo(m) };
-    m.setView([latest.current.home.lat, latest.current.home.lon], 13);
+    const h0 = latest.current.home;
+    m.setView(h0 ? [h0.lat, h0.lon] : COUNTY_CENTER, h0 ? 13 : 10);
     const ro = new ResizeObserver(() => m.invalidateSize());
     ro.observe(el.current);
     return () => {
@@ -77,6 +81,7 @@ const LeafletMap = forwardRef(function LeafletMap(
     const L_ = layers.current;
     L_.ring?.remove();
     L_.home?.remove();
+    if (!home) return; // no address yet: no home marker or travel ring
     const center = [home.lat, home.lon];
     L_.ring = L.circle(center, {
       radius: milesToMeters(radiusMi),
@@ -99,13 +104,17 @@ const LeafletMap = forwardRef(function LeafletMap(
       zIndexOffset: 500,
     }).addTo(m);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [home.lat, home.lon, radiusMi, lang]);
+  }, [home?.lat, home?.lon, radiusMi, lang]);
 
   // ---- framing: the home plus the schools actually shown (at least ~1 mile across), or the whole radius when there are none ----
   useEffect(() => {
     const m = map.current;
     if (!m) return;
     const { pins: ps, home: h, radiusMi: r } = latest.current;
+    if (!h) {
+      m.setView(COUNTY_CENTER, 10);
+      return;
+    }
     const center = L.latLng(h.lat, h.lon);
     const bounds = ps.length
       ? L.latLngBounds([center, ...ps.map((p) => L.latLng(p.lat, p.lon))]).extend(
@@ -171,6 +180,7 @@ const LeafletMap = forwardRef(function LeafletMap(
     zoomOut: () => map.current?.zoomOut(),
     recenter: () => {
       const { home: h, radiusMi: r } = latest.current;
+      if (!h) return map.current?.setView(COUNTY_CENTER, 10);
       // latLng.toBounds takes the full width in meters; a circle's own getBounds only works once it is on the map.
       map.current?.fitBounds(L.latLng(h.lat, h.lon).toBounds(2 * milesToMeters(r)), { padding: [28, 28] });
     },

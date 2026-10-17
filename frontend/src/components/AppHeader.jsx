@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n';
-import { useSaved } from '../saved/SavedProvider';
-import AccountMenu from './AccountMenu';
 import BrandLogo from './BrandLogo';
-import LanguageSwitcher from './LanguageSwitcher';
+import AccountMenu from './AccountMenu';
+import BackButton from './BackButton';
+import MenuButton from './MenuButton';
 
 const NAV = [
   { key: 'explore', to: '/explore' },
@@ -25,7 +25,7 @@ const navLinkStyle = (active) => ({
   textDecoration: 'none',
 });
 
-const askNaviStyle = {
+const askJarvisStyle = {
   display: 'inline-flex',
   alignItems: 'center',
   gap: 8,
@@ -42,7 +42,7 @@ const askNaviStyle = {
   textDecoration: 'none',
 };
 
-function NaviMark() {
+function JarvisMark() {
   return (
     <svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true">
       <circle cx="20" cy="20" r="20" fill="#2A2650" />
@@ -55,21 +55,22 @@ function NaviMark() {
  * Top bar shared by Explore, School and Pathway.
  *  - active:      which nav item is the current page ("explore" | "pathways")
  *  - showSearch:  render the school search box (Explore only)
- *  - onAskNavi:   when given, "Ask Navi" opens the assistant in place; otherwise it links to the map
+ *  - compact:     logo, search and the right-hand buttons only (no page links, no Back): the Explore page uses it to keep the top clean
+ *  - onAskJarvis:   when given, "Ask Jarvis" opens the assistant in place; otherwise it links to the map
  */
-export default function AppHeader({ active, showSearch = false, onAskNavi, onSearch }) {
-  const { t, tp } = useI18n();
-  const { count } = useSaved();
+export default function AppHeader({ active, showSearch = false, compact = false, onAskJarvis, onSearch }) {
+  const { t } = useI18n();
   return (
     <header
       style={{
-        position: 'relative',
-        zIndex: 50, // above the page content so the account menu is never covered
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         // With the search box, the search field absorbs the free space instead.
         justifyContent: showSearch ? 'flex-start' : 'space-between',
+        position: 'sticky', // stays visible while the page scrolls
+        top: 0,
+        zIndex: 1100,
         gap: '16px 28px',
         padding: '14px clamp(16px, 3vw, 40px)',
         background: 'var(--glass)',
@@ -86,49 +87,26 @@ export default function AppHeader({ active, showSearch = false, onAskNavi, onSea
             : { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px 28px' }
         }
       >
+        {!compact && <BackButton fallback="/explore" />}
         <BrandLogo />
+        {!compact && (
         <nav aria-label={t('nav.main')} style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
           {NAV.map((item) => {
             const isActive = item.key === active;
             const style = navLinkStyle(isActive);
             const current = isActive ? 'page' : undefined;
-            const label = t(`nav.${item.key === 'planner' ? 'plan' : item.key}`);
-            const badge = item.key === 'saved' && count > 0;
-            return (
-              <Link
-                key={item.key}
-                to={item.to}
-                aria-current={current}
-                aria-label={badge ? tp('saved.nav.aria', count) : undefined}
-                style={style}
-              >
-                {label}
-                {badge && (
-                  <span
-                    data-testid="saved-count"
-                    aria-hidden="true"
-                    style={{
-                      marginLeft: 8,
-                      minWidth: 22,
-                      height: 22,
-                      padding: '0 6px',
-                      borderRadius: 11,
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      background: 'var(--accent-grad)',
-                      color: '#FFFFFF',
-                      fontSize: 12.5,
-                      fontWeight: 700,
-                    }}
-                  >
-                    {count}
-                  </span>
-                )}
+            return item.to ? (
+              <Link key={item.key} to={item.to} aria-current={current} style={style}>
+                {t(`nav.${item.key === 'planner' ? 'plan' : item.key}`)}
               </Link>
+            ) : (
+              <a key={item.key} href={item.href} style={style}>
+                {t(`nav.${item.key === 'planner' ? 'plan' : item.key}`)}
+              </a>
             );
           })}
         </nav>
+        )}
       </div>
 
       {showSearch && (
@@ -181,23 +159,23 @@ export default function AppHeader({ active, showSearch = false, onAskNavi, onSea
         </div>
       )}
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10 }}>
-        <LanguageSwitcher />
-        {onAskNavi ? (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        {onAskJarvis ? (
           <button
             type="button"
-            onClick={onAskNavi}
-            style={{ ...askNaviStyle, border: 0, font: "700 15px 'Figtree', sans-serif", cursor: 'pointer' }}
+            onClick={onAskJarvis}
+            style={{ ...askJarvisStyle, border: 0, font: "700 15px 'Figtree', sans-serif", cursor: 'pointer' }}
           >
-            <NaviMark />
+            <JarvisMark />
             {t('nav.ask')}
           </button>
         ) : (
-          <Link to="/explore" style={askNaviStyle}>
-            <NaviMark />
+          <Link to="/explore" style={askJarvisStyle}>
+            <JarvisMark />
             {t('nav.ask')}
           </Link>
         )}
+        <MenuButton />
         <AccountMenu />
       </div>
     </header>

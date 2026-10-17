@@ -13,7 +13,7 @@ export function useSchool() {
   const { id } = useParams();
   const { profile } = useProfile();
   const { data, error, loading } = useApi(
-    (signal) => api.school(id, profile.lat, profile.lon, { signal }),
+    (signal) => api.school(id, profile.hasLocation ? profile.lat : undefined, profile.hasLocation ? profile.lon : undefined, { signal }),
     [id, profile.lat, profile.lon],
   );
   return { id, data, error, loading, profile };

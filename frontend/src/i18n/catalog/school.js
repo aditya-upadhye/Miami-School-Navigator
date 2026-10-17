@@ -16,7 +16,7 @@ export const school = {
     'school.hero.pathway': 'See the pathway',
     'school.hero.fitAria': 'Fit for your family',
     'school.hero.forFamily': 'For your family',
-    'school.hero.distDemo': '{miles} from the demo address',
+    'school.hero.noAddress': 'Add your address to see the distance.',
     'school.hero.distYou': '{miles} from your address',
     'school.hero.virtual':
       'This is a virtual school: there is no campus to visit, so distance does not apply.',
@@ -85,7 +85,7 @@ export const school = {
     'school.hero.pathway': 'Ver la trayectoria',
     'school.hero.fitAria': 'Compatibilidad con su familia',
     'school.hero.forFamily': 'Para su familia',
-    'school.hero.distDemo': '{miles} de la dirección de demostración',
+    'school.hero.noAddress': 'Agregue su dirección para ver la distancia.',
     'school.hero.distYou': '{miles} de su dirección',
     'school.hero.virtual':
       'Esta es una escuela virtual: no hay campus que visitar, por lo que la distancia no aplica.',
@@ -159,7 +159,7 @@ export const school = {
     'school.hero.pathway': 'Gade chemen an',
     'school.hero.fitAria': 'Konpatibilite ak fanmi ou',
     'school.hero.forFamily': 'Pou fanmi ou',
-    'school.hero.distDemo': '{miles} de adrès demo a',
+    'school.hero.noAddress': 'Ajoute adrès ou pou wè distans lan.',
     'school.hero.distYou': '{miles} de adrès ou',
     'school.hero.virtual': 'Sa a se yon lekòl vityèl: pa gen kanpis pou vizite, kidonk distans pa aplike.',
     'school.hero.zonedYours': 'Sa a se lekòl {level} ki asiyen pou adrès ou a pa zòn.',

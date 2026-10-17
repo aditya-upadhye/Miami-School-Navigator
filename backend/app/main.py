@@ -9,16 +9,15 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from .auth import router as auth_router
 from .config import get_settings
 from .i18n import MESSAGES, LanguageMiddleware, current_lang, t
-from .accounts import Accounts
-from .account_routes import router as account_router
 from .routes import router
 from .services.context import load_navigator
 from .services.errors import ApiError
 
 log = logging.getLogger("app")
-CACHEABLE = ("/api/schools", "/api/zones", "/api/dates", "/api/meta")  # never /api/auth or /api/me: those are per-user
+CACHEABLE = ("/api/schools", "/api/zones", "/api/dates", "/api/meta")
 
 
 @asynccontextmanager
@@ -34,9 +33,7 @@ async def lifespan(app: FastAPI):
             log.exception("database build failed")
     owned = load_navigator(s) if s.db_path.exists() else None
     app.state.nav = owned
-    app.state.accounts = Accounts(s.users_db_path)
     yield
-    app.state.accounts.close()
     if owned:  # close only the connection this lifespan opened
         owned.conn.close()
 
@@ -54,8 +51,7 @@ app = FastAPI(
                  "translated. The Spanish and Haitian Creole texts are AI-written and have not been reviewed by a native speaker; English is authoritative."),
     lifespan=lifespan,
 )
-app.add_middleware(CORSMiddleware, allow_origins=list(get_settings().cors_origins), allow_methods=["GET", "POST", "PUT", "DELETE"],
-                   allow_headers=["*"], allow_credentials=True)  # credentials: the session cookie (origins are an explicit list)
+app.add_middleware(CORSMiddleware, allow_origins=list(get_settings().cors_origins), allow_methods=["GET", "POST"], allow_headers=["*"])
 app.add_middleware(LanguageMiddleware)  # added last = outermost: every /api handler, dependency and error handler sees the request language
 
 
@@ -117,4 +113,4 @@ async def validation_error(_: Request, exc: RequestValidationError):
 
 
 app.include_router(router)
-app.include_router(account_router)
+app.include_router(auth_router)

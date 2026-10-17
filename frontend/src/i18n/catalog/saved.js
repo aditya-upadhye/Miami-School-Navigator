@@ -1,0 +1,36 @@
+// saved catalog: keys are prefixed 'saved.'. English is authoritative; es/ht are AI-written and unreviewed.
+export const saved = {
+  en: {
+    'saved.save': 'Save',
+    'saved.saved': 'Saved',
+    'saved.title': 'Saved schools',
+    'saved.note': 'Saved on this device only. Clearing your browser data removes them.',
+    'saved.empty': 'You have not saved any schools yet.',
+    'saved.browse': 'Browse schools',
+    'saved.loading': 'Loading…',
+    'saved.remove': 'Remove',
+    'saved.clear': 'Clear all',
+  },
+  es: {
+    'saved.save': 'Guardar',
+    'saved.saved': 'Guardada',
+    'saved.title': 'Escuelas guardadas',
+    'saved.note': 'Se guardan solo en este dispositivo. Borrar los datos del navegador las elimina.',
+    'saved.empty': 'Todavía no ha guardado ninguna escuela.',
+    'saved.browse': 'Ver escuelas',
+    'saved.loading': 'Cargando…',
+    'saved.remove': 'Quitar',
+    'saved.clear': 'Borrar todas',
+  },
+  ht: {
+    'saved.save': 'Sove',
+    'saved.saved': 'Sove',
+    'saved.title': 'Lekòl ou sove',
+    'saved.note': 'Yo sove sou aparèy sa a sèlman. Si ou efase done navigatè a, yo disparèt.',
+    'saved.empty': 'Ou poko sove okenn lekòl.',
+    'saved.browse': 'Gade lekòl yo',
+    'saved.loading': 'Ap chaje…',
+    'saved.remove': 'Retire',
+    'saved.clear': 'Efase tout',
+  },
+};

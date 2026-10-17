@@ -15,7 +15,17 @@ from .errors import ApiError
 from .zones import zoned_for, zoned_place_ids
 
 # --- match score weights (documented in README; the breakdown of every score is returned to the client) ---
-W_ZONED, W_DISTANCE, W_GRADE, W_PRIORITY, W_SCHOLARSHIP = 25, 30, 20, 15, 10
+# Distance used to carry 30 of 100 points; it is now 15, so a better fit a little farther away can outrank the closest school. The family's travel
+# limit (`radius_mi`) is still a hard cutoff: nothing beyond it is ever suggested.
+W_ZONED, W_DISTANCE, W_GRADE, W_PRIORITY, W_SCHOLARSHIP, W_POPULARITY = 15, 15, 20, 15, 10, 10
+# What the family says matters most (`values`) multiplies the weight of the factors it names, for that family only.
+VALUES = ("academics", "programs", "popularity", "proximity")
+VALUE_BOOST = {"academics": {"state_grade": 2.5}, "programs": {"priorities": 2.5}, "popularity": {"popularity": 3.0},
+               "proximity": {"distance": 2.0, "zoned": 2.0}}
+# A factor that cannot be scored for a school (no state grade, no enrollment numbers, a kind of school the state does not grade) counts as
+# NEUTRAL: half of its points, shown in the breakdown. It is neither a guess about the school nor a way to hide the gap: it only stops a
+# school we know nothing about from beating one that is known to be good just because it is a little closer.
+NEUTRAL = 0.5
 GRADE_POINTS = {"A": 1.0, "B": 0.75, "C": 0.4, "D": 0.15, "F": 0.0}
 
 # Specialty keywords found in an *official school name*. This is a weak signal and is labelled `derived`.
@@ -195,43 +205,66 @@ def _specialty_set(p: dict) -> set[str]:
     return {t.lower() for t in p["themes"]} | {k.lower() for k in _keywords(p["name"])}
 
 
+def seat_utilization(p: dict) -> float | None:
+    """Enrollment divided by capacity: how full the school is. The only demand signal the county data has (it publishes no
+    applications, waitlists or ratings). None when either number is missing."""
+    enrolled, capacity = p.get("enrollment"), p.get("capacity")
+    return enrolled / capacity if enrolled and capacity else None
+
+
 def score(p: dict, distance_mi: float, radius_mi: float, zoned_level: str | None, zones_known: bool,
-          priorities: list[str], scholarship_wanted: bool) -> tuple[int, list[ScoreFactor], list[str]]:
+          priorities: list[str], scholarship_wanted: bool, values: list[str] | None = None) -> tuple[int, list[ScoreFactor], list[str]]:
     """Weighted sum over the factors that apply to this school. Every factor is returned so the score can be audited."""
     factors: list[ScoreFactor] = []
     reasons: list[str] = []
+    boost: dict[str, float] = {}
+    for v in values or []:
+        boost.update(VALUE_BOOST.get(v, {}))
 
     def add(name: str, pts: float, mx: float, detail: str, reason: str | None = None):
         factors.append(ScoreFactor(factor=name, points=round(pts, 1), max_points=mx, detail=detail))
         if reason:
             reasons.append(reason)
 
+    W_ZONED_, W_DISTANCE_ = W_ZONED * boost.get("zoned", 1), W_DISTANCE * boost.get("distance", 1)
+    W_GRADE_, W_PRIORITY_ = W_GRADE * boost.get("state_grade", 1), W_PRIORITY * boost.get("priorities", 1)
+
     if p["kind"] == "public" and zones_known:
         if zoned_level:
-            add("zoned", W_ZONED, W_ZONED, tr("score.zoned.detail", level=tr(f"level.{zoned_level}")), tr("score.zoned.reason", level=tr(f"level.{zoned_level}")))
+            add("zoned", W_ZONED_, W_ZONED_, tr("score.zoned.detail", level=tr(f"level.{zoned_level}")), tr("score.zoned.reason", level=tr(f"level.{zoned_level}")))
         else:
-            add("zoned", 0, W_ZONED, tr("score.zoned.not"))
+            add("zoned", 0, W_ZONED_, tr("score.zoned.not"))
     if is_online(p):
         reasons.append(tr("score.online"))  # not scored: no distance points, and not counted as possible
     else:
-        dist_pts = W_DISTANCE * max(0.0, 1 - distance_mi / radius_mi) if radius_mi > 0 else W_DISTANCE
-        add("distance", dist_pts, W_DISTANCE, tr("score.distance.detail", distance=f"{distance_mi:.1f}", radius=f"{radius_mi:g}"),
+        dist_pts = W_DISTANCE_ * max(0.0, 1 - distance_mi / radius_mi) if radius_mi > 0 else W_DISTANCE_
+        add("distance", dist_pts, W_DISTANCE_, tr("score.distance.detail", distance=f"{distance_mi:.1f}", radius=f"{radius_mi:g}"),
             tr("score.distance.reason", distance=f"{distance_mi:.1f}"))
     if p["kind"] in ("public", "charter"):
         if p["state_grade"]:
-            add("state_grade", W_GRADE * GRADE_POINTS[p["state_grade"]], W_GRADE, tr("score.grade.detail", grade=p["state_grade"], year=p["state_grade_year"]),
+            add("state_grade", W_GRADE_ * GRADE_POINTS[p["state_grade"]], W_GRADE_, tr("score.grade.detail", grade=p["state_grade"], year=p["state_grade_year"]),
                 tr("score.grade.reason", grade=p["state_grade"]) + (f" ({p['state_grade_year']})" if p["state_grade_year"] else ""))
         else:
-            reasons.append(tr("score.grade.none"))
+            add("state_grade", W_GRADE_ * NEUTRAL, W_GRADE_, tr("score.grade.neutral"), tr("score.grade.none"))
+    else:
+        add("state_grade", W_GRADE_ * NEUTRAL, W_GRADE_, tr("score.grade.private"))
     if priorities:
         have = _specialty_set(p)
         hits = [x for x in priorities if canonical_specialty(x).lower() in have]
-        add("priorities", W_PRIORITY * len(hits) / len(priorities), W_PRIORITY, tr("score.priorities.detail", hits=len(hits), total=len(priorities)),
+        add("priorities", W_PRIORITY_ * len(hits) / len(priorities), W_PRIORITY_, tr("score.priorities.detail", hits=len(hits), total=len(priorities)),
             (tr("score.priorities.reason", hits=", ".join(hits)) if hits else None))
     if p["kind"] == "private" and scholarship_wanted:
         ok = bool(p["scholarships"])
         add("scholarship", W_SCHOLARSHIP if ok else 0, W_SCHOLARSHIP, tr("score.scholarship.yes") if ok else tr("score.scholarship.no"),
             tr("score.scholarship.yes") if ok else None)
+    util = seat_utilization(p)
+    if util is not None:
+        pct = round(100 * util)
+        add("popularity", W_POPULARITY * boost.get("popularity", 1) * min(1.0, max(0.0, (util - 0.5) / 0.5)), W_POPULARITY * boost.get("popularity", 1),
+            tr("score.popularity.detail", pct=pct, enrolled=p["enrollment"], capacity=p["capacity"]),
+            tr("score.popularity.reason", pct=pct) if util >= 0.9 else None)
+    else:
+        add("popularity", W_POPULARITY * boost.get("popularity", 1) * NEUTRAL, W_POPULARITY * boost.get("popularity", 1), tr("score.popularity.neutral"))
     earned, possible = sum(f.points for f in factors), sum(f.max_points for f in factors)
     return (round(100 * earned / possible) if possible else 0), factors, reasons
 
@@ -249,7 +282,8 @@ def data_available(nav: Navigator) -> dict[str, bool]:
 def search(nav: Navigator, *, lat: float, lon: float, radius_mi: float = 3.0, kinds: list[str] | None = None,
            stages: list[str] | None = None, free_only: bool = False, grade_min: str | None = None,
            specialties: list[str] | None = None, ese: bool = False, scholarship: bool = False, sort: str = "match",
-           limit: int = 20, priorities: list[str] | None = None, q: str | None = None) -> SearchResponse:
+           limit: int = 20, priorities: list[str] | None = None, q: str | None = None,
+           values: list[str] | None = None) -> SearchResponse:
     if not (0 < radius_mi <= 25):
         raise ApiError(422, "bad_radius")
     if grade_min and grade_min.upper() not in GRADE_ORDER:
@@ -257,6 +291,9 @@ def search(nav: Navigator, *, lat: float, lon: float, radius_mi: float = 3.0, ki
     for s_ in stages or []:
         if s_ not in STAGES:
             raise ApiError(422, "bad_stage", params={"stage": s_, "stages": ", ".join(STAGES)})
+    for v in values or []:
+        if v not in VALUES:
+            raise ApiError(422, "bad_values", params={"value": v, "values": ", ".join(VALUES)})
     limit = max(1, min(limit, 100))
     zones = zoned_for(nav, lat, lon)  # also validates that the point is inside Miami-Dade
     zmap = zoned_place_ids(zones)
@@ -298,7 +335,7 @@ def search(nav: Navigator, *, lat: float, lon: float, radius_mi: float = 3.0, ki
 
     scored = []
     for p, d in cands:
-        pts, factors, reasons = score(p, d, radius_mi, zmap.get(p["id"]), True, prio, scholarship)
+        pts, factors, reasons = score(p, d, radius_mi, zmap.get(p["id"]), True, prio, scholarship, values)
         scored.append((p, d, pts, factors, reasons))
     if sort == "distance":
         scored.sort(key=lambda t: (is_online(t[0]), t[1], t[0]["name"]))  # online schools have no campus: never "closest"
@@ -326,12 +363,14 @@ def search(nav: Navigator, *, lat: float, lon: float, radius_mi: float = 3.0, ki
         notes.append(tr("note.search.ese"))
     if want_spec:
         notes.append(tr("note.search.specialties"))
+    if "popularity" in (values or []):
+        notes.append(tr("note.search.popularity"))
     if any(r.state_grade.status == "not_available" for r in results if r.kind in ("public", "charter")):
         notes.append(tr("note.search.nograde"))
 
     applied = {"radius_mi": radius_mi, "kinds": kinds or list(("public", "charter", "private", "early_learning")), "stages": stages or [],
                "free_only": free_only, "grade_min": grade_min.upper() if grade_min else None, "specialties": specialties or [],
-               "ese": ese, "scholarship": scholarship, "sort": sort, "limit": limit, "priorities": prio, "q": q or None}
+               "ese": ese, "scholarship": scholarship, "sort": sort, "limit": limit, "priorities": prio, "values": values or [], "q": q or None}
     return SearchResponse(results=results, meta=SearchMeta(origin={"lat": lat, "lon": lon}, total_matching=len(scored), returned=len(results),
                                                            filters_applied=applied, excluded=excluded, notes=notes, zones=zones,
                                                            data_available=data_available(nav)))

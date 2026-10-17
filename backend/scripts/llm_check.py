@@ -1,7 +1,6 @@
 """Check that the configured LLM works for this app. Run after changing any LLM_* setting:
 
     python scripts/llm_check.py            # uses your environment / .env-style variables
-    python scripts/llm_check.py --backups  # also checks every route in LLM_BACKUPS (one at a time)
     LLM_PROVIDER=ollama LLM_MODEL=gemma4 python scripts/llm_check.py
 
 It verifies: configuration, reachability + auth, whether a system role is accepted (the adapter adapts either way), that the model
@@ -16,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from app.chat.llm import LlmConfig, LlmUnavailable, OpenAICompatLlm, parse_backups  # noqa: E402
+from app.chat.llm import LlmConfig, LlmUnavailable, OpenAICompatLlm  # noqa: E402
 from app.chat.tools import TOOLS  # noqa: E402
 
 
@@ -27,21 +26,6 @@ def step(label: str, ok: bool, detail: str = "") -> bool:
 
 def main() -> int:
     cfg = LlmConfig.from_env()  # also reads backend/.env
-    code = check(cfg)
-    if "--backups" in sys.argv:
-        import os
-
-        routes, problems = parse_backups(os.environ.get("LLM_BACKUPS"), cfg, os.environ)
-        for p in problems:
-            print(f"\n[FAIL] {p}")
-            code = 1
-        for backup, cap in routes:
-            print(f"\n--- backup route (daily cap {cap or 'none'}) ---")
-            code = check(backup) or code
-    return code
-
-
-def check(cfg: LlmConfig) -> int:
     d = cfg.describe()
     print(f"provider={d['provider']} model={d['model']} base_url={d['base_url']}")
     if not step("configuration", d["configured"], "; ".join(d["problems"])):

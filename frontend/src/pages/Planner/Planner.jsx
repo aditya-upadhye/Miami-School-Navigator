@@ -40,7 +40,7 @@ export default function Planner() {
             {data ? t('planner.title', { year: data.school_year }) : t('planner.titleNoYear')}
           </h1>
           <p style={{ margin: 0, maxWidth: 760, fontSize: 18, lineHeight: 1.5, color: 'var(--ink2)' }}>
-            {t('planner.subtitle')} {profile.isDemo ? <Pill tone="info">{t('planner.demo')}</Pill> : null}{' '}
+            {t('planner.subtitle')}{' '}
             <span style={{ fontSize: 15 }}>{profile.matchedAddress}</span>
           </p>
         </div>

@@ -10,7 +10,7 @@ from app.services.geocode import geocode  # noqa: E402
 from app.services.zones import zoned_for  # noqa: E402
 
 ADDRESSES = [
-    "2250 NW 2nd Ave, Miami, FL 33127",   # Wynwood (demo family)
+    "2250 NW 2nd Ave, Miami, FL 33127",   # Wynwood
     "1450 NE 2nd Ave, Miami, FL 33132",   # M-DCPS headquarters, downtown
     "401 Biscayne Blvd, Miami, FL 33132",  # Bayfront Park area
     "11200 SW 8th St, Miami, FL 33199",   # FIU Modesto Maidique campus
