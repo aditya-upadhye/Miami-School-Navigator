@@ -17,7 +17,7 @@ export const ROLE_LANDING: Readonly<Record<string, string>> = {
 };
 
 /** What `/` used to be: the default role's landing. Also where a visitor with no session goes (its guard asks for sign-in). */
-export const DEFAULT_LANDING = "/family-home";
+export const DEFAULT_LANDING = "/landing";
 
 /**
  * The landing of the ACTIVE role (ARCH-2694: the one the user picked in the identity menu, when it is held) and then of

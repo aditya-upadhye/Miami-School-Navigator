@@ -9,7 +9,7 @@ export interface FidelityMaskProps {
 }
 
 /** Path (no leading slash) of every route whose screen is `planned`: the app mounts a placeholder there. */
-const PLANNED_NAV_SLUGS: ReadonlySet<string> = new Set<string>(["account","data-quality","forgot-password","help","landing","login","mfa","not-found","planner","privacy","reset-password","saved","school-detail","signup","terms","verify-email"]);
+const PLANNED_NAV_SLUGS: ReadonlySet<string> = new Set<string>(["account","data-quality","forgot-password","help","login","mfa","not-found","planner","privacy","reset-password","saved","school-detail","signup","terms","verify-email"]);
 
 /** Mask for a nav entry; `slug` is the entry's path without its leading slash. */
 export function navEntryMask(slug: string): FidelityMaskProps {

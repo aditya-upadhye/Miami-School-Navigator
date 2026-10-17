@@ -132,7 +132,7 @@ function Screen_signup() {
   );
 }
 
-const LazyScreen_landing = lazy(() => import('./presentation/views/landing.view'));
+const LazyScreen_landing = lazy(() => import('./presentation/containers/landing.container'));
 function Screen_landing() {
   return (
     <Suspense fallback={<LoadingFallback />}>
