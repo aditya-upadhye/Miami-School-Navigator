@@ -1,10 +1,9 @@
 import Card, { h2 } from '../../components/Card';
-import { isMissing, nextStep, percent, text, tuition } from '../../api/fields';
+import { isMissing, percent, text, tuition } from '../../api/fields';
 import { useI18n } from '../../i18n';
 import { levelLabel } from './useSchool';
 
 function value(key, f, { t, nf }) {
-  if (isMissing(f)) return t('shared.notAvailable');
   if (key === 'tuition') return tuition(f);
   if (key === 'gains_ela' || key === 'gains_math') return percent(f);
   if (key === 'enrollment') return nf(f.value);
@@ -49,8 +48,17 @@ const applies = (key, kind) => {
   return true;
 };
 
+/** The rows to show: only those that apply to this kind of school and have a value. A missing value is left out, never shown as "not available". */
+export function glanceRows(school, ctx) {
+  return ROWS.filter((k) => school[k] && applies(k, school.kind) && !isMissing(school[k]))
+    .map((key) => ({ key, text: value(key, school[key], ctx) }))
+    .filter((row) => row.text);
+}
+
 export default function AtAGlance({ school }) {
   const { t, nf } = useI18n();
+  const rows = glanceRows(school, { t, nf });
+  if (!rows.length) return null;
   return (
     <Card id="glance" aria-labelledby="glance-title">
       <h2 id="glance-title" style={h2}>
@@ -65,9 +73,8 @@ export default function AtAGlance({ school }) {
           gap: 14,
         }}
       >
-        {ROWS.filter((k) => school[k] && applies(k, school.kind)).map((key) => {
+        {rows.map(({ key, text: shown }) => {
           const f = school[key];
-          const missing = isMissing(f);
           return (
             <div
               key={key}
@@ -92,18 +99,7 @@ export default function AtAGlance({ school }) {
               >
                 {t(`school.glance.row.${key}`)}
               </dt>
-              <dd
-                style={{
-                  margin: 0,
-                  fontSize: 17,
-                  fontWeight: 700,
-                  color: missing ? 'var(--ink3)' : 'var(--ink)',
-                  fontStyle: missing ? 'italic' : 'normal',
-                }}
-              >
-                {value(key, f, { t, nf })}
-              </dd>
-              {missing && key !== 'aftercare' && <dd style={{ margin: 0, fontSize: 13.5, color: 'var(--ink2)' }}>{nextStep(f)}</dd>}
+              <dd style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--ink)' }}>{shown}</dd>
               {key === 'state_grade' && school.flags?.includes('grade_match_unverified') && (
                 <dd style={{ margin: 0, fontSize: 13.5, color: 'var(--ink2)' }}>
                   {t('school.glance.check', { note: f.method.split('Check:')[1]?.trim() })}
