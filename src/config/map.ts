@@ -8,8 +8,8 @@ export interface MapTiles {
 }
 
 const tiles: MapTiles = {
-  url: import.meta.env.VITE_MAP_TILES_URL ?? "",
-  attribution: import.meta.env.VITE_MAP_TILES_ATTRIBUTION ?? "",
+  url: import.meta.env.VITE_MAP_TILES_URL || "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  attribution: import.meta.env.VITE_MAP_TILES_ATTRIBUTION || "&copy; OpenStreetMap contributors",
   maxZoom: 19,
 }
 
