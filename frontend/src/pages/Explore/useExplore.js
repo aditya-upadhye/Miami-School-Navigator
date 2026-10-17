@@ -23,6 +23,7 @@ import { onMapUpdate, onShowSchools, setMapContext, takePendingMap, takePendingS
 import { cellNote, cellText, comparableRows, joinNames, levelText, shortDate, specLabel } from './exploreText';
 
 const KINDS = ['public', 'charter', 'private', 'early_learning'];
+const DEFAULT_KINDS = KINDS.filter((k) => k !== 'early_learning'); // early learning is opt-in from the Filters tab
 const SPECIALTIES = ['STEM', 'Arts', 'Bilingual', 'IB'];
 
 // The filter fields a chat answer may change, remembered so a change that empties the map can be undone (see the guard in useExplore).
@@ -37,7 +38,7 @@ const initialFilters = (profile) => ({
   kid: (profile.children ?? []).length > 1 ? 'all' : (profile.children ?? []).length === 1 ? 0 : 'any', // 'all' | child index | 'any'
   radius: profile.radius ?? 3,
   freeOnly: !!profile.freeOnly,
-  kinds: [...KINDS],
+  kinds: [...DEFAULT_KINDS],
   spec: [], // specialty chips: boost the ranking (or, with onlySpec, restrict the list)
   onlySpec: false,
   priorities: [...(profile.priorities ?? [])], // from the family profile; removable here without changing the profile
@@ -460,14 +461,14 @@ export function useExplore() {
   }
   if (s.freeOnly)
     addFilter('free', t('explore.switch.free.label'), exc.free_only, () => setState({ freeOnly: false }));
-  if (s.kinds.length !== KINDS.length)
+  if (s.kinds.length !== DEFAULT_KINDS.length || !DEFAULT_KINDS.every((k) => s.kinds.includes(k)))
     addFilter(
       'kinds',
       t('explore.active.types', {
         types: s.kinds.map((k) => KIND_LABEL[k]).join(', ') || t('explore.active.typesNone'),
       }),
       undefined,
-      () => setState({ kinds: [...KINDS] }),
+      () => setState({ kinds: [...DEFAULT_KINDS] }),
     );
   s.priorities.forEach((p) =>
     addFilter(
