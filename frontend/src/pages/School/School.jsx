@@ -3,10 +3,10 @@ import { useI18n } from '../../i18n';
 import ThemeShell from '../../components/ThemeShell';
 import { Link } from 'react-router-dom';
 import AtAGlance from './AtAGlance';
+import ChildFit from './ChildFit';
 import HowToApply from './HowToApply';
 import NearbyPlaces from './NearbyPlaces';
 import Outcomes from './Outcomes';
-import NotInData from './NotInData';
 import QuestionsToAsk from './QuestionsToAsk';
 import SchoolHero from './SchoolHero';
 import { useSchool } from './useSchool';
@@ -39,12 +39,12 @@ export default function School() {
         {data && (
           <>
             <SchoolHero school={data.school} links={data.links} profile={profile} />
+            <ChildFit id={data.school.id} profile={profile} />
             <AtAGlance school={data.school} />
             <Outcomes id={data.school.id} />
             <HowToApply steps={data.how_to_apply} notes={data.notes} />
             <QuestionsToAsk questions={data.questions_to_ask} />
             <NearbyPlaces parks={data.nearby_parks} libraries={data.nearby_libraries} />
-            <NotInData />
             <p style={{ margin: 0, fontSize: 13.5, color: 'var(--ink3)' }}>
               {data.school.identity_source.as_of
                 ? t('school.identityRetrieved', {

@@ -128,6 +128,21 @@ def test_compare_best_only_on_numeric_official(rclient, rich):
     assert rows["state_grade"]["cells"][0]["value"] == "A"
 
 
+def test_compare_marks_items_that_do_not_apply_to_the_kind_of_school(rclient, rich):
+    _, picks, _ = rich
+    ids = [picks["elem"][0]["id"], picks["private"]["id"]]
+    rows = {r["key"]: r for r in rclient.post("/api/compare", json={"ids": ids, "lat": LAT, "lon": LON}).json()["rows"]}
+    public, private = (rows["state_grade"]["cells"][0], rows["state_grade"]["cells"][1])
+    assert public["status"] == "official" and public.get("applicable", True) is True
+    for key in ("state_grade", "gains_ela", "proficiency_ela", "is_magnet", "magnet_themes", "zoned"):
+        cell = rows[key]["cells"][1]
+        assert cell["status"] == "not_available" and cell["applicable"] is False and cell["why"] and cell["suggested_action"], key
+    assert rows["scholarship"]["cells"][0]["applicable"] is False  # the public school
+    assert rows["enrollment"]["cells"][1].get("applicable", True) is True  # missing data is not the same as not applicable
+    no_loc = {r["key"]: r for r in rclient.post("/api/compare", json={"ids": ids}).json()["rows"]}
+    assert no_loc["zoned"]["cells"][0]["why"]  # without a location the reason is the missing location, not the school type
+
+
 def test_compare_validation(client):
     assert client.post("/api/compare", json={"ids": ["a", "b", "c", "d"]}).status_code == 422
     assert client.post("/api/compare", json={"ids": ["pub-nope"]}).status_code == 404

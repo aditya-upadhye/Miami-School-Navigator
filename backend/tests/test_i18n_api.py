@@ -71,7 +71,7 @@ FRAGMENTS = [
     "outside Miami-Dade", "Enter a street address", "Specializes in", "Before & after care", "higher is better", "Zoned for your address",
     "Do you accept", "Do you offer", "Reports accepting", "Online school", "Magnet programs are", "Magnet status is only",
     "Private-school scholarships apply", "No action needed", "Some public/charter", "Some dates are", "'Best' is only",
-    "We have not verified", "Steps marked", "Try 3", "Use an id", "Unknown stage", "Use one of",
+    "We have not verified", "Try 3", "Use an id", "Unknown stage", "Use one of",
 ]
 
 

@@ -638,6 +638,58 @@
         }
       }
     },
+    "/api/schools/{school_id}/why-match": {
+      "post": {
+        "tags": [
+          "schools"
+        ],
+        "summary": "Why Match",
+        "operationId": "why_match_api_schools__school_id__why_match_post",
+        "parameters": [
+          {
+            "name": "school_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "School Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WhyMatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhyMatchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/compare": {
       "post": {
         "tags": [
@@ -1197,6 +1249,74 @@
           }
         }
       }
+    },
+    "/api/schools/{school_id}/child-fit": {
+      "post": {
+        "tags": [
+          "schools"
+        ],
+        "summary": "Child Fit",
+        "operationId": "child_fit_api_schools__school_id__child_fit_post",
+        "parameters": [
+          {
+            "name": "school_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "School Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChildFitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChildFitResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1543,6 +1663,96 @@
           "age"
         ],
         "title": "Child"
+      },
+      "ChildFitRequest": {
+        "properties": {
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/Child"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "minItems": 1,
+            "title": "Children",
+            "description": "The family's children (age, optional name). Not stored."
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 90.0,
+                "minimum": -90.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat"
+          },
+          "lon": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 180.0,
+                "minimum": -180.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lon"
+          },
+          "priorities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Priorities"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Values"
+          },
+          "ai": {
+            "type": "boolean",
+            "title": "Ai",
+            "description": "False returns only the instant grade-fit sentence, without calling the language model.",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "children"
+        ],
+        "title": "ChildFitRequest"
+      },
+      "ChildFitResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "description": "1-2 short sentences per child on why this school could fit, in the request language."
+          },
+          "ai": {
+            "type": "boolean",
+            "title": "Ai",
+            "description": "True when the language model wrote it; false for the grade-fit sentence built from the child's age and the school's grades."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "summary",
+          "ai"
+        ],
+        "title": "ChildFitResponse"
       },
       "ChildPathway": {
         "properties": {
@@ -2201,6 +2411,12 @@
             ],
             "title": "Suggested Action",
             "description": "not_available only: what the family can do next."
+          },
+          "applicable": {
+            "type": "boolean",
+            "title": "Applicable",
+            "description": "False when the item does not apply to this kind of school (e.g. state grades for a private school): the value is missing by design, not for lack of data. Only set on not_available fields.",
+            "default": true
           }
         },
         "type": "object",
@@ -3881,6 +4097,84 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "WhyMatchRequest": {
+        "properties": {
+          "lat": {
+            "type": "number",
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Lon"
+          },
+          "radius_mi": {
+            "type": "number",
+            "maximum": 25.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Radius Mi",
+            "default": 3.0
+          },
+          "priorities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Priorities"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Values"
+          },
+          "scholarship": {
+            "type": "boolean",
+            "title": "Scholarship",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "lat",
+          "lon"
+        ],
+        "title": "WhyMatchRequest"
+      },
+      "WhyMatchResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "description": "One or two short sentences on why this school is a good match, in the request language. Empty when there is nothing to say."
+          },
+          "ai": {
+            "type": "boolean",
+            "title": "Ai",
+            "description": "True when the language model wrote it; false when it was built from the match score's own reasons (model unavailable)."
+          },
+          "match_score": {
+            "type": "integer",
+            "title": "Match Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "summary",
+          "ai",
+          "match_score"
+        ],
+        "title": "WhyMatchResponse"
       },
       "ZoneEntry": {
         "properties": {

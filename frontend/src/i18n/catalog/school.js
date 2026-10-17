@@ -83,7 +83,6 @@ export const school = {
     'school.hero.notAssigned': 'Charter, private and early-learning schools are not assigned by address.',
     'school.hero.fitOk': '{name}: grades match',
     'school.hero.fitNo': '{name}: outside its grade range',
-    'school.hero.distBadge': 'Straight-line distance, not travel time',
     'school.glance.title': 'At a glance',
     'school.glance.intro':
       'Every value says where it came from. Hover a label for the source, date and method.',
@@ -104,7 +103,6 @@ export const school = {
     'school.glance.zonedYes': 'Yes, zoned {level}',
     'school.glance.check': 'Check: {note}',
     'school.apply.title': 'How to apply',
-    'school.apply.curated': 'Curated',
     'school.apply.source': 'Source',
     'school.apply.checked': 'checked {date}',
     'school.nearby.title': 'Nearby parks and libraries',
@@ -114,17 +112,9 @@ export const school = {
     'school.nearby.none': 'None listed within 1 mile in the county data.',
     'school.nearby.away': '{miles} away',
     'school.ask.title': 'Questions to ask the school',
+    'school.fit.title': 'How it fits {names}',
+    'school.fit.loading': 'Writing a short note…',
     'school.ask.intro': 'Where our data has gaps, these are the questions that fill them.',
-    'school.gaps.title': 'What we do not have',
-    'school.gaps.reviews.title': 'Parent reviews and ratings',
-    'school.gaps.reviews.text': 'No official dataset has them, and we do not scrape review sites.',
-    'school.gaps.photos.title': 'Photos and campus tours',
-    'school.gaps.photos.text': 'Not in the county or state data. Ask the school for a tour.',
-    'school.gaps.safety.title': 'Walking routes and neighborhood safety',
-    'school.gaps.safety.text':
-      'We have no verified data, so we never call a route or area safe or unsafe. Visit at drop-off and ask the school about its procedures.',
-    'school.gaps.staffing.title': 'Class size and staffing',
-    'school.gaps.staffing.text': 'Not published at school level in the sources we use. Ask the school.',
   },
   es: {
     'school.outcomes.survey.title': 'Qué hacen hoy los exalumnos (autorreportado)',
@@ -210,7 +200,6 @@ export const school = {
       'Las escuelas chárter, privadas y de educación temprana no se asignan por dirección.',
     'school.hero.fitOk': '{name}: los grados coinciden',
     'school.hero.fitNo': '{name}: fuera de su rango de grados',
-    'school.hero.distBadge': 'Distancia en línea recta, no tiempo de viaje',
     'school.glance.title': 'De un vistazo',
     'school.glance.intro':
       'Cada valor indica de dónde viene. Pase el cursor sobre una etiqueta para ver la fuente, la fecha y el método.',
@@ -231,7 +220,6 @@ export const school = {
     'school.glance.zonedYes': 'Sí, asignada por zona: {level}',
     'school.glance.check': 'Verifique: {note}',
     'school.apply.title': 'Cómo presentar la solicitud',
-    'school.apply.curated': 'Verificado a mano',
     'school.apply.source': 'Fuente',
     'school.apply.checked': 'verificado {date}',
     'school.nearby.title': 'Parques y bibliotecas cercanos',
@@ -242,20 +230,9 @@ export const school = {
     'school.nearby.none': 'Ninguno en la lista a menos de 1 milla en los datos del condado.',
     'school.nearby.away': 'a {miles}',
     'school.ask.title': 'Preguntas para hacer a la escuela',
+    'school.fit.title': 'Cómo encaja con {names}',
+    'school.fit.loading': 'Escribiendo una breve nota…',
     'school.ask.intro': 'Donde nuestros datos tienen vacíos, estas son las preguntas que los llenan.',
-    'school.gaps.title': 'Lo que no tenemos',
-    'school.gaps.reviews.title': 'Opiniones y calificaciones de padres',
-    'school.gaps.reviews.text':
-      'Ningún conjunto de datos oficial las tiene, y no extraemos datos de sitios de reseñas.',
-    'school.gaps.photos.title': 'Fotos y recorridos del campus',
-    'school.gaps.photos.text':
-      'No están en los datos del condado ni del estado. Pida un recorrido a la escuela.',
-    'school.gaps.safety.title': 'Rutas a pie y seguridad del vecindario',
-    'school.gaps.safety.text':
-      'No tenemos datos verificados, por eso nunca decimos que una ruta o zona es segura o insegura. Visite a la hora de dejar a los niños y pregunte a la escuela por sus procedimientos.',
-    'school.gaps.staffing.title': 'Tamaño de las clases y personal',
-    'school.gaps.staffing.text':
-      'No se publica a nivel de escuela en las fuentes que usamos. Pregunte a la escuela.',
   },
   ht: {
     'school.outcomes.survey.title': 'Kisa ansyen elèv yo fè jodi a (yo menm di)',
@@ -339,7 +316,6 @@ export const school = {
     'school.hero.notAssigned': 'Yo pa asiyen lekòl charter, prive ak edikasyon bonè selon adrès.',
     'school.hero.fitOk': '{name}: klas yo matche',
     'school.hero.fitNo': '{name}: deyò ranje klas li yo',
-    'school.hero.distBadge': 'Distans an liy dwat, pa tan vwayaj',
     'school.glance.title': 'Yon gade rapid',
     'school.glance.intro':
       'Chak valè di kote li soti. Pase kurseur sou yon etikèt pou wè sous la, dat la ak metòd la.',
@@ -360,7 +336,6 @@ export const school = {
     'school.glance.zonedYes': 'Wi, asiyen pa zòn: {level}',
     'school.glance.check': 'Verifye: {note}',
     'school.apply.title': 'Kijan pou aplike',
-    'school.apply.curated': 'Verifye a la men',
     'school.apply.source': 'Sous',
     'school.apply.checked': 'verifye {date}',
     'school.nearby.title': 'Pak ak bibliyotèk ki tou pre',
@@ -370,17 +345,8 @@ export const school = {
     'school.nearby.none': 'Pa gen okenn ki nan lis nan mwens pase 1 mil nan done konte a.',
     'school.nearby.away': 'a {miles} de distans',
     'school.ask.title': 'Kesyon pou poze lekòl la',
+    'school.fit.title': 'Ki jan li koresponn ak {names}',
+    'school.fit.loading': 'N ap ekri yon ti nòt…',
     'school.ask.intro': 'Kote done nou yo gen twou, men kesyon ki ranpli yo.',
-    'school.gaps.title': 'Sa nou pa genyen',
-    'school.gaps.reviews.title': 'Kòmantè ak evalyasyon paran',
-    'school.gaps.reviews.text':
-      'Okenn baz done ofisyèl pa genyen yo, e nou pa rale done sou sit kote moun bay kòmantè.',
-    'school.gaps.photos.title': 'Foto ak vizit kanpis',
-    'school.gaps.photos.text': 'Yo pa nan done konte a ni nan done eta a. Mande lekòl la yon vizit.',
-    'school.gaps.safety.title': 'Wout pou mache ak sekirite katye a',
-    'school.gaps.safety.text':
-      'Nou pa gen done verifye, kidonk nou pa janm di yon wout oswa yon zòn an sekirite oswa pa an sekirite. Vizite lè yo depoze timoun yo epi mande lekòl la sou prosedi li yo.',
-    'school.gaps.staffing.title': 'Gwosè klas yo ak pèsonèl',
-    'school.gaps.staffing.text': 'Yo pa pibliye sa nan nivo lekòl nan sous nou itilize yo. Mande lekòl la.',
   },
 };

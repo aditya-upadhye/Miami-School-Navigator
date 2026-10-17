@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import FieldBadge from '../../components/FieldBadge';
 import { isMissing, KIND_LABEL, miles, stateGrade, text, zonedLevel } from '../../api/fields';
 import { useI18n } from '../../i18n';
 import SaveButton from '../../saved/SaveButton';
@@ -134,7 +133,6 @@ export default function SchoolHero({ school: s, links, profile }) {
             ))}
           </ul>
         )}
-        <FieldBadge field={s.distance_mi} label={t('school.hero.distBadge')} />
       </aside>
     </div>
   );

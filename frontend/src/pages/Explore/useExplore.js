@@ -20,7 +20,7 @@ import { chip, toggleInList } from '../../utils/chip';
 import { ZONE_LEVELS, ZONE_STYLE } from '../../utils/mapStyle';
 import { childName, stageForAge } from '../../utils/stages';
 import { onMapUpdate } from '../../hooks/chatStore';
-import { cellText, joinNames, levelText, shortDate, specLabel } from './exploreText';
+import { cellNote, cellText, comparableRows, joinNames, levelText, shortDate, specLabel } from './exploreText';
 
 const KINDS = ['public', 'charter', 'private', 'early_learning'];
 const SPECIALTIES = ['STEM', 'Arts', 'Bilingual', 'IB'];
@@ -39,12 +39,6 @@ const initialFilters = (profile) => ({
   gradeB: false,
 });
 
-const VERIFICATION_LEVELS = [
-  'confirmed_district_source',
-  'single_secondary_source',
-  'unconfirmed_project_spec',
-];
-const verificationLevel = (method = '') => VERIFICATION_LEVELS.find((k) => method.includes(k));
 
 /** State, live data and derived view values for the Explore screen. Search, compare and dates come from the backend. */
 export function useExplore() {
@@ -278,6 +272,7 @@ export function useExplore() {
       grades: text(sc.grades, t('explore.gradesNotListed')),
       dist: sc.flags?.includes('online_school') ? t('explore.dist.online') : miles(sc.distance_mi),
       chips,
+      whyBody: { lat: home?.lat, lon: home?.lon, radius_mi: s.radius, priorities: params.priorities, values: params.values },
       fits: fitsFor(sc),
       match: sc.match_score,
       reasons: (sc.reasons ?? [])
@@ -296,10 +291,11 @@ export function useExplore() {
   // ---- compare table ----
   const cmpData =
     cmpApi.data && cmpApi.data.schools.map((x) => x.id).join(',') === cmpKey ? cmpApi.data : null;
-  const cmpRows = (cmpData?.rows ?? []).map((row) => ({
+  const cmpRows = comparableRows(cmpData?.rows ?? []).map((row) => ({
     label: row.label,
     cells: row.cells.map((f, i) => ({
       text: cellText(row.key, f, { t, nf }),
+      note: cellNote(f),
       best: row.best_index === i,
       missing: isMissing(f),
       title: provenance(f),
@@ -593,7 +589,6 @@ export function useExplore() {
 
     // dates (from the curated rules file, each with its verification level)
     dates: (dates.data?.dates ?? []).map((d) => {
-      const level = verificationLevel(d.field.method);
       return {
         when: shortDate(d.date, lang),
         what: d.label,
@@ -602,7 +597,6 @@ export function useExplore() {
             ? t('dates.in', { days: days(d.days_until) })
             : t('dates.ago', { days: days(-d.days_until) })
         }`,
-        note: level ? t(`verify.${level}.note`) : '',
         color: d.days_until < 0 ? 'var(--ink3)' : d.approximate ? '#B45309' : 'var(--accent)',
       };
     }),

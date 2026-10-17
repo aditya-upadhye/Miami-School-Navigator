@@ -143,7 +143,7 @@ def summarize(nav: Navigator, p: dict, *, origin: tuple[float, float] | None = N
                       if p["gains_math"] is not None else na(tr("na.gains_math.why"), tr("act.ask_school"), checked="fldoe_learning_gains") if nav.has("fldoe_learning_gains")
                       else na(tr("na.gains.notloaded.why"), tr("act.see_fldoe_gains")))
     else:
-        state_grade = gains_ela = gains_math = na(tr("na.state_only.why"), tr("act.ask_results"))
+        state_grade = gains_ela = gains_math = nav.not_applicable(tr("na.state_only.why"), tr("act.ask_results"))
     state_grade = _rfield(nav, p, "state_grade") or state_grade
     gains_ela = _rfield(nav, p, "gains_ela") or gains_ela
     gains_math = _rfield(nav, p, "gains_math") or gains_math
@@ -179,7 +179,7 @@ def summarize(nav: Navigator, p: dict, *, origin: tuple[float, float] | None = N
     elif kind == "public":
         is_magnet = na(tr("na.magnet.unverified.why"), tr("act.check_magnets"), checked="curated_magnet_themes")
     else:
-        is_magnet = na(tr("na.magnet.nonpublic.why"), tr("act.ask_programs"))
+        is_magnet = nav.not_applicable(tr("na.magnet.nonpublic.why"), tr("act.ask_programs"))
 
     if curated_magnet and p["themes"]:
         magnet_themes = nav.curated(p["themes"], nav.prov("curated_magnet_themes").source, nav.prov("curated_magnet_themes").url,
@@ -217,7 +217,7 @@ def summarize(nav: Navigator, p: dict, *, origin: tuple[float, float] | None = N
         else:
             scholarship = na(tr("na.scholarship.notloaded.why"), tr("act.ask_scholarship"), checked="fldoe_private_directory")
     else:
-        scholarship = na(tr("na.scholarship.nonprivate.why"), tr("act.none_needed"))
+        scholarship = nav.not_applicable(tr("na.scholarship.nonprivate.why"), tr("act.none_needed"))
 
     if kind == "private" and "scholarships" in research:
         scholarship = _rfield(nav, p, "scholarships")
@@ -230,6 +230,8 @@ def summarize(nav: Navigator, p: dict, *, origin: tuple[float, float] | None = N
     def proficiency(key: str) -> Field:
         if state.get(key) is not None:
             return nav.official(state[key], "fldoe_school_grades", tr(f"m.{key}"))
+        if kind not in ("public", "charter"):
+            return nav.not_applicable(tr("na.proficiency.nonpublic.why"), tr("act.ask_results"))
         return na(tr("na.proficiency.why"), tr("act.ask_school"), checked=layer)
 
     proficiency_ela = _rfield(nav, p, "proficiency_ela") or proficiency("proficiency_ela")
@@ -530,8 +532,6 @@ def detail(nav: Navigator, place_id: str, lat: float | None = None, lon: float |
     notes = []
     if p["kind"] == "public" and s.is_magnet.status == "not_available":
         notes.append(tr("note.detail.magnet"))
-    if any(st.field.status == "curated" and "unconfirmed" in (st.field.method or "") for st in steps):
-        notes.append(tr("note.detail.unconfirmed"))
 
     links: dict[str, str] = {}
     if p["website"]:

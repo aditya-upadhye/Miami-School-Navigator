@@ -627,11 +627,6 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
         "No hemos verificado si esta escuela tiene un programa magnet, por lo que los pasos del programa magnet son generales. Confirme en miamimagnets.org.",
         "Nou pa verifye si lekòl sa a gen yon pwogram magnet, kidonk etap magnet yo se jeneral. Konfime sou miamimagnets.org.",
     ),
-    "note.detail.unconfirmed": (
-        "Steps marked \"Not confirmed\" have not been independently confirmed; verify them with the district before relying on them.",
-        "Los pasos marcados como \"No confirmado\" no se han confirmado de forma independiente; verifíquelos con el distrito antes de confiar en ellos.",
-        "Etap ki make \"Pa konfime\" yo pa konfime avèk yon sous endepandan; verifye yo ak distrik la anvan ou konte sou yo.",
-    ),
     # ---- compare
     "cmp.row.kind": ("Type", "Tipo", "Kalite"),
     "cmp.row.grades": ("Grades", "Grados", "Klas"),
@@ -654,6 +649,47 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
     "cmp.row.scholarship": ("Scholarships", "Becas", "Bous"),
     "cmp.row.phone": ("Phone", "Teléfono", "Telefòn"),
     "cmp.row.website": ("Website", "Sitio web", "Sit entènèt"),
+    "m.not_applicable": (
+        "This item only exists for other types of school, so no value is expected.",
+        "Este dato solo existe para otros tipos de escuela, por lo que no se espera ningún valor.",
+        "Done sa a egziste sèlman pou lòt kalite lekòl, kidonk nou pa atann okenn valè.",
+    ),
+    "na.proficiency.nonpublic.why": (
+        "State test results (ELA and math proficiency) are published for public and charter schools only.",
+        "Los resultados de las pruebas estatales (dominio de ELA y matemáticas) se publican solo para escuelas públicas y chárter.",
+        "Rezilta tès leta yo (nivo konpetans ELA ak matematik) pibliye sèlman pou lekòl piblik ak charter.",
+    ),
+    "na.zoned.why": (
+        "Zoning (an assigned school by address) applies to public district schools only; charter, private and early-learning programs admit students another way.",
+        "La asignación por zona (escuela asignada según la dirección) se aplica solo a las escuelas públicas del distrito; las escuelas chárter, privadas y de aprendizaje temprano admiten estudiantes de otra manera.",
+        "Zònaj (lekòl yo asiyen dapre adrès) aplike sèlman pou lekòl piblik distri a; lekòl charter, prive ak pwogram aprantisaj bonè admèt elèv yo yon lòt jan.",
+    ),
+    "act.zoned_none": (
+        "Check this school's own application or enrollment steps.",
+        "Consulte los pasos de solicitud o inscripción de esta escuela.",
+        "Gade etap aplikasyon oswa enskripsyon pwòp lekòl sa a.",
+    ),
+    "fit.your_child": ("Your child", "Su hijo o hija", "Pitit ou"),
+    "fit.serves": (
+        "{who} (age {age}) would enter {grade}, which this school serves.",
+        "{who} ({age} años) entraría a {grade}, que esta escuela atiende.",
+        "{who} ({age} an) ta antre nan {grade}, ki se yon nivo lekòl sa a sèvi.",
+    ),
+    "fit.later": (
+        "{who} is not old enough yet: this school starts at {first}.",
+        "{who} todavía no tiene la edad: esta escuela comienza en {first}.",
+        "{who} poko gen laj la: lekòl sa a kòmanse nan {first}.",
+    ),
+    "fit.ended": (
+        "{who} has moved past this school, which goes up to {last}.",
+        "{who} ya pasó de esta escuela, que llega hasta {last}.",
+        "{who} depase lekòl sa a, ki rive jiska {last}.",
+    ),
+    "fit.unknown": (
+        "We could not tell whether this school's grades match {who}'s age: ask the school.",
+        "No pudimos saber si los grados de esta escuela corresponden a la edad de {who}: pregunte a la escuela.",
+        "Nou pa t kapab konnen si klas lekòl sa a koresponn ak laj {who}: mande lekòl la.",
+    ),
     "cmp.needs_location.why": ("Needs your location.", "Se necesita su ubicación.", "Sa mande kote ou ye a."),
     "cmp.needs_location.action": (
         "Provide lat/lon to compare distance and zoning.",

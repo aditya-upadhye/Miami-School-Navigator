@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { api } from '../../api/client';
-import { verificationInfo } from '../../api/fields';
 import { useApi } from '../../hooks/useApi';
 import { useI18n } from '../../i18n';
 import { useProfile } from '../../profile/ProfileProvider';
@@ -49,14 +48,12 @@ export function usePlanner() {
       }),
     );
     return [...by.values()].map(({ k, who }) => {
-      const v = verificationInfo(k.field);
       return {
         uid: k.id,
         date: k.date,
         summary: `${k.label}${k.approximate ? ` ${t('ics.approx')}` : ''}`,
         description: [
           who.size ? t('ics.for', { names: [...who].join(', ') }) : '',
-          v ? t(`verify.${v.key}.note`) : '',
           t('ics.source', { source: k.field.source }),
           t('ics.confirm'),
         ]

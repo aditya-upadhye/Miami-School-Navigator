@@ -86,22 +86,18 @@ export const VERIFICATION = {
   confirmed_district_source: {
     label: 'Confirmed',
     tone: 'good',
-    note: 'Confirmed against a district or state source.',
   },
   other_district_policies: {
     label: 'Check this',
     tone: 'warn',
-    note: 'Consistent across several Florida district policies, not M-DCPS itself: confirm with M-DCPS.',
   },
   single_secondary_source: {
     label: 'Check this',
     tone: 'warn',
-    note: 'From a single non-district source: confirm on dadeschools.net.',
   },
   unconfirmed_project_spec: {
     label: 'Not confirmed',
     tone: 'bad',
-    note: 'Not independently confirmed: confirm with the district.',
   },
 };
 

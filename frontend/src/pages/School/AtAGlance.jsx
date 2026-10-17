@@ -1,5 +1,4 @@
 import Card, { h2 } from '../../components/Card';
-import FieldBadge from '../../components/FieldBadge';
 import { isMissing, nextStep, percent, text, tuition } from '../../api/fields';
 import { useI18n } from '../../i18n';
 import { levelLabel } from './useSchool';
@@ -91,7 +90,7 @@ export default function AtAGlance({ school }) {
                   flexWrap: 'wrap',
                 }}
               >
-                {t(`school.glance.row.${key}`)} <FieldBadge field={f} />
+                {t(`school.glance.row.${key}`)}
               </dt>
               <dd
                 style={{
@@ -104,7 +103,7 @@ export default function AtAGlance({ school }) {
               >
                 {value(key, f, { t, nf })}
               </dd>
-              {missing && <dd style={{ margin: 0, fontSize: 13.5, color: 'var(--ink2)' }}>{nextStep(f)}</dd>}
+              {missing && key !== 'aftercare' && <dd style={{ margin: 0, fontSize: 13.5, color: 'var(--ink2)' }}>{nextStep(f)}</dd>}
               {key === 'state_grade' && school.flags?.includes('grade_match_unverified') && (
                 <dd style={{ margin: 0, fontSize: 13.5, color: 'var(--ink2)' }}>
                   {t('school.glance.check', { note: f.method.split('Check:')[1]?.trim() })}

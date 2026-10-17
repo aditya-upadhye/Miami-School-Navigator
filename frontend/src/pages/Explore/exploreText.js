@@ -1,6 +1,7 @@
 import { isMissing, KIND_LABEL, miles, percent, text, tuition } from '../../api/fields';
 import { formatMonthDay } from '../../i18n/messages';
 
+export const MISSING_DASH = '—';
 const LEVELS = ['elementary', 'middle', 'high'];
 const KINDS = ['public', 'charter', 'private', 'early_learning'];
 const SPECIALTIES = ['STEM', 'Arts', 'Bilingual', 'International', 'IB', 'Montessori'];
@@ -34,11 +35,10 @@ export const joinNames = (names, t) => names.join(t('explore.and'));
 /** Text of one cell in the compare table. Row labels and "not available" reasons come from the backend already translated. */
 export function cellText(key, f, { t, nf }) {
   if (isMissing(f)) {
+    if (f?.applicable === false) return t('explore.cell.notApplicable'); // it does not exist for this kind of school; not a data gap
     if (key === 'state_grade') return t('shared.noStateGrade');
     if (key === 'zoned') return t('shared.na');
-    return key === 'gains_ela' || key === 'gains_math' || key === 'proficiency_ela' || key === 'proficiency_math'
-      ? t('shared.notAvailable')
-      : t('explore.cell.notAvailableAsk');
+    return MISSING_DASH; // a plain dash: the row stays aligned without a "not available / ask the school" message in every cell
   }
   if (key === 'kind') return KINDS.includes(f.value) ? KIND_LABEL[f.value] : String(f.value);
   if (key === 'distance_mi') return miles(f);
@@ -51,3 +51,11 @@ export function cellText(key, f, { t, nf }) {
   if (key === 'enrollment') return nf(f.value);
   return text(f);
 }
+
+/** The explanation under a cell that does not apply to this kind of school. Empty otherwise: an unknown value is just a dash. */
+export function cellNote(f) {
+  return isMissing(f) && f?.applicable === false ? (f.why ?? '') : '';
+}
+
+/** Rows worth showing in the compare table. A row where no school has a value (unknown or not applicable for all of them) has nothing to compare, so it is dropped. */
+export const comparableRows = (rows) => rows.filter((row) => row.cells.some((cell) => !isMissing(cell)));

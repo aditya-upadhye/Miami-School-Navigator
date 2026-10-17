@@ -1,6 +1,4 @@
 import Card, { h2 } from '../../components/Card';
-import FieldBadge from '../../components/FieldBadge';
-import { verificationInfo } from '../../api/fields';
 import { useI18n } from '../../i18n';
 
 export default function HowToApply({ steps, notes }) {
@@ -22,7 +20,6 @@ export default function HowToApply({ steps, notes }) {
         }}
       >
         {steps.map((s) => {
-          const v = verificationInfo(s.field);
           return (
             <li
               key={s.rule_id}
@@ -46,11 +43,6 @@ export default function HowToApply({ steps, notes }) {
                   color: 'var(--ink2)',
                 }}
               >
-                <FieldBadge
-                  field={s.field}
-                  label={v ? t(`verify.${v.key}.label`) : t('school.apply.curated')}
-                />
-                {v && v.key !== 'confirmed_district_source' && t(`verify.${v.key}.note`)}
                 <a href={s.field.url} target="_blank" rel="noopener noreferrer">
                   {t('school.apply.source')}
                 </a>

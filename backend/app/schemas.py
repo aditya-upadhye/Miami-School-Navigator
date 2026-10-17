@@ -26,6 +26,7 @@ class Field(BaseModel):
     method: str | None = PField(None, description="How the value was obtained or computed.")
     why: str | None = PField(None, description="not_available only: why the value is missing.")
     suggested_action: str | None = PField(None, description="not_available only: what the family can do next.")
+    applicable: bool = PField(True, description="False when the item does not apply to this kind of school (e.g. state grades for a private school): the value is missing by design, not for lack of data. Only set on not_available fields.")
 
 
 class Provenance(BaseModel):
@@ -167,6 +168,37 @@ class CompareRequest(BaseModel):
     radius_mi: float = PField(3.0, gt=0, le=25, description="Travel distance used for the distance part of the match score.")
     priorities: list[str] = PField(default_factory=list)
     values: list[str] = PField(default_factory=list)
+
+
+class WhyMatchRequest(BaseModel):
+    lat: float = PField(ge=-90, le=90)
+    lon: float = PField(ge=-180, le=180)
+    radius_mi: float = PField(3.0, gt=0, le=25)
+    priorities: list[str] = PField(default_factory=list)
+    values: list[str] = PField(default_factory=list)
+    scholarship: bool = False
+
+
+class WhyMatchResponse(BaseModel):
+    id: str
+    summary: str = PField(description="One or two short sentences on why this school is a good match, in the request language. Empty when there is nothing to say.")
+    ai: bool = PField(description="True when the language model wrote it; false when it was built from the match score's own reasons (model unavailable).")
+    match_score: int
+
+
+class ChildFitRequest(BaseModel):
+    children: list[Child] = PField(min_length=1, max_length=6, description="The family's children (age, optional name). Not stored.")
+    lat: float | None = PField(None, ge=-90, le=90)
+    lon: float | None = PField(None, ge=-180, le=180)
+    priorities: list[str] = PField(default_factory=list)
+    values: list[str] = PField(default_factory=list)
+    ai: bool = PField(True, description="False returns only the instant grade-fit sentence, without calling the language model.")
+
+
+class ChildFitResponse(BaseModel):
+    id: str
+    summary: str = PField(description="1-2 short sentences per child on why this school could fit, in the request language.")
+    ai: bool = PField(description="True when the language model wrote it; false for the grade-fit sentence built from the child's age and the school's grades.")
 
 
 class CompareRow(BaseModel):

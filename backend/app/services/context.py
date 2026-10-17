@@ -112,6 +112,11 @@ class Navigator:
                      as_of=as_of or (provs[0].as_of if provs and provs[0].as_of else date.today().isoformat()),
                      method=t("m.na_default"), why=why, suggested_action=action)
 
+    def not_applicable(self, why: str, action: str) -> Field:
+        """The item does not exist for this kind of school (as opposed to not_available: it may exist, but we have no data)."""
+        return Field(value=None, status="not_available", source="Not applicable to this type of school", url=None, as_of=date.today().isoformat(),
+                     method=t("m.not_applicable"), why=why, suggested_action=action, applicable=False)
+
     def rule(self, rule_id: str) -> dict | None:
         return next((r for r in self.rules.get("rules", []) if r["id"] == rule_id), None)
 

@@ -1,5 +1,4 @@
 import Card, { h2 } from '../../components/Card';
-import FieldBadge from '../../components/FieldBadge';
 import { miles } from '../../api/fields';
 import { useI18n } from '../../i18n';
 
@@ -43,8 +42,7 @@ function List({ title, items }) {
                   flexWrap: 'wrap',
                 }}
               >
-                {t('school.nearby.away', { miles: miles(p.distance_mi) })}{' '}
-                <FieldBadge field={p.distance_mi} />
+                {t('school.nearby.away', { miles: miles(p.distance_mi) })}
               </span>
             </li>
           ))}

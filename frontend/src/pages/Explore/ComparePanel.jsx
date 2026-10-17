@@ -224,6 +224,9 @@ export default function ComparePanel({
                       }}
                     >
                       {cell.text}
+                      {cell.note && (
+                        <span style={{ flexBasis: '100%', fontSize: 13, fontStyle: 'normal', lineHeight: 1.35, color: 'var(--ink3)' }}>{cell.note}</span>
+                      )}
                       {cell.best && (
                         <span style={{ padding: '2px 8px', borderRadius: 999, background: 'var(--accent-grad)', boxShadow: 'var(--accent-shadow)', color: 'var(--on-accent)', fontSize: 12, fontWeight: 700 }}>
                           {t('explore.compare.best')}

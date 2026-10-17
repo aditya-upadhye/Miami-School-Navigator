@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, Query, Request
 
 from .schemas import (ChatRequest, ChatResponse, CompareRequest, CompareResponse, DatesResponse, GeocodeResult, LookupResponse, OutcomesResponse, PathwayRequest,
-                      PathwayResponse, PlanRequest, PlanResponse, SchoolDetail, SearchResponse, ZoneShapes, ZonesResult)
+                      PathwayResponse, PlanRequest, PlanResponse, SchoolDetail, SearchResponse, WhyMatchRequest, WhyMatchResponse, ZoneShapes, ZonesResult)
 from .services import compare as compare_svc
 from .services import dates as dates_svc
 from .services import geocode as geocode_svc
@@ -12,6 +12,7 @@ from .services import outcomes as outcomes_svc
 from .services import pathway as pathway_svc
 from .services import plan as plan_svc
 from .services import schools as schools_svc
+from .services import why_match as why_match_svc
 from .services import zones as zones_svc
 from .chat.llm import LlmConfig
 from .i18n import current_lang, use_lang
@@ -93,6 +94,11 @@ def school_detail(school_id: str, lat: float | None = Query(None, ge=-90, le=90)
 def school_outcomes(school_id: str, nav: Navigator = Depends(get_nav)):
     """What graduates of this school go on to do: college and employment trend, course participation, notable alumni. Empty lists where a source has nothing."""
     return outcomes_svc.outcomes(nav, school_id)
+
+
+@router.post("/schools/{school_id}/why-match", response_model=WhyMatchResponse, tags=["schools"])
+def why_match(school_id: str, body: WhyMatchRequest, nav: Navigator = Depends(get_nav)):
+    return why_match_svc.explain(nav, school_id, body)
 
 
 @router.post("/compare", response_model=CompareResponse, tags=["schools"])
