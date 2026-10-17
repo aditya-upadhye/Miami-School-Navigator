@@ -2524,6 +2524,9 @@
           "is_magnet": {
             "$ref": "#/components/schemas/Field"
           },
+          "magnet_themes": {
+            "$ref": "#/components/schemas/Field"
+          },
           "specialties": {
             "$ref": "#/components/schemas/Field"
           },
@@ -2537,6 +2540,18 @@
             "$ref": "#/components/schemas/Field"
           },
           "website": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "proficiency_ela": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "proficiency_math": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "school_hours": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "application_method": {
             "$ref": "#/components/schemas/Field"
           },
           "license": {
@@ -2610,11 +2625,16 @@
           "tuition",
           "aftercare",
           "is_magnet",
+          "magnet_themes",
           "specialties",
           "ese",
           "scholarship",
           "phone",
-          "website"
+          "website",
+          "proficiency_ela",
+          "proficiency_math",
+          "school_hours",
+          "application_method"
         ],
         "title": "SchoolSummary"
       },

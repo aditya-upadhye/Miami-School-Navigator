@@ -46,6 +46,7 @@ CENSUS_GEOCODER_URL = "https://geocoding.geo.census.gov/geocoder/locations/oneli
 FLDOE_PAGES = {
     "fldoe_school_grades": ("FLDOE School Grades", "https://www.fldoe.org/accountability/accountability-reporting/school-grades/"),
     "fldoe_learning_gains": ("FLDOE Learning Gains by School", "https://www.fldoe.org/accountability/accountability-reporting/school-grades/"),
+    "fldoe_enrollment": ("FLDOE Student Enrollment by School (Survey 2)", "https://www.fldoe.org/accountability/data-sys/edu-info-accountability-services/pk-12-public-school-data-pubs-reports/students.stml"),
     "fldoe_charter_directory": ("FLDOE Charter School Directory", "https://www.fldoe.org/schools/school-choice/charter-schools/"),
     "fldoe_private_directory": ("FLDOE Private School Directory", "https://www.fldoe.org/schools/school-choice/private-schools/private-school-directory.stml"),
 }

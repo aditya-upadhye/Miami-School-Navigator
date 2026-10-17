@@ -36,7 +36,7 @@ export function cellText(key, f, { t, nf }) {
   if (isMissing(f)) {
     if (key === 'state_grade') return t('shared.noStateGrade');
     if (key === 'zoned') return t('shared.na');
-    return key === 'gains_ela' || key === 'gains_math'
+    return key === 'gains_ela' || key === 'gains_math' || key === 'proficiency_ela' || key === 'proficiency_math'
       ? t('shared.notAvailable')
       : t('explore.cell.notAvailableAsk');
   }
@@ -45,7 +45,8 @@ export function cellText(key, f, { t, nf }) {
   if (key === 'zoned')
     return f.value.zoned ? levelText('explore.cell.zoned', f.value.level, t) : t('explore.cell.notZoned');
   if (key === 'state_grade') return t('explore.cell.grade', { grade: f.value });
-  if (key === 'gains_ela' || key === 'gains_math') return percent(f);
+  if (key === 'gains_ela' || key === 'gains_math' || key === 'proficiency_ela' || key === 'proficiency_math')
+    return percent(f);
   if (key === 'tuition') return tuition(f);
   if (key === 'enrollment') return nf(f.value);
   return text(f);

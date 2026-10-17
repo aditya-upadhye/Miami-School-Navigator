@@ -63,6 +63,20 @@ def is_online(p: dict) -> bool:
     return bool(ONLINE_NAME.search(p["name"]))
 
 
+def _rfield(nav: Navigator, p: dict, key: str, value=None) -> Field | None:
+    """A researched value (data/curated/school_research.json) as a Field carrying its own source URL, date and confidence."""
+    r = (p["extra"].get("research") or {}).get(key)
+    if not r:
+        return None
+    conf = r.get("confidence") if r.get("confidence") in ("high", "medium", "low") else "medium"
+    method = tr("m.researched", confidence=tr(f"conf.{conf}"))
+    note = (r.get("note") or "").strip()
+    if note:
+        method += " " + (note if len(note) <= 300 else note[:297] + "...")
+    return Field(value=r["value"] if value is None else value, status=r["status"], source=r["source"], url=r.get("url"),
+                 as_of=r.get("as_of") or nav.prov("school_research").as_of or date.today().isoformat(), method=method)
+
+
 def row_to_place(r: sqlite3.Row) -> dict:
     d = dict(r)
     d["stages"] = json.loads(d.pop("stage_flags") or "[]")
@@ -130,9 +144,14 @@ def summarize(nav: Navigator, p: dict, *, origin: tuple[float, float] | None = N
                       else na(tr("na.gains.notloaded.why"), tr("act.see_fldoe_gains")))
     else:
         state_grade = gains_ela = gains_math = na(tr("na.state_only.why"), tr("act.ask_results"))
+    state_grade = _rfield(nav, p, "state_grade") or state_grade
+    gains_ela = _rfield(nav, p, "gains_ela") or gains_ela
+    gains_math = _rfield(nav, p, "gains_math") or gains_math
 
-    enrollment = (nav.official(p["enrollment"], layer, tr("m.enrollment"))
+    enrollment = (nav.official(p["enrollment"], "fldoe_enrollment" if state.get("enrollment_fldoe") else layer,
+                               tr("m.enrollment_fldoe" if state.get("enrollment_fldoe") else "m.enrollment"))
                   if p["enrollment"] else na(tr("na.enrollment.why"), tr("act.ask_school"), checked=layer))
+    enrollment = _rfield(nav, p, "enrollment") or enrollment
 
     # tuition: free for public/charter by definition; otherwise there is no dataset and we never guess
     if kind in ("public", "charter"):
@@ -141,28 +160,52 @@ def summarize(nav: Navigator, p: dict, *, origin: tuple[float, float] | None = N
         tuition = na(tr("na.tuition.private.why"), tr("act.ask_tuition"), checked=layer)
     else:
         tuition = na(tr("na.tuition.care.why"), tr("act.ask_rates"), checked=layer)
+    if kind == "private" and "tuition" in (p["extra"].get("research") or {}):
+        tuition = _rfield(nav, p, "tuition")
     aftercare = na(tr("na.aftercare.why"), tr("act.ask_care"), checked=layer)
+    care = (p["extra"].get("research") or {}).get("aftercare")
+    if care:
+        aftercare = _rfield(nav, p, "aftercare")  # structured value; the client words it in the family's language
 
-    # magnet + specialties
-    if p["is_magnet"]:
+    # magnet + specialties. Order of trust: the hand-curated magnet file, then researched values, then name keywords.
+    research = p["extra"].get("research") or {}
+    curated_magnet = bool(p["is_magnet"]) and "is_magnet" not in research
+    if curated_magnet:
         meta = p["extra"].get("magnet", {})
         is_magnet = nav.curated(True, nav.prov("curated_magnet_themes").source, meta.get("catalog_url") or nav.prov("curated_magnet_themes").url,
                                 meta.get("verified_on"), tr("m.magnet_verified", who=meta.get("verified_by") or tr("m.project_member")))
+    elif "is_magnet" in research:
+        is_magnet = _rfield(nav, p, "is_magnet")
     elif kind == "public":
         is_magnet = na(tr("na.magnet.unverified.why"), tr("act.check_magnets"), checked="curated_magnet_themes")
     else:
         is_magnet = na(tr("na.magnet.nonpublic.why"), tr("act.ask_programs"))
 
-    if p["themes"]:
-        specialties = nav.curated(p["themes"], nav.prov("curated_magnet_themes").source, nav.prov("curated_magnet_themes").url,
-                                  p["extra"].get("magnet", {}).get("verified_on"), tr("m.themes"))
+    if curated_magnet and p["themes"]:
+        magnet_themes = nav.curated(p["themes"], nav.prov("curated_magnet_themes").source, nav.prov("curated_magnet_themes").url,
+                                    p["extra"].get("magnet", {}).get("verified_on"), tr("m.themes"))
+    elif "magnet_themes" in research:
+        magnet_themes = _rfield(nav, p, "magnet_themes")
+    elif is_magnet.status != "not_available" and is_magnet.value is False:
+        magnet_themes = is_magnet.model_copy(update={"value": []})
+    else:
+        magnet_themes = is_magnet if is_magnet.status == "not_available" else na(tr("na.specialties.why"), tr("act.ask_programs"), checked=layer)
+
+    if "specialties" in research:  # normalised tags (STEM, Arts, ...) match the filter chips; the full magnet themes have their own row
+        specialties = _rfield(nav, p, "specialties")
+    elif curated_magnet and p["themes"]:
+        specialties = magnet_themes
+    elif "magnet_themes" in research:
+        specialties = magnet_themes
     elif _keywords(p["name"]):
         specialties = nav.derived(_keywords(p["name"]), layer, tr("m.keywords"))
     else:
         specialties = na(tr("na.specialties.why"), tr("act.ask_programs"), checked=layer)
 
     # ESE + scholarships
-    if p["ese_signal"] == "special_center":
+    if "ese" in research:
+        ese = _rfield(nav, p, "ese", (research["ese"].get("details") or True) if research["ese"]["value"] else False)
+    elif p["ese_signal"] == "special_center":
         ese = nav.derived(True, layer, tr("m.ese_center"))
     elif p["ese_signal"] == "directory_flag":
         ese = nav.reported(True, "fldoe_private_directory", tr("m.ese_flag"))
@@ -176,9 +219,32 @@ def summarize(nav: Navigator, p: dict, *, origin: tuple[float, float] | None = N
     else:
         scholarship = na(tr("na.scholarship.nonprivate.why"), tr("act.none_needed"))
 
+    if kind == "private" and "scholarships" in research:
+        scholarship = _rfield(nav, p, "scholarships")
     phone = (nav.official(p["phone"], layer, tr("m.county_listing")) if p["phone"] else na(tr("na.phone.why"), tr("act.search_site"), checked=layer))
     website = (nav.official(p["website"], layer, tr("m.county_listing")) if p["website"] else
                na(tr("na.website.why"), tr("act.search_page"), checked=layer))
+    phone = _rfield(nav, p, "phone") or phone
+    website = _rfield(nav, p, "website") or website
+
+    def proficiency(key: str) -> Field:
+        if state.get(key) is not None:
+            return nav.official(state[key], "fldoe_school_grades", tr(f"m.{key}"))
+        return na(tr("na.proficiency.why"), tr("act.ask_school"), checked=layer)
+
+    proficiency_ela = _rfield(nav, p, "proficiency_ela") or proficiency("proficiency_ela")
+    proficiency_math = _rfield(nav, p, "proficiency_math") or proficiency("proficiency_math")
+    school_hours = _rfield(nav, p, "school_hours") or na(tr("na.hours.why"), tr("act.ask_school"), checked=layer)
+    application_method = _rfield(nav, p, "application_method")
+    if application_method is None:  # derived from how the school is run, with the curated rule it follows as the source
+        if kind == "charter" and nav.rule("charter_lottery"):
+            application_method = nav.rule_field("charter_lottery", "charter_lottery")
+        elif zoned is not None and zoned.value.get("zoned"):
+            application_method = nav.derived("zoned", "county_zone_" + zoned.value["level"], tr("m.zoned"))
+        elif is_magnet.value is True and nav.rule("magnet_how_to_apply"):
+            application_method = nav.rule_field("magnet_how_to_apply", "magnet_application")
+        else:
+            application_method = na(tr("na.apply.why"), tr("act.ask_school"), checked=layer)
 
     license_field = None
     if kind == "early_learning" and layer == "county_daycare":
@@ -196,13 +262,17 @@ def summarize(nav: Navigator, p: dict, *, origin: tuple[float, float] | None = N
         identity_source=Provenance(source=prov.source, url=prov.url, as_of=prov.as_of),
         stages=stages, grades=grades, distance_mi=distance, zoned=zoned, state_grade=state_grade, gains_ela=gains_ela,
         gains_math=gains_math, enrollment=enrollment, tuition=tuition, aftercare=aftercare, is_magnet=is_magnet,
-        specialties=specialties, ese=ese, scholarship=scholarship, phone=phone, website=website, license=license_field,
-        flags=((["online_school"] if is_online(p) else []) + (["grade_match_unverified"] if state.get("state_school_name") and p["state_grade"] else [])))
+        magnet_themes=magnet_themes, specialties=specialties, ese=ese, scholarship=scholarship, phone=phone, website=website,
+        proficiency_ela=proficiency_ela, proficiency_math=proficiency_math, school_hours=school_hours,
+        application_method=application_method, license=license_field,
+        flags=((["online_school"] if is_online(p) else []) +
+               (["grade_match_unverified"] if state.get("state_school_name") and p["state_grade"] and "state_grade" not in research else [])))
 
 
 # ---------------------------------------------------------------- scoring
 def _specialty_set(p: dict) -> set[str]:
-    return {t.lower() for t in p["themes"]} | {k.lower() for k in _keywords(p["name"])}
+    tags = ((p["extra"].get("research") or {}).get("specialties") or {}).get("value") or []
+    return {t.lower() for t in p["themes"]} | {k.lower() for k in _keywords(p["name"])} | {t.lower() for t in tags}
 
 
 def seat_utilization(p: dict) -> float | None:
@@ -310,6 +380,8 @@ def search(nav: Navigator, *, lat: float, lon: float, radius_mi: float = 3.0, ki
     cands = []
     for r in nav.conn.execute(sql, args):
         p = row_to_place(r)
+        if p["extra"].get("hidden"):  # closed or duplicate record (see data/curated/school_research.json)
+            continue
         d = haversine_mi(lat, lon, p["lat"], p["lon"])
         if d > radius_mi:
             continue

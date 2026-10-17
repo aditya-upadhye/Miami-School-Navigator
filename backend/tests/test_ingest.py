@@ -96,6 +96,7 @@ def test_real_school_grades_layout_single_workbook(tmp_path, bare_nav):
     root.mkdir()
     (root / "snapshots").symlink_to(ROOT / "data" / "snapshots")
     shutil.copytree(ROOT / "data" / "curated", root / "curated")
+    (root / "curated" / "school_research.json").unlink(missing_ok=True)  # this test is about the FLDOE workbook alone
     fl = root / "raw" / "fldoe"
     fl.mkdir(parents=True)
     header = ["District Number", "District Name", "School Number", "Virtual Provider Number", "School Name",

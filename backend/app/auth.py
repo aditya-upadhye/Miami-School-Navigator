@@ -7,6 +7,7 @@ token; only its SHA-256 is stored, so a leaked database cannot be replayed as se
 """
 from __future__ import annotations
 
+import base64
 import hashlib
 import hmac
 import re
@@ -50,7 +51,12 @@ def hash_password(password: str) -> str:
 
 def verify_password(password: str, stored: str) -> bool:
     try:
-        _, salt, digest = stored.split("$")
+        parts = stored.split("$")
+        if len(parts) == 6:  # older accounts: scrypt$n$r$p$<base64 salt>$<base64 digest> (see _migrate_legacy_users)
+            _, n, r, p, salt, digest = parts
+            got = hashlib.scrypt(password.encode(), salt=base64.b64decode(salt), n=int(n), r=int(r), p=int(p), dklen=32)
+            return hmac.compare_digest(got, base64.b64decode(digest))
+        _, salt, digest = parts
         got = hashlib.scrypt(password.encode(), salt=bytes.fromhex(salt), **_SCRYPT)
         return hmac.compare_digest(got, bytes.fromhex(digest))
     except ValueError:
@@ -64,12 +70,34 @@ def _token_hash(token: str) -> str:
     return hashlib.sha256(token.encode()).hexdigest()
 
 
+def _migrate_legacy_users(conn: sqlite3.Connection) -> None:
+    """An earlier version of the accounts code made `users` with `pw_hash` (no `zip`, text timestamps) in the same file. CREATE TABLE IF NOT
+    EXISTS leaves that table alone, so every sign-in crashed on the missing `password_hash` column. Rebuild the table in the current shape,
+    keep the accounts (their password hashes still verify), and drop the old sessions: those people simply sign in again."""
+    cols = {r["name"] for r in conn.execute("PRAGMA table_info(users)")}
+    if not cols or "password_hash" in cols or "pw_hash" not in cols:
+        return
+    conn.execute("PRAGMA foreign_keys=OFF")
+    try:
+        with conn:
+            conn.execute("DROP TABLE IF EXISTS sessions")
+            conn.execute("ALTER TABLE users RENAME TO users_legacy")
+            conn.executescript(SCHEMA)
+            conn.execute("INSERT INTO users (id, email, name, zip, password_hash, created_at) "
+                         "SELECT id, lower(email), CASE WHEN trim(name) = '' THEN substr(email, 1, instr(email, '@') - 1) ELSE name END, NULL, pw_hash, "
+                         "COALESCE(CAST(strftime('%s', created_at) AS INTEGER), CAST(strftime('%s', 'now') AS INTEGER)) FROM users_legacy")
+            conn.execute("DROP TABLE users_legacy")
+    finally:
+        conn.execute("PRAGMA foreign_keys=ON")
+
+
 def get_users_db() -> Iterator[sqlite3.Connection]:
     path = get_settings().users_db_path
     path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(path)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys=ON")
+    _migrate_legacy_users(conn)
     conn.executescript(SCHEMA)
     try:
         yield conn

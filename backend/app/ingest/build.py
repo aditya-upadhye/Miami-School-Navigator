@@ -24,7 +24,7 @@ from shapely import wkb
 from .. import db
 from ..config import Settings, get_settings
 from ..domain import parse_grades, stages_for_grades
-from . import arcgis, curated, fldoe, quality
+from . import arcgis, curated, fldoe, quality, research
 from .datasets import ARCGIS_DATASETS, ArcGisDataset
 
 log = logging.getLogger("ingest")
@@ -352,6 +352,7 @@ def build_database(settings: Settings | None = None, refresh: bool = False) -> d
 
     report["fldoe"] = fldoe.apply(conn, s.fldoe_dir)
     report["curated"] = curated.apply(conn, s.curated_dir)
+    report["research"] = research.apply(conn, s.curated_dir)
     quality.compute(conn, report)
     conn.commit()
     conn.close()

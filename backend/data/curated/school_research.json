@@ -1,0 +1,5356 @@
+{
+ "_readme": "Source-cited research for the 32 free schools nearest the demo address (2250 NW 2nd Ave). Collected 2026-10-17 with an AI research assistant, one cited value per field (source_url + as_of + confidence); null means not found. Spot-check a value by opening its source_url. `hidden` removes a school from search/pathway results (stays reachable by id): remove an id to show it again. Re-run: replace `schools` with a new file in the same shape, then `python -m app.ingest.build`.",
+ "as_of": "2026-10-17",
+ "source": {
+  "title": "Researched school data (AI-assisted, source-cited)",
+  "url": null
+ },
+ "hidden": {
+  "chr-6070": "ASPIRA Arts DECO Charter: absent from FLDOE 2025-26 files; ASPIRA's charter schools reportedly closed in 2019",
+  "pub-4081": "Primary Learning Center: absent from FLDOE 2025-26 files, county enrollment 0; likely closed",
+  "pub-4961": "Shadowlawn Elementary: absent from FLDOE 2025-26 files; reportedly repurposed as an ESE center",
+  "pub-8261": "K-12 Distance Learning: alternative/administrative code, no enrollment or grade on file",
+  "chr-6015-135": "Duplicate county record of chr-6015 (SLAM Miami middle school, same FLDOE school 13-6015)"
+ },
+ "schools": [
+  {
+   "id": "chr-7059-159",
+   "name_verified": "Miami Arts Charter School",
+   "identity_note": "FLDOE row 13-7059 'MIAMI ARTS CHARTER SCHOOL'; school site and county GIS give 95 NW 23rd St, Miami 33127, phone 305-763-6257. County charter layer also holds a stale second ID 7059 record at 3000 SE 9th St 33035 (enrollment 0, modified 2021-07-08) - treated as a data error, not used.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 65.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 68.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 924,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 467 (year not stated; 2018-01-29 record) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "6-12",
+    "source_type": "school",
+    "source_url": "https://www.miamiartscharter.net/",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "School site describes itself as an arts middle and high school; county GIS charter layer says 6-12. Exact grade list not shown on the page opened. Cross-check: FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in 6-12. Consistent."
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "medium",
+    "note": "Charter school; not an M-DCPS magnet; no magnet claim on the page opened Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=7059 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": [
+     "Arts"
+    ],
+    "source_type": "school",
+    "source_url": "https://www.miamiartscharter.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties_detail": {
+    "Arts": "School site states a college-preparatory academic curriculum in the visual and performing arts, with audition and application requirements."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: School site describes itself as tuition-free; charter schools are tuition-free public schools"
+   },
+   "phone": {
+    "value": "305-763-6257",
+    "source_type": "school",
+    "source_url": "https://www.miamiartscharter.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Matches county GIS charter record"
+   },
+   "website": {
+    "value": "https://www.miamiartscharter.net/",
+    "source_type": "school",
+    "source_url": "https://www.miamiartscharter.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "County GIS lists http://www.miamiartscharter.net/"
+   },
+   "optional": {
+    "title_i": {
+     "value": "NO",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "A"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 78.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 76.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 92.0,
+      "ap_ib_offerings": null,
+      "dual_enrollment": null,
+      "acceleration_note": "FLDOE College and Career Acceleration 2024-25: 70%"
+     },
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "graduation_rate is FLDOE Graduation Rate 2024-25 component; AP/IB and dual enrollment not checked"
+    },
+    "application_method": {
+     "value": "audition and application",
+     "source_type": "school",
+     "source_url": "https://www.miamiartscharter.net/",
+     "as_of": "2026-10-17",
+     "confidence": "medium",
+     "note": "Site refers to audition and application requirements; details not opened"
+    }
+   }
+  },
+  {
+   "id": "pub-5931",
+   "name_verified": "Phillis Wheatley Elementary",
+   "identity_note": "FLDOE spells the name 'PHYLLIS WHEATLEY ELEMENTARY SCHOOL' (13-5931); county GIS 'Phillis Wheatley Elementary', 1801 NW 1st Pl 33136, PK-5. Minor spelling variant only.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "C",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 69.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 56.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 146,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 147 (year not stated) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "PK-5",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in PK-5 (PK cell is * (1-9 students)). Grade span from enrolled students; not confirmed on the school's own site. Earlier: not_found: school website https://www.philliswheatleyelementary.net/ shows 'This site has been deactivated'; county GIS says PK-5 (unverified on school site)"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "M-DCPS 2026-27 magnet catalog searched by LOC# and name; school not listed Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=5931 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "low",
+    "note": "No documented specialty found; school site deactivated"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Public school: no tuition under Florida law; optional fees (aftercare, field trips, uniforms) may apply"
+   },
+   "phone": {
+    "value": "305-573-2638",
+    "source_type": "official",
+    "source_url": "https://gisweb.miamidade.gov/ArcGIS/rest/services/CommunityServices/MD_Educational/MapServer/2/query",
+    "as_of": "2025-06-25",
+    "confidence": "medium",
+    "note": "County GIS SchoolSite"
+   },
+   "website": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: https://www.philliswheatleyelementary.net/ opened 2026-10-17: 'This site has been deactivated'"
+   },
+   "optional": {
+    "title_i": {
+     "value": "YES",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "C"
+      },
+      {
+       "year": "2024-25",
+       "grade": "C"
+      },
+      {
+       "year": "2023-24",
+       "grade": "B"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 44.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 44.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    }
+   }
+  },
+  {
+   "id": "pub-1441",
+   "name_verified": "Paul Laurence Dunbar K-8 Center",
+   "identity_note": "FLDOE 13-1441 'PAUL LAURENCE DUNBAR K-8 CENTER'; school site and GIS address 505 NW 20th St 33127 match.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 54.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 73.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 311,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 359 (year not stated) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "PK-8",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in PK-8. Grade span from enrolled students; not confirmed on the school's own site. Earlier: not_found: school home page https://dunbark8.net/ shows no grade span; county GIS says PK-8 (not inferred from name)"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "M-DCPS 2026-27 magnet catalog searched by LOC# and name; school not listed Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=1441 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "school",
+    "source_url": "https://dunbark8.net/",
+    "as_of": "2026-10-17",
+    "confidence": "low",
+    "note": "No specialty documented on home page; programme pages not opened"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Public school: no tuition under Florida law; optional fees (aftercare, field trips, uniforms) may apply"
+   },
+   "phone": {
+    "value": "305-573-2344",
+    "source_type": "school",
+    "source_url": "https://dunbark8.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Matches county GIS"
+   },
+   "website": {
+    "value": "https://dunbark8.net/",
+    "source_type": "school",
+    "source_url": "https://dunbark8.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "title_i": {
+     "value": "YES",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "C"
+      },
+      {
+       "year": "2023-24",
+       "grade": "C"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 41.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 59.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    }
+   }
+  },
+  {
+   "id": "chr-6070",
+   "name_verified": null,
+   "identity_note": "CONFLICT/likely CLOSED: not in FLDOE 2025-26 School Grades file under 6070 or any 'ASPIRA' name. County GIS charter record (1911 NE Miami Ct, 6-8) was last modified 2018-02-02. Web search results (not opened as pages) report ASPIRA of Florida closed its three charter schools effective 2019-06-30 and the Wynwood building was sold, and an M-DCPS closed-charter list PDF (api.dadeschools.net, unreachable from our box) lists 'Aspira Arts Deco Charter (6070)'. Recommend removing from the list.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: not in FLDOE SchoolGrades26.xlsx; school appears to have closed in 2019"
+   },
+   "gains_ela": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: not in FLDOE SchoolGrades26.xlsx; school appears closed"
+   },
+   "gains_math": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: not in FLDOE SchoolGrades26.xlsx; school appears closed"
+   },
+   "enrollment": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school number absent from FLDOE 2025-26 Final Survey 2 membership file (https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx) - no 2025-26 students reported; county GIS shows 467 from a 2018 record"
+   },
+   "grades_served": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no school website live; county GIS 6-8 from 2018 record"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "medium",
+    "note": "Charter; not in magnet catalog Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=6070 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school appears closed; nothing documented"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school appears closed"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school appears closed"
+   },
+   "tuition": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school appears closed; tuition not applicable"
+   },
+   "phone": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: county GIS 305-576-1512 is from a 2018 record of an apparently closed school - not used"
+   },
+   "website": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: county GIS link http://fl.aspira.org/Wynwood/Charter/emh_charter.htm is a 2018 record; school appears closed"
+   },
+   "optional": {}
+  },
+  {
+   "id": "chr-2013-124",
+   "name_verified": "BridgePrep Academy of Greater Miami",
+   "identity_note": "CONFLICT on campus: county GIS charter layer has TWO ID-2013 records - 137 NE 19th St 33132 (K-5, enrollment 229, modified 2018-05-16) and 18801 W Dixie Hwy 33180 Aventura (K-5, enrollment 972, modified 2025-11-13, phone 305-570-4048). The newer record suggests the school may now operate in Aventura, about 12+ miles away; not confirmed on the operator site. FLDOE values below belong to MSID 2013 whichever campus it is.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "medium",
+    "note": "MSID 2013; campus location unresolved"
+   },
+   "gains_ela": {
+    "value": 66.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "medium",
+    "note": null
+   },
+   "gains_math": {
+    "value": 64.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "medium",
+    "note": null
+   },
+   "enrollment": {
+    "value": 354,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS had two conflicting ID-2013 records (229 at 137 NE 19th St, 2018; 972 at 18801 W Dixie Hwy, 2025-11)."
+   },
+   "grades_served": {
+    "value": "K-5",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in K-5. Grade span from enrolled students; not confirmed on the school's own site. Earlier: not_found: operator page opened (school grades page) shows no grade span; both GIS records say K-5"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "medium",
+    "note": "Charter; not in M-DCPS magnet catalog Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=2013 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: campus programme page not opened"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Charter schools are tuition-free public schools; optional fees may apply"
+   },
+   "phone": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: CONFLICT: GIS 786-477-4372 (137 NE 19th St, 2018) vs 305-570-4048 (Aventura, 2025)"
+   },
+   "website": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: only the network site was found (https://www.bridgeprepacademy.com/); opened campus page https://www.bridgeprepacademy.com/apps/pages/index.jsp?pREC_ID=1089231&termREC_ID=&type=d&uREC_ID=565078 is a grades page in the network site, not a campus home URL"
+   },
+   "optional": {
+    "title_i": {
+     "value": "YES",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "C"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 58.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 59.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    }
+   }
+  },
+  {
+   "id": "chr-2060",
+   "name_verified": "Theodore R. and Thelma A. Gibson Charter School",
+   "identity_note": "FLDOE 13-2060 'THEODORE R. AND THELMA A. GIBSON CHARTER SCHOOL'. CONFLICT on address: county GIS (record modified 2018-07-26) gives 1682 NW 4th Ave 33136; the school's own site gives 450 NW 14 Street, Miami 33136. Phone 305-438-0895 matches both. Distance from home should be rechecked.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 67.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 58.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 166,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 356 (year not stated; 2018-07-26 record) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "K-5",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in K-5. Grade span from enrolled students; not confirmed on the school's own site. Earlier: not_found: school home page shows no grade span; county GIS (2018) says K-6 County GIS says K-6 (2018 record); no grade 6 students in 2025-26."
+   },
+   "grades_differs_from_county": true,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "medium",
+    "note": "Charter; not in magnet catalog Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=2060 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: home page lists no programmes"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Charter schools are tuition-free public schools; optional fees may apply"
+   },
+   "phone": {
+    "value": "305-438-0895",
+    "source_type": "school",
+    "source_url": "https://www.gibsoncharterschool.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Matches county GIS"
+   },
+   "website": {
+    "value": "https://www.gibsoncharterschool.com/",
+    "source_type": "school",
+    "source_url": "https://www.gibsoncharterschool.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "title_i": {
+     "value": "YES",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "C"
+      },
+      {
+       "year": "2023-24",
+       "grade": "C"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 43.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 47.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    }
+   }
+  },
+  {
+   "id": "pub-2351",
+   "name_verified": "Eneida M. Hartner Elementary School",
+   "identity_note": "FLDOE 13-2351 'ENEIDA M. HARTNER ELEMENTARY SCHOOL'; county 'Eneida Massas Hartner Elementary'; the address 401 NW 29th St 33127 matches the school site.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 47.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 68.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 293,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 325 (year not stated) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "K-5",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in K-5 (no PK students reported). Grade span from enrolled students; not confirmed on the school's own site. Earlier: not_found: school home page https://eneidamhartner.org/ shows no grade span; county GIS PK-5 County GIS says PK-5."
+   },
+   "grades_differs_from_county": true,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "M-DCPS 2026-27 magnet catalog searched by LOC# and name; school not listed Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=2351 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "school",
+    "source_url": "https://eneidamhartner.org/",
+    "as_of": "2026-10-17",
+    "confidence": "low",
+    "note": "None documented on home page"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Public school: no tuition under Florida law; optional fees (aftercare, field trips, uniforms) may apply"
+   },
+   "phone": {
+    "value": "305-573-8181",
+    "source_type": "school",
+    "source_url": "https://eneidamhartner.org/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Matches county GIS"
+   },
+   "website": {
+    "value": "https://eneidamhartner.org/",
+    "source_type": "school",
+    "source_url": "https://eneidamhartner.org/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "title_i": {
+     "value": "YES",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "C"
+      },
+      {
+       "year": "2023-24",
+       "grade": "C"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 51.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 58.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    }
+   }
+  },
+  {
+   "id": "pub-7056",
+   "name_verified": "Young Men's Preparatory Academy",
+   "identity_note": "FLDOE 13-7056 'YOUNG MEN'S PREPARATORY ACADEMY' (combination school); magnet catalog 'Young Men's Preparatory 6-12 Academy', 3001 NW 2nd Ave 33127. School site describes it as a single-gender boys' school, which matters for Maya.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 64.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 51.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 158,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 161 (year not stated) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "6-12",
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "Magnet catalog 'APPLYING GRADES: 6-12' (applying grades, not a confirmed served-grades list); school home page does not state grades Cross-check: FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in 6-12. Consistent."
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": true,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": "Listed LOC# 7056 Confirmed 2026-10-17 on https://yourchoicemiami.org/program-search/school-details?school=7056 (Leadership) and in the 2027-28 catalog."
+   },
+   "magnet_themes": {
+    "value": [
+     "Leadership"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "Leadership theme is not one of the allowed tags"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Public school: no tuition under Florida law; optional fees (aftercare, field trips, uniforms) may apply"
+   },
+   "phone": {
+    "value": "305-571-1111",
+    "source_type": "school",
+    "source_url": "https://ympacademy.org/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Matches GIS and catalog"
+   },
+   "website": {
+    "value": "https://ympacademy.org/",
+    "source_type": "school",
+    "source_url": "https://ympacademy.org/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "title_i": {
+     "value": "YES",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "A"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 66.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 66.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 84.0,
+      "ap_ib_offerings": null,
+      "dual_enrollment": null,
+      "acceleration_note": "FLDOE College and Career Acceleration 2024-25: 75%"
+     },
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "graduation_rate is FLDOE Graduation Rate 2024-25 component; AP/IB and dual enrollment not checked"
+    },
+    "application_method": {
+     "value": "M-DCPS magnet application",
+     "source_type": "official",
+     "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "as_of": "2026-03",
+     "confidence": "medium",
+     "note": null
+    }
+   }
+  },
+  {
+   "id": "pub-0331",
+   "name_verified": "Chapman Partnership Early Childhood Center North",
+   "identity_note": "PK-only centre at 1550 North Miami Ave 33136 (county GIS, record modified 2023-03-24). Not in FLDOE grades file (PK-only centres are not graded). Not to be confused with Dr. William A. Chapman Elementary (0771).",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: PK-only centre, not graded - absent from FLDOE SchoolGrades26.xlsx"
+   },
+   "gains_ela": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: PK-only centre, no state assessments"
+   },
+   "gains_math": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: PK-only centre, no state assessments"
+   },
+   "enrollment": {
+    "value": 43,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 44 (year not stated; 2023-03-24 record) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "PK",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in PK. Grade span from enrolled students; not confirmed on the school's own site. Earlier: not_found: no school website found; county GIS PK"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "M-DCPS 2026-27 magnet catalog searched by LOC# and name; school not listed Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=0331 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no school page found"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: PK eligibility/cost rules (Head Start/VPK/fee) not verified for this centre"
+   },
+   "phone": {
+    "value": "305-329-3057",
+    "source_type": "official",
+    "source_url": "https://gisweb.miamidade.gov/ArcGIS/rest/services/CommunityServices/MD_Educational/MapServer/2/query",
+    "as_of": "2023-03-24",
+    "confidence": "low",
+    "note": "County GIS record last modified 2023"
+   },
+   "website": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no school website found"
+   },
+   "optional": {}
+  },
+  {
+   "id": "pub-6361",
+   "name_verified": "Jose de Diego Middle School",
+   "identity_note": "FLDOE 13-6361 'JOSE DE DIEGO MIDDLE SCHOOL'; address 3100 NW 5th Ave 33127 matches site, catalog, GIS.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 57.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 66.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 507,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 644 (year not stated) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "6-8",
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "Catalog 'APPLYING GRADES: 6-8'; FLDOE school type 02 (middle); school home page does not list grades Cross-check: FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in 6-8. Consistent."
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": true,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": "Listed LOC# 6361 Confirmed 2026-10-17 on https://yourchoicemiami.org/program-search/school-details?school=6361: Engineering & Robotics; Visual Arts - Art (auditions required). Same in the 2027-28 catalog."
+   },
+   "magnet_themes": {
+    "value": [
+     "Engineering & Robotics",
+     "Visual Arts - Art*"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": "Asterisk is the catalog's own mark (likely audition/portfolio)"
+   },
+   "specialties": {
+    "value": [
+     "STEM",
+     "Arts"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties_detail": {
+    "STEM": "Magnet catalog lists an Engineering & Robotics programme.",
+    "Arts": "Magnet catalog lists a Visual Arts - Art programme."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Public school: no tuition under Florida law; optional fees (aftercare, field trips, uniforms) may apply"
+   },
+   "phone": {
+    "value": "305-573-7229",
+    "source_type": "school",
+    "source_url": "https://www.jddms.org/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Matches GIS and catalog"
+   },
+   "website": {
+    "value": "https://www.jddms.org/",
+    "source_type": "school",
+    "source_url": "https://www.jddms.org/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "title_i": {
+     "value": "YES",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "C"
+      },
+      {
+       "year": "2023-24",
+       "grade": "C"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 42.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 46.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    }
+   }
+  },
+  {
+   "id": "pub-8261",
+   "name_verified": "K-12 Distance Learning",
+   "identity_note": "County GIS: TYPE 'ALT', 172 NE 15th St 33132, K-12, ENROLLMNT 0. Not in the FLDOE grades file; not in the magnet catalog. Purpose and status not documented in anything we opened, so it is likely an administrative/alternative code rather than an enrollable neighbourhood school.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: not in FLDOE SchoolGrades26.xlsx (alternative/distance programme code, no state letter grade)"
+   },
+   "gains_ela": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: not in FLDOE grades file"
+   },
+   "gains_math": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: not in FLDOE grades file"
+   },
+   "enrollment": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school number absent from FLDOE 2025-26 Final Survey 2 membership file (https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx) - no 2025-26 students reported; county GIS shows 0"
+   },
+   "grades_served": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no school website found; county GIS K-12"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "M-DCPS 2026-27 magnet catalog searched by LOC# and name; school not listed Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=8261 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no programme page found"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Public school: no tuition under Florida law; optional fees (aftercare, field trips, uniforms) may apply"
+   },
+   "phone": {
+    "value": "305-995-1717",
+    "source_type": "official",
+    "source_url": "https://gisweb.miamidade.gov/ArcGIS/rest/services/CommunityServices/MD_Educational/MapServer/2/query",
+    "as_of": "2025-06-23",
+    "confidence": "low",
+    "note": "County GIS only"
+   },
+   "website": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no website found"
+   },
+   "optional": {}
+  },
+  {
+   "id": "pub-7001",
+   "name_verified": "Miami-Dade Online Academy",
+   "identity_note": "IDENTITY CAUTION: the FLDOE row for 13-7001 is named 'K12 FLORIDA, LLC – GRADES KG-12' (virtual provider code 302). Magnet catalog lists 'Miami-Dade Online Academy (MDO) LOC# 7001', and the school's About page says it uses the K12 online platform, so the row is taken as MDO's (medium confidence). CONFLICT on address/phone: GIS 1501 NE 2nd Ave, 305-995-1257; catalog 1450 NE 2nd Ave Suite 456, 305-756-2929; school site footer 150 S Royal Poinciana Blvd 33166, 305-995-3133. Fully virtual - distance not meaningful. UPDATE: the FLDOE 2025-26 Survey 2 file names 13-7001 'MIAMI-DADE ONLINE ACADEMY- VIRTUAL INSTRUCTION PROGRAM', which supports the 7001 = MDO match. More addresses: the M-DCPS program search page gives 6101 NE 2nd Ave, Bldg 2, Room 414, 33127, and the 2027-28 catalog gives 150 S. Royal Poinciana Blvd, Miami Springs 33166, matching the school site footer.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "medium",
+    "note": "FLDOE row named K12 FLORIDA, LLC under MSID 7001"
+   },
+   "gains_ela": {
+    "value": 64.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "medium",
+    "note": null
+   },
+   "gains_math": {
+    "value": 48.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "medium",
+    "note": null
+   },
+   "enrollment": {
+    "value": 335,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 317 (year not stated) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "K-12",
+    "source_type": "school",
+    "source_url": "https://mdomagnet.net/about-us/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "About page: serves grades K-12; catalog also K-12 Cross-check: FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in K-12 (KG-2 cells are * (1-9 students each)). Consistent."
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": true,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": "Catalog LOC# 7001; school site calls itself an accredited M-DCPS magnet school Confirmed 2026-10-17 on https://yourchoicemiami.org/program-search/school-details?school=7001 (Virtual K-12 Online; 2.5 GPA criterion) and in the 2027-28 catalog."
+   },
+   "magnet_themes": {
+    "value": [
+     "Virtual K-12 Online"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "school",
+    "source_url": "https://mdomagnet.net/about-us/",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Virtual delivery is not one of the allowed tags"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: virtual school; no on-site care documented"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: About page says tuition-free; requires an adult Learning Coach"
+   },
+   "phone": {
+    "value": "305-756-2929",
+    "source_type": "school",
+    "source_url": "https://mdomagnet.net/about-us/",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Matches catalog; CONFLICT with GIS 305-995-1257 and footer 305-995-3133"
+   },
+   "website": {
+    "value": "https://mdomagnet.net/",
+    "source_type": "school",
+    "source_url": "https://mdomagnet.net/about-us/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "title_i": {
+     "value": "NO",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "A"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 80.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 56.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 98.0,
+      "ap_ib_offerings": null,
+      "dual_enrollment": null,
+      "acceleration_note": "FLDOE College and Career Acceleration 2024-25: 81%"
+     },
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "graduation_rate is FLDOE Graduation Rate 2024-25 component; AP/IB and dual enrollment not checked"
+    },
+    "application_method": {
+     "value": "M-DCPS magnet application; site lists 2.5 unweighted GPA, fewer than 10 unexcused absences, adult Learning Coach",
+     "source_type": "school",
+     "source_url": "https://mdomagnet.net/about-us/",
+     "as_of": "2026-10-17",
+     "confidence": "high",
+     "note": null
+    }
+   }
+  },
+  {
+   "id": "pub-4081",
+   "name_verified": null,
+   "identity_note": "LIKELY CLOSED: not in FLDOE grades file; not in the magnet catalog; county GIS ENROLLMNT 0 at 1500 Biscayne Blvd #101 (the same building as iPrep). A third-party search result (publicschoolreview, not opened) labels it 'Closed 2016'. Not confirmed by an official source. Recommend excluding.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: not in FLDOE SchoolGrades26.xlsx; likely closed"
+   },
+   "gains_ela": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: not in FLDOE grades file"
+   },
+   "gains_math": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: not in FLDOE grades file"
+   },
+   "enrollment": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school number absent from FLDOE 2025-26 Final Survey 2 membership file (https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx) - no 2025-26 students reported; county GIS shows 0"
+   },
+   "grades_served": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no live school website; county GIS PK-4"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "M-DCPS 2026-27 magnet catalog searched by LOC# and name; school not listed Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=4081 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no live school page"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school likely closed"
+   },
+   "phone": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: county GIS 305-523-8390 not used - school likely closed"
+   },
+   "website": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no live website found"
+   },
+   "optional": {}
+  },
+  {
+   "id": "pub-7581",
+   "name_verified": "iPreparatory Academy PK-12",
+   "identity_note": "FLDOE 13-7581 'I PREPARATORY ACADEMY'; catalog 'iPrep Academy PreK-12 LOC# 7581', 1500 Biscayne Blvd 33132; matches site and GIS.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 79.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 73.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 746,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 774 (year not stated) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "PK-12",
+    "source_type": "school",
+    "source_url": "https://www.ipreparatoryacademy.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Site title 'iPreparatory Academy PK-12'; catalog 'APPLYING GRADES: PreK-12' (PreK through VPK application) Cross-check: FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in PK-12. Consistent."
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": true,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": "Catalog LOC# 7581 Confirmed 2026-10-17 on https://yourchoicemiami.org/program-search/school-details?school=7581, which lists 'International Education Global Focus (9-12)', i.e. a 9-12 magnet entry, while the catalog's applying grades are PreK-12. The 2027-28 catalog matches 2026-27."
+   },
+   "magnet_themes": {
+    "value": [
+     "Int’l Education/Global Focus"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties": {
+    "value": [
+     "International"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties_detail": {
+    "International": "Magnet catalog theme is International Education/Global Focus; school site title repeats it."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Public school: no tuition under Florida law; optional fees (aftercare, field trips, uniforms) may apply"
+   },
+   "phone": {
+    "value": "305-995-1929",
+    "source_type": "school",
+    "source_url": "https://www.ipreparatoryacademy.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Matches catalog and GIS"
+   },
+   "website": {
+    "value": "https://www.ipreparatoryacademy.net/",
+    "source_type": "school",
+    "source_url": "https://www.ipreparatoryacademy.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "title_i": {
+     "value": "NO",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "A"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 94.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 93.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 100.0,
+      "ap_ib_offerings": null,
+      "dual_enrollment": null,
+      "acceleration_note": "FLDOE College and Career Acceleration 2024-25: 100%"
+     },
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "graduation_rate is FLDOE Graduation Rate 2024-25 component; AP/IB and dual enrollment not checked"
+    },
+    "application_method": {
+     "value": "M-DCPS magnet application; PreK through VPK application",
+     "source_type": "official",
+     "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "as_of": "2026-03",
+     "confidence": "high",
+     "note": null
+    }
+   }
+  },
+  {
+   "id": "pub-1361",
+   "name_verified": "Frederick Douglass Elementary",
+   "identity_note": "FLDOE 13-1361 'FREDERICK R. DOUGLASS ELEMENTARY'; site and GIS 314 NW 12th St 33136 match.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 67.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 65.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 181,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 171 (year not stated) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "PK-5",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in PK-5 (PK cell is * (1-9 students)). Grade span from enrolled students; not confirmed on the school's own site. Earlier: not_found: school home page shows no grade span; county GIS PK-5"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "M-DCPS 2026-27 magnet catalog searched by LOC# and name; school not listed Cross-check 2026-10-17: yourchoicemiami.org program-search school-details page for school=1361 shows no school/programs (empty template); 2027-28 magnet catalog (https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf) has no entry."
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": null
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "school",
+    "source_url": "https://frederickdouglasselementary.net/",
+    "as_of": "2026-10-17",
+    "confidence": "low",
+    "note": "None documented on home page"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Public school: no tuition under Florida law; optional fees (aftercare, field trips, uniforms) may apply"
+   },
+   "phone": {
+    "value": "305-371-4687",
+    "source_type": "school",
+    "source_url": "https://frederickdouglasselementary.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Matches GIS"
+   },
+   "website": {
+    "value": "https://frederickdouglasselementary.net/",
+    "source_type": "school",
+    "source_url": "https://frederickdouglasselementary.net/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "title_i": {
+     "value": "YES",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "B"
+      },
+      {
+       "year": "2023-24",
+       "grade": "B"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 52.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 65.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    }
+   }
+  },
+  {
+   "id": "pub-7791",
+   "name_verified": "Booker T. Washington Senior High School",
+   "identity_note": "FLDOE 13-7791 'BOOKER T. WASHINGTON SENIOR HIGH'; 1200 NW 6th Ave 33136 matches site, catalog, GIS.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 46.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 53.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 878,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2025-26",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2, sheet 'Schl Total Enrollment'. County GIS ENROLLMNT 941 (year not stated) - CONFLICT, FLDOE value used."
+   },
+   "grades_served": {
+    "value": "9-12",
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "medium",
+    "note": "Catalog 'APPLYING GRADES: 9-12'; FLDOE type 03 (high); school home page does not list grades Cross-check: FLDOE 2025-26 Survey 2 'School' sheet shows students enrolled in 9-12. Consistent."
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": true,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": "Catalog LOC# 7791; school site also posts a Magnet Application notice"
+   },
+   "magnet_themes": {
+    "value": [
+     "Engineering",
+     "SpaceHUB (GRADE 9 ONLY)"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": "CONFLICT across official M-DCPS sources: the 2026-27 catalog (value used) lists 'Engineering', 'SpaceHUB (GRADE 9 ONLY)'. https://yourchoicemiami.org/program-search/school-details?school=7791 (opened 2026-10-17) lists Engineering, SpaceHUB - Aerospace Manufacturing, SpaceHUB - Aerospace Robotics, SpaceHUB - Aerospace Technology & Design. The 2027-28 catalog lists SpaceHUB (GRADE 9-10 ONLY): Aerospace Engineering & Manufacturing, Aerospace Robotics & Coding, Aerospace Technology & Design, and no separate Engineering entry."
+   },
+   "specialties": {
+    "value": [
+     "STEM"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+    "as_of": "2026-03",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties_detail": {
+    "STEM": "Magnet catalog lists Engineering and SpaceHUB (grade 9 entry only) programmes."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no ESE page opened for this school in this pass (school site home page and FLDOE file checked only)"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after-care page for this school opened; district-wide fee figure is third-party only, not school-specific"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": null,
+    "confidence": "high",
+    "note": "fees_note: Public school: no tuition under Florida law; optional fees (aftercare, field trips, uniforms) may apply"
+   },
+   "phone": {
+    "value": "305-324-8900",
+    "source_type": "school",
+    "source_url": "https://www.btwtornadoes.org/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Matches catalog and GIS"
+   },
+   "website": {
+    "value": "https://www.btwtornadoes.org/",
+    "source_type": "school",
+    "source_url": "https://www.btwtornadoes.org/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "title_i": {
+     "value": "YES",
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE 'Title I' column, 2025-26 file"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "B"
+      }
+     ],
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": null
+    },
+    "proficiency_ela": {
+     "value": 36.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE ELA Achievement %, 2025-26"
+    },
+    "proficiency_math": {
+     "value": 50.0,
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "FLDOE Math Achievement %, 2025-26"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 95.0,
+      "ap_ib_offerings": null,
+      "dual_enrollment": null,
+      "acceleration_note": "FLDOE College and Career Acceleration 2024-25: 90%"
+     },
+     "source_type": "official",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "confidence": "high",
+     "note": "graduation_rate is FLDOE Graduation Rate 2024-25 component; AP/IB and dual enrollment not checked"
+    }
+   }
+  },
+  {
+   "id": "chr-6047",
+   "name_verified": "Mater International Preparatory",
+   "identity_note": "Shares campus (795 NW 32nd St) and website (materacademyis.com) with Mater Academy of International Studies (chr-1017); separate FLDOE school number 13-6047 used for all numbers. County says 6-9; FLDOE 2025-26 membership shows grades 6-8 only.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 68.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 86.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 231,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "6-8",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "medium",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows students only in grades 6-8; county GIS lists 6-9; school site does not state grade span"
+   },
+   "grades_differs_from_county": true,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Charter school; charters are not M-DCPS magnet programs and no magnet designation stated on pages opened"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [
+     "STEM"
+    ],
+    "source_type": "school",
+    "source_url": "https://www.materacademyis.com/apps/pages/index.jsp?type=d&uREC_ID=224872",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Page describes MAIS and MIP together. Mission mentions a 'bilingual and multicultural curriculum' but no dual-language program is described, so Bilingual not tagged; Spanish is a weekly special-area class."
+   },
+   "specialties_detail": {
+    "STEM": "Joint MAIS/MIP academic programs page describes growing STEM initiatives including coding, robotics and engineering design challenges."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school site pages opened (home, MIP home, academic programs) do not describe ESE services; 2024-25 handbook PDF link returned 404"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after care information on materacademyis.com pages opened"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Charter school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-634-0445",
+    "source_type": "school",
+    "source_url": "https://www.materacademyis.com/apps/pages/index.jsp?type=d&uREC_ID=495830",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.materacademyis.com/apps/pages/index.jsp?type=d&uREC_ID=495830",
+    "source_type": "school",
+    "source_url": "https://www.materacademyis.com/apps/pages/index.jsp?type=d&uREC_ID=495830",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "MIP page within the shared MAIS website"
+   },
+   "optional": {
+    "school_hours": null,
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": null,
+    "proficiency_ela": {
+     "value": 69.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 82.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "B"
+      },
+      {
+       "year": "2023-24",
+       "grade": "B"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "chr-1017",
+   "name_verified": "Mater Academy of International Studies",
+   "identity_note": "Shares campus (795 NW 32nd St) with Mater International Preparatory (chr-6047); numbers taken only from FLDOE school 13-1017.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 60.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 56.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 437,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "K-5",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows K-5; matches county"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Charter school; charters are not M-DCPS magnet programs and no magnet designation stated on pages opened"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [
+     "STEM"
+    ],
+    "source_type": "school",
+    "source_url": "https://www.materacademyis.com/apps/pages/index.jsp?type=d&uREC_ID=224872",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Page describes MAIS and MIP together. Mission mentions a 'bilingual and multicultural curriculum' but no dual-language program is described, so Bilingual not tagged; Spanish is a weekly special-area class."
+   },
+   "specialties_detail": {
+    "STEM": "Joint MAIS/MIP academic programs page describes growing STEM initiatives including coding, robotics and engineering design challenges."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: school site pages opened (home, academic programs) do not describe ESE services; 2024-25 handbook PDF link returned 404"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after care information on materacademyis.com pages opened"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Charter school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-634-0445",
+    "source_type": "school",
+    "source_url": "https://www.materacademyis.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.materacademyis.com/",
+    "source_type": "school",
+    "source_url": "https://www.materacademyis.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "school_hours": null,
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": null,
+    "proficiency_ela": {
+     "value": 56.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 68.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "B"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "pub-4841",
+   "name_verified": "Santa Clara Elementary School",
+   "identity_note": null,
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "C",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 63.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 62.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 489,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "M-DCPS school page shows Total Enrollment 431 (current, undated); used FLDOE 2025-26 Final Survey 2 = 489"
+   },
+   "grades_served": {
+    "value": "PK-5",
+    "source_type": "official",
+    "source_url": "https://www.dadeschools.net/SchoolInformation/school/4841/details",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "M-DCPS school page 'Grades: PK - 05'; FLDOE membership also PK-5"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=6",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Not listed in M-DCPS magnet Program Search (alphabetical list jumps from Ruben Dario Middle, pg 5, to Scott Lake Elementary, pg 6)"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=6",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "school",
+    "source_url": "https://www.santaclaraes.com/programs/",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "School 'Programs' page says 'Coming Soon!'; no specialty program documented"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: M-DCPS school page and santaclaraes.com Programs page list no ESE details"
+   },
+   "aftercare": {
+    "value": {
+     "before_care": null,
+     "after_care": true,
+     "hours": null,
+     "cost": "varies, contact school",
+     "provider": "South Florida After-School All-Stars (fee-based)"
+    },
+    "source_type": "third_party",
+    "source_url": "https://sfasas.org/programs/fee-based-program/",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "SFASAS lists Santa Clara Elementary as a fee-based after-school site; register via school main office. Fee amount and hours not stated. No district before-care info found."
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Public school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-635-1417",
+    "source_type": "official",
+    "source_url": "https://www.dadeschools.net/SchoolInformation/school/4841/details",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.santaclaraes.com/",
+    "source_type": "school",
+    "source_url": "https://www.santaclaraes.com/programs/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "school_hours": {
+     "value": "PK-1: 8:20am-1:50pm; 2-5: 8:35am-3:05pm (Wed 8:35am-1:50pm)",
+     "source_url": "https://www.dadeschools.net/SchoolInformation/school/4841/details",
+     "as_of": "2026-27"
+    },
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": {
+     "value": true,
+     "source_url": "https://www.dadeschools.net/SchoolInformation/school/4841/details",
+     "as_of": "2026-27"
+    },
+    "transportation": null,
+    "application_method": null,
+    "proficiency_ela": {
+     "value": 38.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 54.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "C"
+      },
+      {
+       "year": "2024-25",
+       "grade": "C"
+      },
+      {
+       "year": "2023-24",
+       "grade": "C"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "pub-7081",
+   "name_verified": "Design and Architecture Senior High (DASH)",
+   "identity_note": null,
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 67.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 53.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 468,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "9-12",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows 9-12; school site: applicants apply in grades 8 and 9"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": true,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=2",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Listed in M-DCPS magnet Program Search; school site 'Magnet Overview'"
+   },
+   "magnet_themes": {
+    "value": [
+     "Visual Art and Design - Architecture/Interior Design",
+     "Visual Art and Design - Entertainment Technology/Film",
+     "Visual Art and Design - Fashion Design",
+     "Visual Art and Design - Industrial Design/Product and Transportation",
+     "Visual Art and Design - Visual Communication/Graphic Design"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=2",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "All five list 'Auditions Required'"
+   },
+   "specialties": {
+    "value": [
+     "Arts"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=2",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties_detail": {
+    "Arts": "M-DCPS catalog lists five Visual Art and Design magnet programs (architecture, film, fashion, industrial, graphic design), all audition-based."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: DASH magnet overview page and M-DCPS catalog entry do not describe ESE services"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after care information on DASH pages opened; M-DCPS per-school aftercare listing not found"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Public magnet school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-573-7135",
+    "source_type": "school",
+    "source_url": "https://www.dashschool.net/magnet-overview/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.dashschool.net/",
+    "source_type": "school",
+    "source_url": "https://www.dashschool.net/magnet-overview/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "M-DCPS catalog lists https://www.dashschool.org/; dashschool.net is the live site opened"
+   },
+   "optional": {
+    "school_hours": null,
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": false,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": {
+     "value": "audition",
+     "source_url": "https://www.dashschool.net/magnet-overview/",
+     "as_of": "2026-27",
+     "note": "Magnet application Oct 1-Jan 15; eligible in grades 8 and 9; audition required"
+    },
+    "proficiency_ela": {
+     "value": 85.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 57.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "A"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 100.0,
+      "graduation_rate_year": "2024-25",
+      "ap_ib_offerings": null,
+      "dual_enrollment": null,
+      "acceleration_note": "College and Career Acceleration 2024-25 = 99 (FLDOE component)"
+     },
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "chr-4070",
+   "name_verified": "Early Beginnings Academy (Civic Center campus)",
+   "identity_note": "FLDOE lists the school as 'EARLY BEGINNINGS ACADEMY'; this is the 1411 NW 14th Ave (Civic) campus. Specialized ESE center, not a general-enrollment school. County lists PreK-2; school and FLDOE show PreK-5.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: Early Beginnings Academy is an ESE center; school states 'as an exceptional student education program, EBA does not receive a school grade', and 13-4070 is absent from FLDOE 2025-26 School Grades file"
+   },
+   "gains_ela": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: Early Beginnings Academy is an ESE center; school states 'as an exceptional student education program, EBA does not receive a school grade', and 13-4070 is absent from FLDOE 2025-26 School Grades file"
+   },
+   "gains_math": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: Early Beginnings Academy is an ESE center; school states 'as an exceptional student education program, EBA does not receive a school grade', and 13-4070 is absent from FLDOE 2025-26 School Grades file"
+   },
+   "enrollment": {
+    "value": 86,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE suppresses some grade cells (<10 students) but total is published"
+   },
+   "grades_served": {
+    "value": "PK-5",
+    "source_type": "school",
+    "source_url": "https://www.earlybeginningsacademy.org/charter-school-information",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "School: 'specialized center teaching students, PreK to 5th grade'; FLDOE 2025-26 membership also shows PK-5; county says PreK-2"
+   },
+   "grades_differs_from_county": true,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Charter school; charters are not M-DCPS magnet programs and no magnet designation stated on pages opened"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [
+     "Early Learning"
+    ],
+    "source_type": "school",
+    "source_url": "https://www.earlybeginningsacademy.org/charter-school-information",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Specialized ESE center serving PreK-5"
+   },
+   "specialties_detail": {
+    "Early Learning": "School describes itself as a specialized center teaching students from PreK to 5th grade with exceptional educational needs."
+   },
+   "ese": {
+    "value": {
+     "offers_ese": true,
+     "details": "Specialized ESE center for students PreK-5 with exceptional educational needs; grades 3-5 take the FSAA (alternate assessment). Operated via UCO of South Florida."
+    },
+    "source_type": "school",
+    "source_url": "https://www.earlybeginningsacademy.org/charter-school-information",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "aftercare": {
+    "value": {
+     "before_care": null,
+     "after_care": null,
+     "hours": "Campus hours Mon-Fri 8:00am-6:00pm",
+     "cost": null,
+     "provider": null
+    },
+    "source_type": "school",
+    "source_url": "https://www.earlybeginningsacademy.org/charter-school-information",
+    "as_of": "2026-10-17",
+    "confidence": "low",
+    "note": "School lists campus hours 8:00 AM-6:00 PM but does not say whether a separate before/after care program exists"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Charter school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-325-1080",
+    "source_type": "school",
+    "source_url": "https://www.earlybeginningsacademy.org/charter-school-information",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.earlybeginningsacademy.org/",
+    "source_type": "school",
+    "source_url": "https://www.earlybeginningsacademy.org/charter-school-information",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "school_hours": {
+     "value": "Mon-Fri 8:00am-6:00pm (campus hours as listed)",
+     "source_url": "https://www.earlybeginningsacademy.org/charter-school-information",
+     "as_of": "2026-10-17"
+    },
+    "student_teacher_ratio": null,
+    "title_i": null,
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": null,
+    "proficiency_ela": null,
+    "proficiency_math": null,
+    "grade_history": null,
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "chr-3600",
+   "name_verified": "Downtown Miami Charter School",
+   "identity_note": "County lists K-6; FLDOE 2025-26 membership shows K-5 only.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 57.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": "School homepage claims 70% ELA learning gains (undated, different basis); used FLDOE 2025-26 component"
+   },
+   "gains_math": {
+    "value": 65.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": "School homepage claims 77% math learning gains (undated); used FLDOE 2025-26 component"
+   },
+   "enrollment": {
+    "value": 376,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "K-5",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "medium",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows K-5; county GIS says K-6; school pages opened do not state span"
+   },
+   "grades_differs_from_county": true,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Charter school; charters are not M-DCPS magnet programs and no magnet designation stated on pages opened"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "school",
+    "source_url": "https://www.downtowncharter.org/",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Homepage lists clubs (robotics, art, music) but no specialty program; nothing tagged"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: downtowncharter.org homepage, hours and care pages opened do not describe ESE services"
+   },
+   "aftercare": {
+    "value": {
+     "before_care": true,
+     "after_care": true,
+     "hours": "Before care 6:30am-7:30am; after care until 6:00pm",
+     "cost": "varies, contact school",
+     "provider": "school-run"
+    },
+    "source_type": "school",
+    "source_url": "https://www.downtowncharter.org/apps/pages/index.jsp?type=d&uREC_ID=421142",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "$40 annual registration fee; monthly payment amount not published; $20 late fee"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Charter school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-579-2112",
+    "source_type": "school",
+    "source_url": "https://www.downtowncharter.org/apps/pages/index.jsp?type=d&uREC_ID=421103",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.downtowncharter.org/",
+    "source_type": "school",
+    "source_url": "https://www.downtowncharter.org/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "school_hours": {
+     "value": "8:00am-3:00pm (Wed dismissal 2:00pm)",
+     "source_url": "https://www.downtowncharter.org/apps/pages/index.jsp?type=d&uREC_ID=421103",
+     "as_of": "2026-10-17"
+    },
+    "student_teacher_ratio": {
+     "value": 19,
+     "source_url": "https://www.downtowncharter.org/",
+     "as_of": "2026-10-17",
+     "note": "School homepage '19:1 Student-Teacher Ratio', undated, school-reported"
+    },
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": null,
+    "proficiency_ela": {
+     "value": 51.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 51.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "B"
+      },
+      {
+       "year": "2023-24",
+       "grade": "C"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": null,
+    "languages": {
+     "value": null,
+     "source_url": "https://www.downtowncharter.org/",
+     "as_of": "2026-10-17",
+     "note": "School says '6 Languages + 19 Countries Represented on Campus' (student body, not instruction languages); not listed"
+    },
+    "highlights": null
+   }
+  },
+  {
+   "id": "pub-7033",
+   "name_verified": "Law Enforcement Officers' Memorial High School",
+   "identity_note": "Two school websites exist: schoolofjustice.org (listed in M-DCPS catalog) and lawenforcementhighschool.com.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 63.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 36.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 279,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "9-12",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows 9-12"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": true,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=3",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Listed in M-DCPS magnet Program Search"
+   },
+   "magnet_themes": {
+    "value": [
+     "Forensic Science",
+     "Homeland Security",
+     "Law Studies"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=3",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties": {
+    "value": [
+     "Career/Technical"
+    ],
+    "source_type": "school",
+    "source_url": "https://www.lawenforcementhighschool.com/academy-of-forensic-science/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties_detail": {
+    "Career/Technical": "Academy of Forensic Science students can earn Biotechnology Assistant or Crime Scene Technician industry certifications and take MDC dual enrollment."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: schoolofjustice.org About/How to Apply pages and Forensic Science academy page do not describe ESE services"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after care information on school pages opened"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Public magnet school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-371-0400",
+    "source_type": "school",
+    "source_url": "https://www.schoolofjustice.org/apps/pages/index.jsp?type=d&uREC_ID=248070",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "lawenforcementhighschool.com footer shows (786) 573-5353; schoolofjustice.org, M-DCPS catalog and county GIS show 305-371-0400; used 305-371-0400"
+   },
+   "website": {
+    "value": "https://www.schoolofjustice.org/",
+    "source_type": "school",
+    "source_url": "https://www.schoolofjustice.org/apps/pages/index.jsp?type=d&uREC_ID=248070",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "school_hours": null,
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": {
+     "value": "magnet lottery",
+     "source_url": "https://www.schoolofjustice.org/apps/pages/index.jsp?type=d&uREC_ID=248070",
+     "as_of": "2026-27",
+     "note": "M-DCPS magnet application Oct 1-Jan 15, notifications Mar 15; Forensic Science academy also lists GPA/attendance/conduct requirements. Selection method (lottery) per M-DCPS magnet rules, not stated on this page."
+    },
+    "proficiency_ela": {
+     "value": 64.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 37.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "A"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 99.0,
+      "graduation_rate_year": "2024-25",
+      "ap_ib_offerings": null,
+      "dual_enrollment": true,
+      "acceleration_note": "College and Career Acceleration 2024-25 = 96 (FLDOE); dual enrollment with MDC per school site"
+     },
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "pub-7041",
+   "name_verified": "School for Advanced Studies - Wolfson Campus",
+   "identity_note": "One of five SAS campuses (Homestead, Kendall, North, West, Wolfson); sasdreamfactory.net is the shared SAS site. Co-located at 25 NE 2nd St with New World School of the Arts (pub-7901).",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: FLDOE 2025-26 file has no ELA Learning Gains component for 13-7041 (school graded only on graduation and acceleration)"
+   },
+   "gains_math": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: FLDOE 2025-26 file has no Mathematics Learning Gains component for 13-7041 (school graded only on graduation and acceleration)"
+   },
+   "enrollment": {
+    "value": 134,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "11-12",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows 11-12; SAS applications are for 10th graders entering 11th"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "school",
+    "source_url": "https://sasdreamfactory.net/eligibility/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "SAS site: 'SAS is not a magnet school'; also absent from M-DCPS magnet Program Search"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "school",
+    "source_url": "https://sasdreamfactory.net/eligibility/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [
+     "Dual Enrollment"
+    ],
+    "source_type": "official",
+    "source_url": "https://www.mdc.edu/dual-enrollment/sas-program/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties_detail": {
+    "Dual Enrollment": "Miami Dade College's SAS page has Wolfson Campus SAS students submit MDC dual-enrollment program forms (tuition waiver); eligibility requires placement into MDC ENC1101/MAC1105."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: SAS eligibility page and MDC SAS page do not describe ESE services"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after care information found; grades 11-12 only"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Public school (dual-enrollment tuition waived per MDC page); Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-237-7270",
+    "source_type": "official",
+    "source_url": "https://gisweb.miamidade.gov/ArcGIS/rest/services/CommunityServices/MD_Educational/MapServer/2/query?where=1%3D1&outFields=*&returnGeometry=false&f=json",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "County GIS SchoolSite layer; not confirmed on a Wolfson-specific school page"
+   },
+   "website": {
+    "value": "https://sasdreamfactory.net/",
+    "source_type": "school",
+    "source_url": "https://sasdreamfactory.net/",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Shared five-campus SAS site, not Wolfson-specific"
+   },
+   "optional": {
+    "school_hours": null,
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": false,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": {
+     "value": "test + application",
+     "source_url": "https://sasdreamfactory.net/eligibility/",
+     "as_of": "2026-27",
+     "note": "10th graders apply; min 3.0 unweighted GPA, Algebra 2, placement-test minimums; random selection among eligible applicants when oversubscribed"
+    },
+    "proficiency_ela": null,
+    "proficiency_math": null,
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "A"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 100.0,
+      "graduation_rate_year": "2024-25",
+      "ap_ib_offerings": null,
+      "dual_enrollment": true,
+      "acceleration_note": "College and Career Acceleration 2024-25 = 100 (FLDOE)"
+     },
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "pub-7901",
+   "name_verified": "New World School of the Arts",
+   "identity_note": "Co-located at 25 NE 2nd St with SAS Wolfson (pub-7041); high school run with Miami Dade College (site nwsa.mdc.edu).",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 75.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 47.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 477,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "M-DCPS school page shows Total Enrollment 458 (current, undated); used FLDOE 2025-26 Final Survey 2 = 477"
+   },
+   "grades_served": {
+    "value": "9-12",
+    "source_type": "official",
+    "source_url": "https://www.dadeschools.net/SchoolInformation/school/7901/details",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "M-DCPS page 'Grades: 09 - 12'"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": true,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=5",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Listed in M-DCPS magnet Program Search"
+   },
+   "magnet_themes": {
+    "value": [
+     "Visual & Performing Arts - Art",
+     "Visual & Performing Arts - Chorus",
+     "Visual & Performing Arts - Dance",
+     "Visual & Performing Arts - Instrumental",
+     "Visual & Performing Arts - Strings",
+     "Visual & Performing Arts - Theater/Acting"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=5",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "All list 'Auditions Required'"
+   },
+   "specialties": {
+    "value": [
+     "Arts"
+    ],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=5",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "specialties_detail": {
+    "Arts": "M-DCPS catalog lists six audition-based Visual & Performing Arts magnet programs; NWSA describes conservatory-level dance, music, theater and visual arts training."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: M-DCPS school page and nwsa.mdc.edu high school page do not describe ESE services"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no before/after care information on pages opened"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Public magnet school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-237-3135",
+    "source_type": "official",
+    "source_url": "https://www.dadeschools.net/SchoolInformation/school/7901/details",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://nwsa.mdc.edu/highschool/",
+    "source_type": "school",
+    "source_url": "https://nwsa.mdc.edu/highschool/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "school_hours": {
+     "value": "7:30am-3:45pm",
+     "source_url": "https://www.dadeschools.net/SchoolInformation/school/7901/details",
+     "as_of": "2026-27"
+    },
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": false,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": {
+     "value": false,
+     "source_url": "https://www.dadeschools.net/SchoolInformation/school/7901/details",
+     "as_of": "2026-27"
+    },
+    "transportation": null,
+    "application_method": {
+     "value": "audition",
+     "source_url": "https://nwsa.mdc.edu/highschool/",
+     "as_of": "2026-27",
+     "note": "Performance audition or portfolio review; only current 8th and 9th graders may apply"
+    },
+    "proficiency_ela": {
+     "value": 93.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 71.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "A"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 100.0,
+      "graduation_rate_year": "2024-25",
+      "ap_ib_offerings": null,
+      "dual_enrollment": null,
+      "acceleration_note": "College and Career Acceleration 2024-25 = 100 (FLDOE)"
+     },
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "pub-4961",
+   "name_verified": "Shadowlawn Elementary",
+   "identity_note": "LIKELY NOT AN OPERATING NEIGHBORHOOD SCHOOL: absent from FLDOE 2025-26 grades and 2025-26 enrollment files; M-DCPS page shows blank enrollment/capacity and an outdated principal message; news search results say it was repurposed (ESE center) for 2024-25 and a Feb 2026 M-DCPS board item concerns a ground-lease ITN for the site. Recommend excluding from the demo or labeling 'status unconfirmed'.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: 13-4961 absent from FLDOE 2025-26 School Grades file; news search (Axios Miami, 2024-04-24) reports the school was repurposed as an ESE center for 2024-25 (article fetch timed out, not cited)"
+   },
+   "gains_ela": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: 13-4961 absent from FLDOE 2025-26 School Grades file; news search (Axios Miami, 2024-04-24) reports the school was repurposed as an ESE center for 2024-25 (article fetch timed out, not cited)"
+   },
+   "gains_math": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: 13-4961 absent from FLDOE 2025-26 School Grades file; news search (Axios Miami, 2024-04-24) reports the school was repurposed as an ESE center for 2024-25 (article fetch timed out, not cited)"
+   },
+   "enrollment": {
+    "value": null,
+    "year": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: 13-4961 not in FLDOE 2025-26 Final Survey 2 'Student Enrollment by School' (2526MembBySchoolByGrade.xlsx)"
+   },
+   "grades_served": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: M-DCPS page still says 'Grades: PK - 05' but school appears repurposed (see identity_note); not recording an unreliable span"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=6",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Not listed in M-DCPS magnet Program Search (alphabetical: Scott Lake Elementary followed by Shenandoah Middle)"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search?&pg=6",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no current program information; school status unconfirmed"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: repurposing to ESE center reported only in news search snippets; not confirmed on an official page opened"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no information; school status unconfirmed"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Public school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-758-3673",
+    "source_type": "official",
+    "source_url": "https://www3.dadeschools.net/SchoolInformation/school/4961/details",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Listed on M-DCPS page; school status unconfirmed"
+   },
+   "website": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: M-DCPS page links 'View school website' but no school site was opened"
+   },
+   "optional": {
+    "school_hours": null,
+    "student_teacher_ratio": null,
+    "title_i": null,
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": null,
+    "proficiency_ela": null,
+    "proficiency_math": null,
+    "grade_history": null,
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "chr-6015",
+   "name_verified": "Sports Leadership and Management Charter School Middle School (SLAM Miami)",
+   "identity_note": "chr-6015 and chr-6015-135 are the same FLDOE school (13-6015), listed twice in county GIS at 601 and 604 NW 12th Ave (33136). SLAM's 2025-26 handbook gives 542 NW 12 Avenue, Miami 33125 and site footer 542 NW 12th Avenue 33136; middle and high (chr-7016) share one campus/handbook but have separate FLDOE numbers.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 58.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 54.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 831,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "6-8",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows 6-8; handbook covers SLAM Middle/High 6-12"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Charter school; charters are not M-DCPS magnet programs and no magnet designation stated on pages opened"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [
+     "Sports"
+    ],
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+    "as_of": "2025-26",
+    "confidence": "medium",
+    "note": "Handbook covers middle and high together; courses not broken out by grade level"
+   },
+   "specialties_detail": {
+    "Sports": "SLAM's mission emphasizes sports-related majors; handbook lists Sports Management and Marketing, Sports Medicine and Sports Broadcasting classes."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: handbook only asks families to submit any IEP/504 plans at registration; departments page lists no ESE department; ESE services not described"
+   },
+   "aftercare": {
+    "value": {
+     "before_care": null,
+     "after_care": true,
+     "hours": null,
+     "cost": "varies, contact school",
+     "provider": "school-run"
+    },
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+    "as_of": "2025-26",
+    "confidence": "medium",
+    "note": "Handbook: students not picked up at dismissal are enrolled in the after-care program automatically and fees applied; hours/fees not stated"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Charter school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-326-0003",
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.slammiami.com/",
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Shared middle/high site"
+   },
+   "optional": {
+    "school_hours": {
+     "value": "7:55am-2:50pm (grades 6-8)",
+     "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+     "as_of": "2025-26"
+    },
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": {
+     "value": true,
+     "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+     "as_of": "2025-26"
+    },
+    "transportation": null,
+    "application_method": {
+     "value": "charter lottery",
+     "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+     "as_of": "2025-26"
+    },
+    "proficiency_ela": {
+     "value": 51.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 59.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "B"
+      },
+      {
+       "year": "2023-24",
+       "grade": "B"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "chr-3003",
+   "name_verified": "Mater Preparatory Academy",
+   "identity_note": "County lists same point as SLAM Middle (601 NW 12th Ave); school site confirms 601 NW 12th Avenue, Miami 33136. Separate school (FLDOE 13-3003); no SLAM data used.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "C",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 52.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 64.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 343,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "K-5",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows K-5; matches county"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Charter school; charters are not M-DCPS magnet programs and no magnet designation stated on pages opened"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "school",
+    "source_url": "https://www.materprepacademy.com/",
+    "as_of": "2026-10-17",
+    "confidence": "low",
+    "note": "Homepage shows only news and mission; no specialty program documented"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: materprepacademy.com homepage does not describe ESE services"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: materprepacademy.com homepage has no before/after care information"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Charter school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "786-648-4580",
+    "source_type": "school",
+    "source_url": "https://www.materprepacademy.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.materprepacademy.com/",
+    "source_type": "school",
+    "source_url": "https://www.materprepacademy.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "school_hours": null,
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": null,
+    "proficiency_ela": {
+     "value": 43.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 61.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "C"
+      },
+      {
+       "year": "2024-25",
+       "grade": "B"
+      },
+      {
+       "year": "2023-24",
+       "grade": "B"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "chr-7016",
+   "name_verified": "Sports Leadership Arts Management Charter High School (SLAM Miami)",
+   "identity_note": "County address 604 NW 12th Ave 33136; SLAM handbook 542 NW 12 Avenue. Shares campus/handbook with SLAM Middle (chr-6015) but has its own FLDOE number 13-7016.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 57.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 35.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 1015,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "9-12",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows 9-12"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Charter school; charters are not M-DCPS magnet programs and no magnet designation stated on pages opened"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [
+     "Sports",
+     "Career/Technical"
+    ],
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+    "as_of": "2025-26",
+    "confidence": "medium",
+    "note": "Handbook covers middle and high together"
+   },
+   "specialties_detail": {
+    "Sports": "Mission emphasizes sports-related majors; classes include Sports Management and Marketing, Sports Medicine (with Emergency Medical Response) and Sports Broadcasting.",
+    "Career/Technical": "Handbook lists Career & Technical Education academies and industry certifications, plus AP and dual enrollment (Doral College or Miami Dade College)."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: handbook only asks families to submit any IEP/504 plans at registration; ESE services not described"
+   },
+   "aftercare": {
+    "value": {
+     "before_care": null,
+     "after_care": true,
+     "hours": null,
+     "cost": "varies, contact school",
+     "provider": "school-run"
+    },
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+    "as_of": "2025-26",
+    "confidence": "medium",
+    "note": "Handbook: students not picked up are auto-enrolled in after-care with fees; hours/fees not stated"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Charter school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-326-0003",
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.slammiami.com/",
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Shared middle/high site"
+   },
+   "optional": {
+    "school_hours": {
+     "value": "7:20am-2:00pm (grades 9-12)",
+     "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+     "as_of": "2025-26"
+    },
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": {
+     "value": true,
+     "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+     "as_of": "2025-26"
+    },
+    "transportation": null,
+    "application_method": {
+     "value": "charter lottery",
+     "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+     "as_of": "2025-26"
+    },
+    "proficiency_ela": {
+     "value": 54.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 43.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "B"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": {
+     "value": {
+      "graduation_rate": 100.0,
+      "graduation_rate_year": "2024-25",
+      "ap_ib_offerings": "AP courses (titles not listed)",
+      "dual_enrollment": true,
+      "acceleration_note": "College and Career Acceleration 2024-25 = 80 (FLDOE); handbook lists AP, dual enrollment, CTE certifications"
+     },
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "chr-6015-135",
+   "name_verified": "Sports Leadership and Management Charter School Middle School (SLAM Miami)",
+   "identity_note": "chr-6015 and chr-6015-135 are the same FLDOE school (13-6015), listed twice in county GIS at 601 and 604 NW 12th Ave (33136). SLAM's 2025-26 handbook gives 542 NW 12 Avenue, Miami 33125 and site footer 542 NW 12th Avenue 33136; middle and high (chr-7016) share one campus/handbook but have separate FLDOE numbers.",
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "B",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 58.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 54.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 831,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "6-8",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows 6-8; handbook covers SLAM Middle/High 6-12"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Charter school; charters are not M-DCPS magnet programs and no magnet designation stated on pages opened"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [
+     "Sports"
+    ],
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+    "as_of": "2025-26",
+    "confidence": "medium",
+    "note": "Handbook covers middle and high together; courses not broken out by grade level"
+   },
+   "specialties_detail": {
+    "Sports": "SLAM's mission emphasizes sports-related majors; handbook lists Sports Management and Marketing, Sports Medicine and Sports Broadcasting classes."
+   },
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: handbook only asks families to submit any IEP/504 plans at registration; departments page lists no ESE department; ESE services not described"
+   },
+   "aftercare": {
+    "value": {
+     "before_care": null,
+     "after_care": true,
+     "hours": null,
+     "cost": "varies, contact school",
+     "provider": "school-run"
+    },
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+    "as_of": "2025-26",
+    "confidence": "medium",
+    "note": "Handbook: students not picked up at dismissal are enrolled in the after-care program automatically and fees applied; hours/fees not stated"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Charter school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-326-0003",
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.slammiami.com/",
+    "source_type": "school",
+    "source_url": "https://www.slammiami.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "Shared middle/high site"
+   },
+   "optional": {
+    "school_hours": {
+     "value": "7:55am-2:50pm (grades 6-8)",
+     "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+     "as_of": "2025-26"
+    },
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": {
+     "value": true,
+     "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+     "as_of": "2025-26"
+    },
+    "transportation": null,
+    "application_method": {
+     "value": "charter lottery",
+     "source_url": "https://www.slammiami.com/pdf/SLAM%20Miami%20Parent-%20Student%20Handbook%202025-2026.pdf",
+     "as_of": "2025-26"
+    },
+    "proficiency_ela": {
+     "value": 51.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 59.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "B"
+      },
+      {
+       "year": "2024-25",
+       "grade": "B"
+      },
+      {
+       "year": "2023-24",
+       "grade": "B"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "chr-4000",
+   "name_verified": "Miami Children's Museum Charter School",
+   "identity_note": null,
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "A",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 75.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 63.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 314,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "K-5",
+    "source_type": "school",
+    "source_url": "https://www.mcmcharter.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": "School: 'welcomes Kindergarten through 5th grade'; FLDOE membership K-5"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Charter school; charters are not M-DCPS magnet programs and no magnet designation stated on pages opened"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [
+     "Arts",
+     "Gifted"
+    ],
+    "source_type": "school",
+    "source_url": "https://www.mcmcharter.com/apps/pages/index.jsp?type=d&uREC_ID=353836",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "School also mentions a 'Language Program for native and non-native Spanish speakers' but does not describe it as dual-language; Bilingual not tagged"
+   },
+   "specialties_detail": {
+    "Arts": "Curriculum uses Miami Children's Museum exhibits and focuses on the museum's themes of art, culture, community and communication.",
+    "Gifted": "Eligible students may join the Young Explorers Gifted Program (teacher or parent referral)."
+   },
+   "ese": {
+    "value": {
+     "offers_ese": true,
+     "details": "2026-27 handbook lists an ESE Specialist under Student Services; school offers the Young Explorers Gifted Program."
+    },
+    "source_type": "school",
+    "source_url": "https://www.mcmcharter.com/pdf/NEW%20MCMCS%20Parent%20Handbook%202026-2027%20FINAL.pdf",
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Services/models (inclusion, self-contained) not described"
+   },
+   "aftercare": {
+    "value": {
+     "before_care": null,
+     "after_care": true,
+     "hours": null,
+     "cost": "varies, contact school",
+     "provider": "Miami Children's Museum After Care Program"
+    },
+    "source_type": "school",
+    "source_url": "https://www.mcmcharter.com/pdf/NEW%20MCMCS%20Parent%20Handbook%202026-2027%20FINAL.pdf",
+    "as_of": "2026-27",
+    "confidence": "medium",
+    "note": "Handbook: After Care run via Miami Children's Museum office (305-373-5437 ext. 100); supervised morning drop-off 8:00-8:30am only; no before-care program stated"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Charter school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-329-3758",
+    "source_type": "school",
+    "source_url": "https://www.mcmcharter.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.mcmcharter.com/",
+    "source_type": "school",
+    "source_url": "https://www.mcmcharter.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "school_hours": {
+     "value": "K-1: 8:30am-2:30pm; 2-5: 8:30am-3:00pm (Fri 1:30pm K-1, 2:00pm 2-5)",
+     "source_url": "https://www.mcmcharter.com/pdf/NEW%20MCMCS%20Parent%20Handbook%202026-2027%20FINAL.pdf",
+     "as_of": "2026-27"
+    },
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": false,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": {
+     "value": true,
+     "source_url": "https://www.mcmcharter.com/apps/pages/index.jsp?type=d&uREC_ID=353836",
+     "as_of": "2026-10-17"
+    },
+    "transportation": {
+     "value": "none",
+     "source_url": "https://www.mcmcharter.com/pdf/NEW%20MCMCS%20Parent%20Handbook%202026-2027%20FINAL.pdf",
+     "as_of": "2026-27",
+     "note": "Handbook: as a charter school, district does not provide transportation"
+    },
+    "application_method": {
+     "value": "charter lottery",
+     "source_url": "https://www.mcmcharter.com/apps/pages/index.jsp?type=d&uREC_ID=353836",
+     "as_of": "2026-10-17"
+    },
+    "proficiency_ela": {
+     "value": 90.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 86.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "A"
+      },
+      {
+       "year": "2024-25",
+       "grade": "A"
+      },
+      {
+       "year": "2023-24",
+       "grade": "A"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  },
+  {
+   "id": "pub-0881",
+   "name_verified": "Comstock Elementary School",
+   "identity_note": null,
+   "researched_on": "2026-10-17",
+   "state_grade": {
+    "value": "C",
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_ela": {
+    "value": 52.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "gains_math": {
+    "value": 65.0,
+    "year": "2025-26",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+    "as_of": "2026-09-01",
+    "confidence": "high",
+    "note": null
+   },
+   "enrollment": {
+    "value": 546,
+    "year": "2025-26 (Final Survey 2)",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": null
+   },
+   "grades_served": {
+    "value": "PK-5",
+    "source_type": "official",
+    "source_url": "https://cdn.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+    "as_of": "2026-07-07",
+    "confidence": "high",
+    "note": "FLDOE 2025-26 Final Survey 2 membership by grade (2526MembBySchoolByGrade.xlsx, sheet 'School') shows PK-5; matches county; school homepage does not state span"
+   },
+   "grades_differs_from_county": false,
+   "is_magnet": {
+    "value": false,
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "Not listed in M-DCPS magnet Program Search (alphabetical: Coconut Palm K-8 followed by Coral Gables Senior High)"
+   },
+   "magnet_themes": {
+    "value": [],
+    "source_type": "official",
+    "source_url": "https://yourchoicemiami.org/program-search",
+    "as_of": "2026-10-17",
+    "confidence": "medium",
+    "note": "not a magnet school"
+   },
+   "specialties": {
+    "value": [],
+    "source_type": "school",
+    "source_url": "http://www.comstockelementary.com/",
+    "as_of": "2026-10-17",
+    "confidence": "low",
+    "note": "Homepage shows news only; no specialty program documented"
+   },
+   "specialties_detail": {},
+   "ese": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: comstockelementary.com homepage does not describe ESE services; M-DCPS details page did not load"
+   },
+   "aftercare": {
+    "value": null,
+    "source_type": null,
+    "source_url": null,
+    "as_of": null,
+    "confidence": null,
+    "note": "not_found: no aftercare information on school homepage; M-DCPS details page did not load"
+   },
+   "tuition": {
+    "value": 0,
+    "source_type": "derived",
+    "source_url": null,
+    "as_of": "2026-27",
+    "confidence": "high",
+    "note": "Public school; Florida public/charter schools are tuition-free. fees_note: none verified (aftercare/uniform/activity costs may apply)"
+   },
+   "phone": {
+    "value": "305-635-7341",
+    "source_type": "school",
+    "source_url": "http://www.comstockelementary.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "website": {
+    "value": "https://www.comstockelementary.com/",
+    "source_type": "school",
+    "source_url": "http://www.comstockelementary.com/",
+    "as_of": "2026-10-17",
+    "confidence": "high",
+    "note": null
+   },
+   "optional": {
+    "school_hours": null,
+    "student_teacher_ratio": null,
+    "title_i": {
+     "value": true,
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01",
+     "note": "FLDOE 2025-26 School Grades file 'Title I' column"
+    },
+    "uniform_required": null,
+    "transportation": null,
+    "application_method": null,
+    "proficiency_ela": {
+     "value": 32.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "proficiency_math": {
+     "value": 55.0,
+     "year": "2025-26",
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "grade_history": {
+     "value": [
+      {
+       "year": "2025-26",
+       "grade": "C"
+      },
+      {
+       "year": "2024-25",
+       "grade": "C"
+      },
+      {
+       "year": "2023-24",
+       "grade": "C"
+      }
+     ],
+     "source_url": "https://cdn.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "as_of": "2026-09-01"
+    },
+    "high_school": null,
+    "languages": null,
+    "highlights": null
+   }
+  }
+ ]
+}
