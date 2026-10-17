@@ -176,6 +176,8 @@ export const explore = {
     'explore.pinned.back': 'Back to my filters',
     'explore.pinned.count': '{n} schools from Jarvis',
     'explore.chat.nothing': 'Those filters from your chat matched no schools nearby, so your map is unchanged. Ask Jarvis to widen the search.',
+    'explore.cmp.limit': 'You can compare up to 3 schools. Remove one to add another.',
+    'explore.cmp.limit.go': 'Go to compare',
   },
   es: {
     'explore.navi.move': 'Mover la ventana de Jarvis (arrastre la barra de título o use las flechas)',
@@ -358,6 +360,8 @@ export const explore = {
     'explore.pinned.back': 'Volver a mis filtros',
     'explore.pinned.count': '{n} escuelas de Jarvis',
     'explore.chat.nothing': 'Esos filtros de su chat no encontraron escuelas cercanas, así que su mapa no cambió. Pida a Jarvis que amplíe la búsqueda.',
+    'explore.cmp.limit': 'Puede comparar hasta 3 escuelas. Quite una para agregar otra.',
+    'explore.cmp.limit.go': 'Ir a comparar',
   },
   ht: {
     'explore.navi.move': 'Deplase fenèt Jarvis la (rale ba tit la, oswa sèvi ak flèch yo)',
@@ -538,5 +542,7 @@ export const explore = {
     'explore.pinned.back': 'Retounen nan filtè mwen yo',
     'explore.pinned.count': '{n} lekòl Jarvis',
     'explore.chat.nothing': 'Filtè sa yo ki soti nan chat la pa jwenn okenn lekòl tou pre, kidonk kat ou a pa chanje. Mande Jarvis elaji rechèch la.',
+    'explore.cmp.limit': 'Ou ka konpare jiska 3 lekòl. Retire youn pou ajoute yon lòt.',
+    'explore.cmp.limit.go': 'Ale nan konparezon',
   },
 };

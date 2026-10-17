@@ -1,0 +1,1305 @@
+{
+ "note": "Alumni research (LinkedIn page counts and official FLDOE/NCES figures) joined to schools by FLDOE number or exact name; see scripts/merge_alumni_enriched.py.",
+ "schools": {
+  "chr-7059": {
+   "confidence": "match",
+   "official": {
+    "school_type": "Public charter (M-DCPS district)",
+    "grades": "6-12",
+    "enrollment": 924,
+    "enrollment_year": "2025-26",
+    "grad_rate": 92.2,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 66,
+    "pct_employed": 24,
+    "earnings": "avg $10,007 / median $7,780 annualized (all employed grads)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7059; match; grad cohort 142/154; 2024-25 grade A; FETPIP: 76 standard-diploma grads, 72% with any outcome found; continuing ed = Florida institutions only (FL College System 34, State Univ. System 18, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039007599"
+   },
+   "linkedin": {
+    "page": "Miami Arts Charter School",
+    "url": "https://www.linkedin.com/school/miami-arts-charter-school/",
+    "page_type": "school",
+    "alumni_count": 514,
+    "studied": [
+     {
+      "name": "Photography",
+      "count": 41
+     },
+     {
+      "name": "Music",
+      "count": 29
+     },
+     {
+      "name": "Creative Writing",
+      "count": 28
+     },
+     {
+      "name": "Musical Theatre",
+      "count": 27
+     },
+     {
+      "name": "Psychology",
+      "count": 26
+     }
+    ],
+    "does": [
+     {
+      "name": "Operations",
+      "count": 56
+     },
+     {
+      "name": "Arts and Design",
+      "count": 32
+     },
+     {
+      "name": "Education",
+      "count": 31
+     },
+     {
+      "name": "Administrative",
+      "count": 23
+     },
+     {
+      "name": "Sales",
+      "count": 23
+     }
+    ]
+   },
+   "school": "Miami Arts Charter School"
+  },
+  "chr-7059-159": {
+   "confidence": "match",
+   "official": {
+    "school_type": "Public charter (M-DCPS district)",
+    "grades": "6-12",
+    "enrollment": 924,
+    "enrollment_year": "2025-26",
+    "grad_rate": 92.2,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 66,
+    "pct_employed": 24,
+    "earnings": "avg $10,007 / median $7,780 annualized (all employed grads)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7059; match; grad cohort 142/154; 2024-25 grade A; FETPIP: 76 standard-diploma grads, 72% with any outcome found; continuing ed = Florida institutions only (FL College System 34, State Univ. System 18, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039007599"
+   },
+   "linkedin": {
+    "page": "Miami Arts Charter School",
+    "url": "https://www.linkedin.com/school/miami-arts-charter-school/",
+    "page_type": "school",
+    "alumni_count": 514,
+    "studied": [
+     {
+      "name": "Photography",
+      "count": 41
+     },
+     {
+      "name": "Music",
+      "count": 29
+     },
+     {
+      "name": "Creative Writing",
+      "count": 28
+     },
+     {
+      "name": "Musical Theatre",
+      "count": 27
+     },
+     {
+      "name": "Psychology",
+      "count": 26
+     }
+    ],
+    "does": [
+     {
+      "name": "Operations",
+      "count": 56
+     },
+     {
+      "name": "Arts and Design",
+      "count": 32
+     },
+     {
+      "name": "Education",
+      "count": 31
+     },
+     {
+      "name": "Administrative",
+      "count": 23
+     },
+     {
+      "name": "Sales",
+      "count": 23
+     }
+    ]
+   },
+   "school": "Miami Arts Charter School"
+  },
+  "pub-7056": {
+   "confidence": "uncertain",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "6-12",
+    "enrollment": 158,
+    "enrollment_year": "2025-26",
+    "grad_rate": 84.2,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 83,
+    "program_focus": "Magnet: Leadership (6-12 single-gender academy)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7056; match (FLDOE: Young Men's Preparatory Academy, grades 6-12); grad cohort 16/19; 2024-25 grade A; FETPIP: 12 standard-diploma grads, 92% with any outcome found; continuing ed = Florida institutions only (FL College System suppressed, State Univ. System suppressed, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039007420"
+   },
+   "linkedin": {
+    "page": "Young Men's Preparatory Academy",
+    "url": "https://www.linkedin.com/school/young-men%27s-preparatory-academy/",
+    "page_type": "school",
+    "alumni_count": 59,
+    "studied": [
+     {
+      "name": "Organizational Leadership",
+      "count": 4
+     },
+     {
+      "name": "Computer and Information Sciences, General",
+      "count": 2
+     },
+     {
+      "name": "Musical Theatre",
+      "count": 2
+     },
+     {
+      "name": "Art/Art Studies, General",
+      "count": 2
+     },
+     {
+      "name": "Music",
+      "count": 2
+     }
+    ],
+    "does": [
+     {
+      "name": "Operations",
+      "count": 7
+     },
+     {
+      "name": "Customer Success and Support",
+      "count": 4
+     },
+     {
+      "name": "Business Development",
+      "count": 3
+     },
+     {
+      "name": "Education",
+      "count": 3
+     },
+     {
+      "name": "Marketing",
+      "count": 2
+     }
+    ]
+   },
+   "school": "Young Men's Preparatory Academy Senior High"
+  },
+  "prv-4caa901b2a": {
+   "confidence": "match",
+   "official": {
+    "school_type": "Private (non-religious, for-profit)",
+    "grades": "6-11",
+    "enrollment": 77,
+    "enrollment_year": "2025 survey",
+    "sources": [
+     "https://web09.fldoe.org/PrivateSchoolDirectory/DownloadSchools"
+    ],
+    "notes": "FLDOE private directory 'CENTNER ACADEMY - MIDDLE AND HIGH SCHOOLS', 1911 NE Miami Ct; enrollment = sum of reported grades 6-11 (21+27+13+9+5+2). No state grades/grad rate/FETPIP for private schools. NCES PSS 2023-24 lists 'centner academy llc' at same address with 308 students PK-9."
+   },
+   "linkedin": null,
+   "school": "Centner Academy - Middle and High Schools"
+  },
+  "pub-6361": {
+   "confidence": "uncertain",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "6-8",
+    "enrollment": 507,
+    "enrollment_year": "2025-26",
+    "school_grade": "B",
+    "school_grade_year": "2025-26",
+    "program_focus": "Magnet: Engineering & Robotics; Visual Arts",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #6361; match; 2024-25 grade C; NCES ID 120039003559"
+   },
+   "linkedin": null,
+   "school": "Jose De Diego Middle"
+  },
+  "pub-0331": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "PK",
+    "enrollment": 43,
+    "enrollment_year": "2025-26",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #0331; match (M-DCPS pre-K center; no grades/outcomes reported); N/A for grades/grad rate/FETPIP: pre-K only; NCES ID 120039008101"
+   },
+   "linkedin": null,
+   "school": "Chapman Partnership Early Childhood Center North"
+  },
+  "chr-6047": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public charter (M-DCPS district)",
+    "grades": "6-8",
+    "enrollment": 231,
+    "enrollment_year": "2025-26",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #6047; match; 2024-25 grade B; NCES ID 120039007484"
+   },
+   "linkedin": null,
+   "school": "Mater International Preparatory"
+  },
+  "pub-7791": {
+   "confidence": "likely",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "9-12",
+    "enrollment": 878,
+    "enrollment_year": "2025-26",
+    "grad_rate": 94.7,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "B",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 53,
+    "pct_employed": 43,
+    "earnings": "avg $15,026 / median $13,074 annualized (all employed grads)",
+    "program_focus": "Magnet: Engineering; SpaceHUB (aerospace)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7791; match; grad cohort 197/208; 2024-25 grade A; FETPIP: 111 standard-diploma grads, 77% with any outcome found; continuing ed = Florida institutions only (FL College System 43, State Univ. System suppressed, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039003562"
+   },
+   "linkedin": {
+    "page": "Booker T. Washington High School",
+    "url": "https://www.linkedin.com/school/booker-t.-washington-high-school/",
+    "page_type": "school",
+    "alumni_count": 470,
+    "studied": [
+     {
+      "name": "General Studies",
+      "count": 18
+     },
+     {
+      "name": "Business Administration and Management, General",
+      "count": 17
+     },
+     {
+      "name": "High School/Secondary Diplomas and Certificates",
+      "count": 14
+     },
+     {
+      "name": "Psychology",
+      "count": 11
+     },
+     {
+      "name": "Business/Commerce, General",
+      "count": 9
+     }
+    ],
+    "does": [
+     {
+      "name": "Operations",
+      "count": 59
+     },
+     {
+      "name": "Education",
+      "count": 31
+     },
+     {
+      "name": "Customer Success and Support",
+      "count": 17
+     },
+     {
+      "name": "Community and Social Services",
+      "count": 17
+     },
+     {
+      "name": "Sales",
+      "count": 15
+     }
+    ]
+   },
+   "school": "Booker T. Washington Senior High"
+  },
+  "pub-7081": {
+   "confidence": "match",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "9-12",
+    "enrollment": 468,
+    "enrollment_year": "2025-26",
+    "grad_rate": 100,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 55,
+    "pct_employed": 30,
+    "earnings": "avg $12,052 / median $11,276 annualized (all employed grads)",
+    "program_focus": "Magnet: Architecture/Interior Design; Entertainment Technology/Film; Fashion Design; Industrial Design; Visual Communications/Graphic Design",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7081; match; grad cohort 108/108; 2024-25 grade A; FETPIP: 56 standard-diploma grads, 64% with any outcome found; continuing ed = Florida institutions only (FL College System 23, State Univ. System suppressed, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039002736"
+   },
+   "linkedin": null,
+   "school": "Design & Architecture Senior High"
+  },
+  "prv-0780e5b088": {
+   "confidence": "uncertain",
+   "official": {
+    "school_type": "Private (Lincoln-Marti campus)",
+    "sources": [
+     "https://web09.fldoe.org/PrivateSchoolDirectory/DownloadSchools",
+     "https://nces.ed.gov/surveys/pss/privateschoolsearch/"
+    ],
+    "notes": "Private Lincoln-Marti Community Agency campus. FLDOE private directory lists ~20 numbered Lincoln-Marti campuses but all with the HQ address (2700 SW 8 St), so this street-named campus can't be matched to one; not reported."
+   },
+   "linkedin": {
+    "page": "Lincoln-Marti Schools",
+    "url": "https://www.linkedin.com/school/lincoln-marti-schools/",
+    "page_type": "school",
+    "alumni_count": 112,
+    "studied": [
+     {
+      "name": "General Studies",
+      "count": 4
+     },
+     {
+      "name": "Psychology",
+      "count": 3
+     },
+     {
+      "name": "English Language and Literature/Letters",
+      "count": 2
+     },
+     {
+      "name": "Medical/Clinical Assistant",
+      "count": 2
+     },
+     {
+      "name": "High School/Secondary Diplomas and Certificates",
+      "count": 2
+     }
+    ],
+    "does": [
+     {
+      "name": "Customer Success and Support",
+      "count": 9
+     },
+     {
+      "name": "Operations",
+      "count": 8
+     },
+     {
+      "name": "Sales",
+      "count": 4
+     },
+     {
+      "name": "Healthcare Services",
+      "count": 3
+     },
+     {
+      "name": "Administrative",
+      "count": 2
+     }
+    ]
+   },
+   "school": "Lincoln-Marti Schools - 13th Ct"
+  },
+  "pub-7033": {
+   "confidence": "match",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "9-12",
+    "enrollment": 279,
+    "enrollment_year": "2025-26",
+    "grad_rate": 98.6,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 75,
+    "pct_employed": 47,
+    "earnings": "avg $17,623 / median $14,914 annualized (all employed grads)",
+    "program_focus": "Magnet: Forensic Science; Homeland Security; Law Studies",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7033; match; grad cohort 68/69; 2024-25 grade A; FETPIP: 59 standard-diploma grads, 90% with any outcome found; continuing ed = Florida institutions only (FL College System 24, State Univ. System 12, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039007496"
+   },
+   "linkedin": {
+    "page": "Law Enforcement Officers Memorial High School",
+    "url": "https://www.linkedin.com/school/law-enforcement-officers-memorial-high-school/",
+    "page_type": "school",
+    "alumni_count": 267,
+    "studied": [
+     {
+      "name": "Forensic Science and Technology",
+      "count": 36
+     },
+     {
+      "name": "Psychology",
+      "count": 22
+     },
+     {
+      "name": "Homeland Security",
+      "count": 20
+     },
+     {
+      "name": "Law",
+      "count": 19
+     },
+     {
+      "name": "Criminal Justice/Police Science",
+      "count": 17
+     }
+    ],
+    "does": [
+     {
+      "name": "Operations",
+      "count": 21
+     },
+     {
+      "name": "Legal",
+      "count": 19
+     },
+     {
+      "name": "Education",
+      "count": 15
+     },
+     {
+      "name": "Healthcare Services",
+      "count": 11
+     },
+     {
+      "name": "Administrative",
+      "count": 11
+     }
+    ]
+   },
+   "school": "Law Enforcement Officers Memorial Senior High"
+  },
+  "pub-7901": {
+   "confidence": "uncertain",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "9-12",
+    "enrollment": 477,
+    "enrollment_year": "2025-26",
+    "grad_rate": 100,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 50,
+    "pct_employed": 20,
+    "earnings": "avg $9,031 / median $6,324 annualized (all employed grads)",
+    "program_focus": "Magnet: Visual Art; Dance; Music (chorus/strings/instrumental/jazz); Musical Theatre; Theatre",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7901; match; grad cohort 101/101; 2024-25 grade A; FETPIP: 56 standard-diploma grads, 61% with any outcome found; continuing ed = Florida institutions only (FL College System suppressed, State Univ. System 18, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039002810"
+   },
+   "linkedin": null,
+   "school": "New World School of the Arts"
+  },
+  "pub-7041": {
+   "confidence": "match",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "11-12",
+    "enrollment": 134,
+    "enrollment_year": "2025-26",
+    "grad_rate": 100,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 48,
+    "program_focus": "Collegiate high school on Miami Dade College Wolfson campus (dual enrollment toward AA degree)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://sasdreamfactory.net/why-sas/",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7041; match; grad cohort 64/64; 2024-25 grade A; FETPIP: 52 standard-diploma grads, 54% with any outcome found; continuing ed = Florida institutions only (FL College System suppressed, State Univ. System 23, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; SAS students take Miami Dade College dual-enrollment courses; school reports 99% of the Class of 2026 earned an MDC Associate in Arts (https://sasdreamfactory.net/why-sas/); NCES ID 120039003561"
+   },
+   "linkedin": {
+    "page": "School for Advanced Studies-Wolfson",
+    "url": "https://www.linkedin.com/school/school-for-advanced-studies-wolfson/",
+    "page_type": "school",
+    "alumni_count": 474,
+    "studied": [
+     {
+      "name": "Computer Science",
+      "count": 33
+     },
+     {
+      "name": "Computational Science",
+      "count": 32
+     },
+     {
+      "name": "Political Science and Government",
+      "count": 32
+     },
+     {
+      "name": "Psychology",
+      "count": 20
+     },
+     {
+      "name": "Finance, General",
+      "count": 19
+     }
+    ],
+    "does": [
+     {
+      "name": "Education",
+      "count": 51
+     },
+     {
+      "name": "Business Development",
+      "count": 41
+     },
+     {
+      "name": "Research",
+      "count": 39
+     },
+     {
+      "name": "Operations",
+      "count": 38
+     },
+     {
+      "name": "Engineering",
+      "count": 23
+     }
+    ]
+   },
+   "school": "School For Advanced Studies Wolfson"
+  },
+  "chr-6015": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public charter (M-DCPS district)",
+    "grades": "6-8",
+    "enrollment": 831,
+    "enrollment_year": "2025-26",
+    "school_grade": "B",
+    "school_grade_year": "2025-26",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #6015; uncertain: 'Sports Leadership and Management' is FLDOE's name for SLAM's middle school (6015, same campus as SLAM high); SLAM high school data is in the 'Sports Leadership Arts Management CHS' row; North campus HS is FLDOE 7108; 2024-25 grade B; NCES ID 120039008248"
+   },
+   "linkedin": null,
+   "school": "Sports Leadership and Management (SLAM) CHS"
+  },
+  "chr-6015-135": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public charter (M-DCPS district)",
+    "grades": "6-8",
+    "enrollment": 831,
+    "enrollment_year": "2025-26",
+    "school_grade": "B",
+    "school_grade_year": "2025-26",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #6015; uncertain: 'Sports Leadership and Management' is FLDOE's name for SLAM's middle school (6015, same campus as SLAM high); SLAM high school data is in the 'Sports Leadership Arts Management CHS' row; North campus HS is FLDOE 7108; 2024-25 grade B; NCES ID 120039008248"
+   },
+   "linkedin": null,
+   "school": "Sports Leadership and Management (SLAM) CHS"
+  },
+  "chr-7016": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public charter (M-DCPS district)",
+    "grades": "9-12",
+    "enrollment": 1015,
+    "enrollment_year": "2025-26",
+    "grad_rate": 99.5,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "B",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 71,
+    "pct_employed": 49,
+    "earnings": "avg $18,144 / median $15,736 annualized (all employed grads)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7016; match (main campus, 604 NW 12 Ave); grad cohort 201/202; 2024-25 grade A; FETPIP: 146 standard-diploma grads, 90% with any outcome found; continuing ed = Florida institutions only (FL College System 78, State Univ. System 13, FL private college 15); out-of-state college and military not reported in FETPIP school report; NCES ID 120039007845"
+   },
+   "linkedin": null,
+   "school": "Sports Leadership Arts Management CHS"
+  },
+  "prv-fe49a4e0a4": {
+   "confidence": "uncertain",
+   "official": {
+    "school_type": "Private (Lincoln-Marti campus)",
+    "sources": [
+     "https://web09.fldoe.org/PrivateSchoolDirectory/DownloadSchools",
+     "https://nces.ed.gov/surveys/pss/privateschoolsearch/"
+    ],
+    "notes": "Private Lincoln-Marti Community Agency campus; can't be matched to a specific numbered campus in FLDOE/NCES private school data (all listed at HQ address). Not reported."
+   },
+   "linkedin": {
+    "page": "Lincoln Marti Schools",
+    "url": "https://www.linkedin.com/school/lincoln-marti-schools-02/",
+    "page_type": "school",
+    "alumni_count": 1,
+    "studied": [],
+    "does": []
+   },
+   "school": "Lincoln-Marti Schools - 8th Ave"
+  },
+  "pub-6011": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "6-8",
+    "enrollment": 455,
+    "enrollment_year": "2025-26",
+    "school_grade": "B",
+    "school_grade_year": "2025-26",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #6011; match; 2024-25 grade C; NCES ID 120039000541"
+   },
+   "linkedin": null,
+   "school": "Georgia Jones-Ayers Middle"
+  },
+  "pub-7341": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "9-12",
+    "enrollment": 1124,
+    "enrollment_year": "2025-26",
+    "grad_rate": 94.6,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "B",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 50,
+    "pct_employed": 50,
+    "earnings": "avg $17,018 / median $16,728 annualized (all employed grads)",
+    "program_focus": "Magnet: Industrial Biotechnology; Int'l Business & Finance",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7341; match; grad cohort 226/239; 2024-25 grade B; FETPIP: 145 standard-diploma grads, 84% with any outcome found; continuing ed = Florida institutions only (FL College System 62, State Univ. System suppressed, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039000601"
+   },
+   "linkedin": null,
+   "school": "Miami Jackson Senior High"
+  },
+  "prv-31f4556353": {
+   "confidence": "uncertain",
+   "official": {
+    "school_type": "Private (preschool/Montessori)",
+    "grades": "PK-KG",
+    "enrollment": 25,
+    "enrollment_year": "2023-24",
+    "sources": [
+     "https://nces.ed.gov/surveys/pss/privateschoolsearch/"
+    ],
+    "notes": "N/A for outcomes: preschool/kindergarten. NCES PSS 2023-24, 5051 Biscayne Blvd."
+   },
+   "linkedin": null,
+   "school": "Morningside Montessori School"
+  },
+  "chr-7144": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public charter (M-DCPS district)",
+    "grades": "9-12",
+    "enrollment": 63,
+    "enrollment_year": "2025-26",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7144; uncertain: mapped to the newer Florida City campus (7144); both campuses now enroll grades 9-12; grad rate suppressed (<10 students); 2024-25 grade A; FETPIP: counts suppressed (fewer than 10 graduates); FETPIP/grad rate suppressed (small cohort); NCES ID 120039008703"
+   },
+   "linkedin": null,
+   "school": "Charter High School of the Americas (Gr. 9- 11)"
+  },
+  "prv-5f89b3a8e1": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Private (non-religious, for-profit)",
+    "grades": "6-12",
+    "enrollment": 234,
+    "enrollment_year": "2025 survey",
+    "sources": [
+     "https://web09.fldoe.org/PrivateSchoolDirectory/DownloadSchools"
+    ],
+    "notes": "FLDOE private directory 'MIAMI INTERNATIONAL ACADEMY', 4343 NW 17th Ave; enrollment = sum of reported grades 6-12 (2+12+19+26+39+57+79). Not in NCES CCD. No state grades/grad rate/FETPIP for private schools."
+   },
+   "linkedin": null,
+   "school": "Miami International Academy"
+  },
+  "chr-7080": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public charter (M-DCPS district)",
+    "grades": "9-12",
+    "enrollment": 206,
+    "enrollment_year": "2025-26",
+    "grad_rate": 87,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 92,
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7080; match (main campus, W Flagler St); grad cohort 20/23; 2024-25 grade A; FETPIP: 13 standard-diploma grads, 100% with any outcome found; continuing ed = Florida institutions only (FL College System 12, State Univ. System suppressed, FL private college 0); out-of-state college and military not reported in FETPIP school report; NCES ID 120039008206"
+   },
+   "linkedin": null,
+   "school": "Charter High School of the Americas"
+  },
+  "chr-7080-19": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public charter (M-DCPS district)",
+    "grades": "9-12",
+    "enrollment": 206,
+    "enrollment_year": "2025-26",
+    "grad_rate": 87,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 92,
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7080; match (main campus, W Flagler St); grad cohort 20/23; 2024-25 grade A; FETPIP: 13 standard-diploma grads, 100% with any outcome found; continuing ed = Florida institutions only (FL College System 12, State Univ. System suppressed, FL private college 0); out-of-state college and military not reported in FETPIP school report; NCES ID 120039008206"
+   },
+   "linkedin": null,
+   "school": "Charter High School of the Americas"
+  },
+  "pub-7055": {
+   "confidence": "match",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "6-12",
+    "enrollment": 288,
+    "enrollment_year": "2025-26",
+    "grad_rate": 100,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 79,
+    "pct_employed": 38,
+    "earnings": "avg $14,165 / median $11,600 annualized (all employed grads)",
+    "program_focus": "Magnet: Leadership (6-12 single-gender academy)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7055; match; grad cohort 19/19; 2024-25 grade A; FETPIP: 29 standard-diploma grads, 83% with any outcome found; continuing ed = Florida institutions only (FL College System suppressed, State Univ. System suppressed, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039007016"
+   },
+   "linkedin": {
+    "page": "Young Women's Preparatory Academy",
+    "url": "https://www.linkedin.com/school/ywpafl/",
+    "page_type": "school",
+    "alumni_count": 198,
+    "studied": [
+     {
+      "name": "Business Administration and Management, General",
+      "count": 11
+     },
+     {
+      "name": "Psychology",
+      "count": 10
+     },
+     {
+      "name": "Political Science and Government",
+      "count": 8
+     },
+     {
+      "name": "Computer Science",
+      "count": 7
+     },
+     {
+      "name": "Biology, General",
+      "count": 5
+     }
+    ],
+    "does": [
+     {
+      "name": "Education",
+      "count": 20
+     },
+     {
+      "name": "Community and Social Services",
+      "count": 13
+     },
+     {
+      "name": "Operations",
+      "count": 12
+     },
+     {
+      "name": "Research",
+      "count": 12
+     },
+     {
+      "name": "Sales",
+      "count": 9
+     }
+    ]
+   },
+   "school": "Young Women's Preparatory Academy"
+  },
+  "pub-7005": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "9-12",
+    "enrollment": 199,
+    "enrollment_year": "2025-26",
+    "grad_rate": 96.2,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 70,
+    "pct_employed": 32,
+    "earnings": "avg $16,308 / median $13,996 annualized (all employed grads)",
+    "program_focus": "Magnet (iTech): ERP; GIS; iCode (Microsoft Software Solutions)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7005; match; grad cohort 50/52; 2024-25 grade A; FETPIP: 37 standard-diploma grads, 78% with any outcome found; continuing ed = Florida institutions only (FL College System 17, State Univ. System suppressed, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039008412"
+   },
+   "linkedin": null,
+   "school": "iTech@Thomas A. Edison Education Center"
+  },
+  "prv-44a6349d0f": {
+   "confidence": "uncertain",
+   "official": {
+    "school_type": "Private (Lincoln-Marti campus)",
+    "sources": [
+     "https://web09.fldoe.org/PrivateSchoolDirectory/DownloadSchools",
+     "https://nces.ed.gov/surveys/pss/privateschoolsearch/"
+    ],
+    "notes": "Private Lincoln-Marti Community Agency campus; no campus #15 in the FLDOE private directory (2025) and no NCES PSS match. Not reported."
+   },
+   "linkedin": {
+    "page": "Lincoln-Marti Schools",
+    "url": "https://www.linkedin.com/school/lincoln-marti-schools/",
+    "page_type": "school",
+    "alumni_count": 112,
+    "studied": [],
+    "does": []
+   },
+   "school": "Lincoln-Marti Schools #15 -3rd St"
+  },
+  "pub-7301": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "9-12",
+    "enrollment": 508,
+    "enrollment_year": "2025-26",
+    "grad_rate": 94.8,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "C",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 54,
+    "pct_employed": 43,
+    "earnings": "avg $14,117 / median $14,040 annualized (all employed grads)",
+    "program_focus": "Magnet: Artificial Intelligence; Cambridge Int'l; Culinary Arts; Business & Finance; Entrepreneurship & Innovation (Iovine and Young Center); Medical Health Sciences (First Responder/EMT)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7301; match; grad cohort 147/155; 2024-25 grade A; FETPIP: 76 standard-diploma grads, 79% with any outcome found; continuing ed = Florida institutions only (FL College System 29, State Univ. System suppressed, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039000600"
+   },
+   "linkedin": null,
+   "school": "Miami Edison Senior High"
+  },
+  "pub-8141": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public alternative education (M-DCPS)",
+    "grades": "6-12",
+    "enrollment": 58,
+    "enrollment_year": "2025-26",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #8141; match: M-DCPS 'Juvenile Justice Center Alt Ed'; grad rate suppressed (<10 students); NCES ID 120039002555"
+   },
+   "linkedin": null,
+   "school": "Juvenile Justice Center"
+  },
+  "pub-2531": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "PK",
+    "enrollment": 72,
+    "enrollment_year": "2025-26",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #2531; match (public pre-K ESE center); N/A for grades/grad rate/FETPIP: pre-K only; NCES ID 120039000436"
+   },
+   "linkedin": null,
+   "school": "Thena C. Crowder Early Childhood Diagnostic SP ED"
+  },
+  "pub-6031": {
+   "confidence": "uncertain",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "6-8",
+    "enrollment": 416,
+    "enrollment_year": "2025-26",
+    "school_grade": "B",
+    "school_grade_year": "2025-26",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #6031; match; 2024-25 grade B; NCES ID 120039000543"
+   },
+   "linkedin": null,
+   "school": "Brownsville Middle"
+  },
+  "prv-652e0f4b50": {
+   "confidence": "match",
+   "official": {
+    "school_type": "Private for-profit postsecondary (less-than-2-year, non-degree)",
+    "grades": "Postsecondary certificates",
+    "enrollment": 9747,
+    "enrollment_year": "Fall 2024",
+    "program_focus": "Vocational certificates; largest programs: HVAC/R technician, electrical/electronics installation & repair, medical/clinical assistant, nursing assistant",
+    "sources": [
+     "https://nces.ed.gov/collegenavigator/?id=443252"
+    ],
+    "notes": "Not a K-12 school, so no FLDOE grades/grad rate/FETPIP high-school outcomes. 720 NW 27th Ave."
+   },
+   "linkedin": {
+    "page": "South Florida Institute of Technology",
+    "url": "https://www.linkedin.com/school/south-florida-institute-of-technology/",
+    "page_type": "school",
+    "alumni_count": 902,
+    "studied": [
+     {
+      "name": "Graphic Design",
+      "count": 67
+     },
+     {
+      "name": "Electrical and Electronics Engineering",
+      "count": 57
+     },
+     {
+      "name": "Electrician",
+      "count": 54
+     },
+     {
+      "name": "Medical/Clinical Assistant",
+      "count": 43
+     },
+     {
+      "name": "Business Administration and Management, General",
+      "count": 38
+     }
+    ],
+    "does": [
+     {
+      "name": "Operations",
+      "count": 173
+     },
+     {
+      "name": "Engineering",
+      "count": 48
+     },
+     {
+      "name": "Healthcare Services",
+      "count": 33
+     },
+     {
+      "name": "Sales",
+      "count": 32
+     },
+     {
+      "name": "Arts and Design",
+      "count": 25
+     }
+    ]
+   },
+   "school": "South Florida Institute of Technology"
+  },
+  "pub-7411": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "9-12",
+    "enrollment": 1505,
+    "enrollment_year": "2025-26",
+    "grad_rate": 96.4,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 52,
+    "pct_employed": 42,
+    "earnings": "avg $16,249 / median $13,472 annualized (all employed grads)",
+    "program_focus": "Magnet: Medical & Allied Health Professions; Visual & Performing Arts (art, dance, instrumental, theatre)",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7411; match; grad cohort 345/358; 2024-25 grade C; FETPIP: 255 standard-diploma grads, 88% with any outcome found; continuing ed = Florida institutions only (FL College System 82, State Univ. System suppressed, FL private college 27); out-of-state college and military not reported in FETPIP school report; NCES ID 120039000604"
+   },
+   "linkedin": null,
+   "school": "Miami Northwestern Senior High"
+  },
+  "prv-6324dc3891": {
+   "confidence": "not found",
+   "official": {
+    "school_type": "Private (preschool/Montessori)",
+    "grades": "PK-KG",
+    "enrollment": 42,
+    "enrollment_year": "2023-24",
+    "sources": [
+     "https://nces.ed.gov/surveys/pss/privateschoolsearch/"
+    ],
+    "notes": "N/A for outcomes: preschool/kindergarten. NCES PSS 2023-24, 1770 Brickell Ave (main campus at 2733 SW 3 Ave lists 242 students PK-3 in PSS)."
+   },
+   "linkedin": null,
+   "school": "La Prima Casa Montessori - Brickell Campus"
+  },
+  "prv-ef02bb0d27": {
+   "confidence": "uncertain",
+   "official": {
+    "school_type": "Private (Lincoln-Marti campus)",
+    "sources": [
+     "https://web09.fldoe.org/PrivateSchoolDirectory/DownloadSchools",
+     "https://nces.ed.gov/surveys/pss/privateschoolsearch/"
+    ],
+    "notes": "Private Lincoln-Marti Community Agency campus; can't be matched (closest NCES PSS listing is campus #23 at 904 SW 23 Ave, KG-8, 155 students, 2023-24, but address differs). Not reported."
+   },
+   "linkedin": {
+    "page": "Lincoln-Marti Schools",
+    "url": "https://www.linkedin.com/school/lincoln-marti-schools/",
+    "page_type": "school",
+    "alumni_count": 112,
+    "studied": [],
+    "does": []
+   },
+   "school": "Lincoln-Marti Schools - 22nd Ave"
+  },
+  "pub-7461": {
+   "confidence": "match",
+   "official": {
+    "school_type": "Public (M-DCPS)",
+    "grades": "9-12",
+    "enrollment": 2972,
+    "enrollment_year": "2025-26",
+    "grad_rate": 95.8,
+    "grad_rate_year": "2024-25 (federal cohort)",
+    "school_grade": "A",
+    "school_grade_year": "2025-26",
+    "fetpip_year": "2023-24 graduates (Fall 2024 findings)",
+    "pct_continuing_ed": 72,
+    "pct_employed": 48,
+    "earnings": "avg $17,388 / median $16,608 annualized (all employed grads)",
+    "program_focus": "Magnet: Legal & Public Affairs; Teaching Profession",
+    "sources": [
+     "https://www.fldoe.org/file/7584/2526MembBySchoolByGrade.xlsx",
+     "https://www.fldoe.org/file/7584/FedGradRateCategory2425.xls",
+     "https://www.fldoe.org/file/18534/SchoolGrades26.xlsx",
+     "https://www.fldoe.org/file/7592/2324HS-SDGrad656ByDistBySchl.pdf",
+     "https://yourchoicemiami.org/files/2026/03/MAGNET-CATALOG2026-2027-ENG.pdf",
+     "https://educationdata.urban.org/api/v1/schools/ccd/directory/2024/?leaid=1200390"
+    ],
+    "notes": "FLDOE school #7461; match; grad cohort 699/730; 2024-25 grade A; FETPIP: 452 standard-diploma grads, 88% with any outcome found; continuing ed = Florida institutions only (FL College System 255, State Univ. System 64, FL private college suppressed); out-of-state college and military not reported in FETPIP school report; NCES ID 120039000606"
+   },
+   "linkedin": {
+    "page": "Miami Senior High School",
+    "url": "https://www.linkedin.com/school/miami-senior-high-school/",
+    "page_type": "school",
+    "alumni_count": 2463,
+    "studied": [
+     {
+      "name": "Business Administration and Management, General",
+      "count": 188
+     },
+     {
+      "name": "High School/Secondary Diplomas and Certificates",
+      "count": 113
+     },
+     {
+      "name": "Psychology",
+      "count": 102
+     },
+     {
+      "name": "General Studies",
+      "count": 81
+     },
+     {
+      "name": "Computer Science",
+      "count": 56
+     }
+    ],
+    "does": [
+     {
+      "name": "Operations",
+      "count": 334
+     },
+     {
+      "name": "Administrative",
+      "count": 134
+     },
+     {
+      "name": "Customer Success and Support",
+      "count": 130
+     },
+     {
+      "name": "Sales",
+      "count": 127
+     },
+     {
+      "name": "Education",
+      "count": 102
+     }
+    ]
+   },
+   "school": "Miami Senior High"
+  }
+ }
+}

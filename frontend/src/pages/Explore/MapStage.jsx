@@ -460,9 +460,10 @@ export default function MapStage({
         )}
 
         <span
+          className="map-caption"
           style={{
             position: 'absolute',
-            left: 120,
+            left: 120, // clears the floating Back button
             bottom: 16,
             zIndex: 20,
             padding: '4px 10px',

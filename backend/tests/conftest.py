@@ -6,6 +6,10 @@ from __future__ import annotations
 import os
 
 os.environ["NAVIGATOR_SKIP_DOTENV"] = "1"  # tests must never pick up a real key from .env
+import tempfile
+
+# Tests must never write to the real accounts file (data/users.db): every test that does not choose its own file gets a scratch one.
+os.environ["USERS_DB_PATH"] = os.path.join(tempfile.mkdtemp(prefix="navigator-tests-"), "users.db")
 
 import json
 import shutil

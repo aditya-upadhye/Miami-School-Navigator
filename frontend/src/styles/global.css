@@ -368,3 +368,11 @@ input[type="range"]::-moz-range-thumb {
   background: #6b54c9;
   box-shadow: 0 2px 6px rgba(43, 42, 58, 0.3);
 }
+
+/* Phones: the page links live in the Menu (they took three rows of the header), and the floating Back button on Explore covered the
+   Matches / Filters tabs at the bottom of the screen; the phone's own Back does the same job there. */
+@media (max-width: 720px) {
+  .app-nav { display: none !important; }
+  .explore-back { display: none; }
+  .map-caption { left: 12px !important; bottom: 40px !important; } /* no Back button to clear; sit above the map credits */
+}

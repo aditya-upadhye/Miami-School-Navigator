@@ -79,6 +79,14 @@ class ScoreFactor(BaseModel):
     detail: str
 
 
+class AlsoServes(BaseModel):
+    """Another record for the same school site (for example the early-learning program inside a public school), shown on one card."""
+
+    id: str
+    kind: Kind
+    name: str
+
+
 class SchoolSummary(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -108,6 +116,7 @@ class SchoolSummary(BaseModel):
     scholarship: Field
     phone: Field
     website: Field
+    also_serves: list[AlsoServes] = PField(default_factory=list, description="Other records at the same site and under the same school name or program (e.g. early learning inside a public school), merged into this card.")
     proficiency_ela: Field
     proficiency_math: Field
     school_hours: Field
@@ -438,7 +447,7 @@ class ReadinessYear(BaseModel):
 
 
 class OutcomeSource(BaseModel):
-    key: Literal["fldoe", "crdc", "wikidata"]
+    key: Literal["fldoe", "crdc", "wikidata", "official", "linkedin"]
     name: str
     url: str
     years: str | None = None
@@ -473,12 +482,51 @@ class LookupResponse(BaseModel):
     total: int = PField(description="How many schools match; `results` holds the best few.")
 
 
+class RankedCount(BaseModel):
+    name: str
+    count: int
+
+
+class OfficialOutcomes(BaseModel):
+    """Figures from FLDOE / NCES files for one school, each of which may be missing; `sources` lists the files they came from."""
+
+    school_type: str | None = None
+    grades: str | None = None
+    enrollment: int | None = None
+    enrollment_year: str | None = None
+    grad_rate: float | None = None
+    grad_rate_year: str | None = None
+    school_grade: str | None = None
+    school_grade_year: str | None = None
+    fetpip_year: str | None = None
+    pct_continuing_ed: float | None = None
+    pct_employed: float | None = None
+    pct_military: float | None = None
+    earnings: str | None = None
+    program_focus: str | None = None
+    sources: list[str] = []
+    notes: str | None = None
+
+
+class LinkedinAlumni(BaseModel):
+    """What people who list this school on LinkedIn studied and do now. Self-reported, a sample of those on LinkedIn, not a statistic."""
+
+    page: str | None = None
+    url: str | None = None
+    alumni_count: int | None = None
+    studied: list[RankedCount] = []
+    does: list[RankedCount] = []
+    confidence: Literal["match", "likely"] = "match"
+
+
 class OutcomesResponse(BaseModel):
     place_id: str
     applies: bool = PField(True, description="False for child care and other places with no K-12 grades, where this section does not make sense.")
     empty_reason: str | None = PField(None, description="Why a K-12 school has no outcome data, in the request language. Set only when every list is empty.")
     college: list[CollegeYear] = []
     readiness: list[ReadinessYear] = []
+    official: OfficialOutcomes | None = PField(None, description="Graduation rate, school grade, what graduates did next and program focus from FLDOE/NCES files, when researched for this school.")
+    linkedin: LinkedinAlumni | None = PField(None, description="LinkedIn alumni sample (counts of fields studied and jobs). Shown only for schools whose LinkedIn page was matched with confidence.")
     alumni_total: int = 0
     alumni_groups: list[AlumniGroup] = []
     alumni: list[AlumniPerson] = PField(default_factory=list, description="Up to 12 notable alumni. Notable people only: not a representative sample.")

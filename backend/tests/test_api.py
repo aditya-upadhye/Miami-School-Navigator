@@ -324,3 +324,31 @@ def test_a_neighborhood_name_geocodes_to_its_zip(client):
     r = client.get("/api/geocode", params={"q": "Wynwood"})
     assert r.status_code == 200 and r.json()["precision"] == "zip" and "33127" in r.json()["matched_address"]
     assert client.get("/api/geocode", params={"q": "wynwood, Miami"}).status_code == 200
+
+
+def test_one_campus_with_several_programs_is_one_card():
+    from app.services.schools import merge_same_site
+
+    def rec(i, kind, name, lat=25.8, lon=-80.2):
+        return {"id": i, "kind": kind, "name": name, "lat": lat, "lon": lon}
+
+    row = lambda p, pts=50: (p, 0.1, pts, [], [])
+    out = merge_same_site([row(rec("e1", "early_learning", "MDCPS Phyllis Miller Elementary Headstart"), 65), row(rec("p1", "public", "Phyllis Ruth Miller Elementary"), 70),
+                           row(rec("e2", "early_learning", "Phyllis Ruth Miller Elementary"), 65), row(rec("x", "public", "Phyllis Miller Middle", lat=26.0), 40)])
+    assert [o[0]["id"] for o in out] == ["p1", "x"]  # the public school leads its group; a different site stays separate
+    assert sorted(m["id"] for m in out[0][5]) == ["e1", "e2"] and out[0][2] == 70
+    same = merge_same_site([row(rec("a", "public", "Dunbar K-8")), row(rec("b", "public", "Dunbar Elementary"))])
+    assert len(same) == 2  # two records of the same kind with different names are not merged
+
+
+def test_alumni_research_is_joined_to_schools_and_uncertain_matches_are_hidden(client):
+    from app.services import outcomes as svc
+
+    recs = svc._enriched()
+    assert recs, "run scripts/merge_alumni_enriched.py"
+    pid = next(i for i, r in recs.items() if r["confidence"] == "match" and r.get("linkedin") and r["linkedin"].get("alumni_count") and r.get("official"))
+    body = client.get(f"/api/schools/{pid}/outcomes").json()
+    assert body["linkedin"]["alumni_count"] > 0 and body["linkedin"]["studied"] and body["official"] and {s["key"] for s in body["sources"]} >= {"official", "linkedin"}
+    hidden = next((i for i, r in recs.items() if r["confidence"] == "uncertain" and r.get("linkedin")), None)
+    if hidden:
+        assert client.get(f"/api/schools/{hidden}/outcomes").json()["linkedin"] is None

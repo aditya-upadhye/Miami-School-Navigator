@@ -193,6 +193,8 @@ class ToolBox:
              "ese": f(s.ese), "scholarship": f(s.scholarship), "stages": f(s.stages)}
         if s.flags:
             d["flags"] = s.flags
+        if s.also_serves:
+            d["also_serves"] = sorted({a.kind for a in s.also_serves})  # same campus: other programs (e.g. early learning) merged into this school
         if s.distance_mi:
             d["distance_mi"] = f(s.distance_mi)
         if s.zoned:
@@ -264,7 +266,15 @@ class ToolBox:
 
     def _t_get_zones(self, lat=None, lon=None) -> dict:
         lat, lon = self._loc(lat, lon)
-        return self._zones(zones_svc.zoned_for(self.nav, lat, lon))
+        z = zones_svc.zoned_for(self.nav, lat, lon)
+        # The zoned schools come back as results too, so the family can put exactly them on the map (a search's list is never replaced).
+        ids = [e.place_id for lv in ("elementary", "middle", "high") for e in getattr(z, lv) if e.place_id]
+        if ids and not self.results:
+            rows = self.nav.conn.execute(f"SELECT * FROM places WHERE id IN ({','.join('?' * len(ids))})", ids).fetchall()
+            by_id = {r["id"]: r for r in rows}
+            with use_lang(self.lang):
+                self.results = [schools_svc.summarize(self.nav, schools_svc.row_to_place(by_id[i]), origin=(lat, lon)) for i in dict.fromkeys(ids) if i in by_id]
+        return self._zones(z)
 
     def _t_search_schools(self, lat=None, lon=None, radius_mi=None, q=None, kinds=None, ages=None, stages=None, free_only=None, grade_min=None,
                           specialties=None, priorities=None, ese=None, scholarship=None, sort=None, limit=None) -> dict:

@@ -534,7 +534,7 @@ def test_chat_warnings_follow_the_request_language(rich_nav, monkeypatch):
         with use_lang(header_lang):
             return agent.run_chat(rich_nav, req(lang=lang_body, lat=LAT, lon=LON), llm)
 
-    assert run(None, "en").warnings == ["the answer carries no citations"]
+    assert run(None, "en").warnings == ["this answer has no sources attached, so treat it as general guidance"]
     assert run(None, "es").warnings == [t("chat.warn.no_citations", "es")]
     assert run("ht", "es").warnings == [t("chat.warn.no_citations", "ht")]  # body lang wins
     llm = FakeLlm([uses(("get_dates", {})), lambda m: say("Mire [c99] y también [c1].")])

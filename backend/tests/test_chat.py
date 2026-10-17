@@ -189,9 +189,9 @@ def test_get_dates_returns_rules_with_citations(bare_nav):
 
 def test_rule_claims_without_a_rules_lookup_are_flagged(bare_nav):
     r = agent.run_chat(bare_nav, req(), FakeLlm([uses(("get_zones", {"lat": LAT, "lon": LON})), say("Yes, you must apply even if zoned.")]))
-    assert any("no rules lookup" in w for w in r.warnings)
+    assert any("not checked against" in w for w in r.warnings)
     ok = agent.run_chat(bare_nav, req(), FakeLlm([uses(("get_dates", {})), say("You must apply [c1].")]))
-    assert not any("no rules lookup" in w for w in ok.warnings)
+    assert not any("not checked against" in w for w in ok.warnings)
 
 
 def test_usage_is_reported_per_turn(bare_nav):
@@ -436,3 +436,15 @@ def test_a_tool_call_written_as_text_is_executed_and_never_shown(bare_nav):
     out = tb.run(calls[0]["name"], calls[0]["input"])  # `point` becomes lat/lon, ages are used
     assert out["schools"] and out["filters_applied"]["stages"] == ["elementary"]
     assert "error" not in tb.run("search_schools", {"lat": 25.8, "lon": -80.2, "made_up": 1})  # unknown arguments are dropped
+
+
+def test_a_zoning_lookup_returns_the_zoned_schools_as_results(bare_nav):
+    tb = ToolBox(bare_nav, CitationBook(), ChatProfile(lat=LAT, lon=LON))
+    out = tb.run("get_zones", {})
+    ids = {e["place_id"] for lv in ("elementary", "middle", "high") for e in out[lv] if e["place_id"]}
+    assert ids and {r.id for r in tb.results} == ids
+    tb2 = ToolBox(bare_nav, CitationBook(), ChatProfile(lat=LAT, lon=LON))
+    tb2.run("search_schools", {})
+    first = [r.id for r in tb2.results]
+    tb2.run("get_zones", {})
+    assert [r.id for r in tb2.results] == first  # a search's list is kept
