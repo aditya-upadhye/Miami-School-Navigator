@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { translate } from '../i18n/messages';
 import { describe as describeOption } from '../pages/Pathway/usePathway';
+import { glanceRows } from '../pages/School/AtAGlance';
 import { levelLabel } from '../pages/School/useSchool';
 
 const tIn = (lang) => (key, vars) => translate(lang, key, vars);
@@ -43,5 +44,21 @@ describe('pathway option meta line', () => {
   it('pluralizes the key-date countdown', () => {
     expect(translate('en', 'pathway.inDays.one', { n: 1 })).toBe('in 1 day');
     expect(translate('es', 'pathway.daysAgo.other', { n: 3 })).toBe('hace 3 días');
+  });
+});
+
+describe('At a glance leaves out what is missing', () => {
+  const f = (value) => ({ value, status: 'official', source: 's', as_of: '2026-10-17' });
+  const gone = { value: null, status: 'not_available', source: 's', as_of: '2026-10-17', why: 'x', suggested_action: 'y' };
+  const ctx = { t: tIn('en'), nf: String };
+  it('shows only rows that have a value, and never "Not available"', () => {
+    const school = { kind: 'public', state_grade: f('A'), gains_ela: gone, gains_math: gone, enrollment: f(600), tuition: f(0), aftercare: gone, is_magnet: gone, specialties: gone, ese: f(true), license: gone };
+    const rows = glanceRows(school, ctx);
+    expect(rows.map((r) => r.key)).toEqual(['state_grade', 'enrollment', 'tuition', 'ese']);
+    expect(rows.every((r) => !/not available/i.test(r.text))).toBe(true);
+  });
+  it('drops a row whose value renders as nothing, such as care with no before or after flag', () => {
+    const school = { kind: 'private', aftercare: f({ before_care: null, after_care: false, hours: null, cost: null, provider: null }), tuition: gone };
+    expect(glanceRows(school, ctx)).toEqual([]);
   });
 });
