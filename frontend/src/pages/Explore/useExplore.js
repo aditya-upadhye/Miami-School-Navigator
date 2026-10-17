@@ -27,14 +27,15 @@ const DEFAULT_KINDS = KINDS.filter((k) => k !== 'early_learning'); // early lear
 const SPECIALTIES = ['STEM', 'Arts', 'Bilingual', 'IB'];
 
 // The filter fields a chat answer may change, remembered so a change that empties the map can be undone (see the guard in useExplore).
-const FILTER_KEYS = ['view', 'kid', 'radius', 'freeOnly', 'kinds', 'spec', 'onlySpec', 'priorities', 'values', 'ese', 'gradeB'];
+const FILTER_KEYS = ['view', 'top', 'kid', 'radius', 'freeOnly', 'kinds', 'spec', 'onlySpec', 'priorities', 'values', 'ese', 'gradeB'];
 const pickFilters = (st) => Object.fromEntries(FILTER_KEYS.map((k) => [k, st[k]]));
 /** "Public + Early learning": one card for a campus that has more than one kind of program. */
 const kindLabel = (sc) => [...new Set([sc.kind, ...(sc.also_serves ?? []).map((a) => a.kind)])].map((k) => KIND_LABEL[k]).join(' + ');
 const pickLocation = (p) => ({ lat: p.lat, lon: p.lon, address: p.address, matchedAddress: p.matchedAddress, precision: p.precision });
 
 const initialFilters = (profile) => ({
-  view: 'top', // top = best matches (5), all = everything nearby sorted by distance
+  view: 'top', // top = best matches (`top` of them, 5 unless Jarvis was asked for another number), all = everything nearby sorted by distance
+  top: 5,
   kid: (profile.children ?? []).length > 1 ? 'all' : (profile.children ?? []).length === 1 ? 0 : 'any', // 'all' | child index | 'any'
   radius: profile.radius ?? 3,
   freeOnly: !!profile.freeOnly,
@@ -93,7 +94,7 @@ export function useExplore() {
     priorities: [...new Set([...s.priorities, ...s.spec])],
     values: s.values,
     sort: s.view === 'top' ? 'match' : 'distance',
-    limit: s.view === 'top' ? 5 : 30,
+    limit: s.view === 'top' ? s.top : 30,
   };
   const mapSearchKey = JSON.stringify(params);
   // Jarvis starts its school searches from exactly what the map is showing, so both lists are the same schools.
@@ -192,6 +193,7 @@ export function useExplore() {
         const spec = SPECIALTIES.filter((p) => [...(f.specialties ?? []), ...rank].includes(p));
         return {
           view: 'top',
+          top: Math.min(20, Math.max(1, Math.round(f.limit ?? 5))), // "top 3" in the chat: the map shows those 3, not its usual 5
           kid,
           radius: Math.min(25, Math.max(1, Math.round(f.radius_mi ?? st.radius))),
           kinds: f.kinds?.length ? KINDS.filter((k) => f.kinds.includes(k)) : [...KINDS],
@@ -535,7 +537,7 @@ export function useExplore() {
     }),
     badge: profile.precision === 'zip' ? t('explore.badge.zip') : null,
     views: [
-      { id: 'top', label: t('explore.view.top') },
+      { id: 'top', label: t('explore.view.top', { n: s.top }) },
       { id: 'all', label: t('explore.view.all') },
     ].map((v) => ({
       label: v.label,
