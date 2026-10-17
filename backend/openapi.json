@@ -1,0 +1,3369 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Miami-Dade School Navigator API",
+    "description": "Map-based school navigator for Miami-Dade County (infancy to 12th grade). Every metric is a `Field` with status, source, url, as_of and method; missing data is returned as `not_available` with a reason and a next step. Data: Miami-Dade County GIS, FLDOE, curated rules (see /api/meta/quality).\n\n**Language.** Send `X-Lang: en | es | ht` on any request (or `?lang=`, which wins over the header) and the API writes its own text (notes, `why` / `suggested_action` explanations, score reasons, questions to ask, compare labels, errors) in English, Spanish or Haitian Creole. Missing or unknown values mean English. `POST /api/plan` and `POST /api/chat` also take a `lang` body field, which wins for that request. `Field.method` is translated, but `verification: <level>` and the `Check:` marker inside it stay literal. `source`, `url`, school and place names, addresses and data values are never translated. The Spanish and Haitian Creole texts are AI-written and have not been reviewed by a native speaker; English is authoritative.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/geocode": {
+      "get": {
+        "tags": [
+          "location"
+        ],
+        "summary": "Geocode",
+        "operationId": "geocode_api_geocode_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Street address or 5-digit ZIP",
+              "title": "Q"
+            },
+            "description": "Street address or 5-digit ZIP"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeocodeResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/zones": {
+      "get": {
+        "tags": [
+          "location"
+        ],
+        "summary": "Zones",
+        "operationId": "zones_api_zones_get",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 90,
+              "minimum": -90,
+              "title": "Lat"
+            }
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Lon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZonesResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/zones/geojson": {
+      "get": {
+        "tags": [
+          "location"
+        ],
+        "summary": "Zones Geojson",
+        "operationId": "zones_geojson_api_zones_geojson_get",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 90,
+              "minimum": -90,
+              "title": "Lat"
+            }
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Lon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoneShapes"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schools": {
+      "get": {
+        "tags": [
+          "schools"
+        ],
+        "summary": "Schools",
+        "operationId": "schools_api_schools_get",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 90,
+              "minimum": -90,
+              "title": "Lat"
+            }
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Lon"
+            }
+          },
+          {
+            "name": "radius_mi",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 25,
+              "exclusiveMinimum": 0,
+              "default": 3.0,
+              "title": "Radius Mi"
+            }
+          },
+          {
+            "name": "kinds",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "csv of public,charter,private,early_learning",
+              "title": "Kinds"
+            },
+            "description": "csv of public,charter,private,early_learning"
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "csv of infant_toddler,pre_k,elementary,middle,high",
+              "title": "Stage"
+            },
+            "description": "csv of infant_toddler,pre_k,elementary,middle,high"
+          },
+          {
+            "name": "free_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Free Only"
+            }
+          },
+          {
+            "name": "grade_min",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A-F; public/charter only",
+              "title": "Grade Min"
+            },
+            "description": "A-F; public/charter only"
+          },
+          {
+            "name": "specialties",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "csv hard filter, e.g. STEM,Arts",
+              "title": "Specialties"
+            },
+            "description": "csv hard filter, e.g. STEM,Arts"
+          },
+          {
+            "name": "ese",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Ese"
+            }
+          },
+          {
+            "name": "scholarship",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Scholarship"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "match | distance | grade | name",
+              "default": "match",
+              "title": "Sort"
+            },
+            "description": "match | distance | grade | name"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "priorities",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "csv; boosts the match score without filtering",
+              "title": "Priorities"
+            },
+            "description": "csv; boosts the match score without filtering"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "school-name text filter (use a large radius_mi to search the whole county)",
+              "title": "Q"
+            },
+            "description": "school-name text filter (use a large radius_mi to search the whole county)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schools/{school_id}": {
+      "get": {
+        "tags": [
+          "schools"
+        ],
+        "summary": "School Detail",
+        "operationId": "school_detail_api_schools__school_id__get",
+        "parameters": [
+          {
+            "name": "school_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "School Id"
+            }
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 90,
+                  "minimum": -90
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat"
+            }
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 180,
+                  "minimum": -180
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SchoolDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/compare": {
+      "post": {
+        "tags": [
+          "schools"
+        ],
+        "summary": "Compare",
+        "operationId": "compare_api_compare_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompareRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompareResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pathway": {
+      "post": {
+        "tags": [
+          "planning"
+        ],
+        "summary": "Pathway",
+        "operationId": "pathway_api_pathway_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PathwayRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PathwayResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/plan": {
+      "post": {
+        "tags": [
+          "planning"
+        ],
+        "summary": "Plan",
+        "operationId": "plan_api_plan_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dates": {
+      "get": {
+        "tags": [
+          "planning"
+        ],
+        "summary": "Dates",
+        "operationId": "dates_api_dates_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat": {
+      "post": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Chat",
+        "operationId": "chat_api_chat_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meta/quality": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Quality",
+        "operationId": "quality_api_meta_quality_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signup": {
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Signup",
+        "operationId": "signup_api_auth_signup_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Signup"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Login",
+        "operationId": "login_api_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Me",
+        "description": "Signed out is a normal answer ({\"user\": null}), not an error.",
+        "operationId": "me_api_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Logout",
+        "operationId": "logout_api_auth_logout_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        }
+      }
+    },
+    "/api/auth/password": {
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Change Password",
+        "description": "Other devices are signed out; this one stays.",
+        "operationId": "change_password_api_auth_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordChange"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/delete-account": {
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Delete Account",
+        "description": "Deletes the account, its saved schools, its profile (including any address) and every session.",
+        "operationId": "delete_account_api_auth_delete_account_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordConfirm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/profile": {
+      "put": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Put Profile",
+        "operationId": "put_profile_api_me_profile_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/saved": {
+      "get": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "List Saved",
+        "description": "Saved schools, newest first, each with the same summary the search returns (distance when lat/lon are given).",
+        "operationId": "list_saved_api_me_saved_get",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 90,
+                  "minimum": -90
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat"
+            }
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 180,
+                  "minimum": -180
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/saved/{school_id}": {
+      "put": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Save School",
+        "description": "Save (or update the note on) a school. Idempotent.",
+        "operationId": "save_school_api_me_saved__school_id__put",
+        "parameters": [
+          {
+            "name": "school_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "School Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/SaveBody"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Unsave School",
+        "operationId": "unsave_school_api_me_saved__school_id__delete",
+        "parameters": [
+          {
+            "name": "school_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "School Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/saved/merge": {
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Merge Saved",
+        "description": "Add the schools a family saved as a guest. Unknown ids and anything over the limit are skipped; existing notes are kept.",
+        "operationId": "merge_saved_api_me_saved_merge_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MergeBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApplyStep": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "rule_id": {
+            "type": "string",
+            "title": "Rule Id"
+          },
+          "field": {
+            "$ref": "#/components/schemas/Field"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "rule_id",
+          "field"
+        ],
+        "title": "ApplyStep"
+      },
+      "ChatMessage": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant"
+            ],
+            "title": "Role"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "content"
+        ],
+        "title": "ChatMessage"
+      },
+      "ChatProfile": {
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat"
+          },
+          "lon": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lon"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/Child"
+            },
+            "type": "array",
+            "title": "Children",
+            "default": []
+          },
+          "free_only": {
+            "type": "boolean",
+            "title": "Free Only",
+            "default": false
+          },
+          "priorities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Priorities",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "ChatProfile",
+        "description": "What the family has already told us. Held for the request only; nothing is stored."
+      },
+      "ChatRequest": {
+        "properties": {
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Messages"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/ChatProfile"
+          },
+          "lang": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "en",
+                  "es",
+                  "ht"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lang",
+            "description": "Language of the answer. Omit to use the X-Lang header (English when absent). Translations are AI-written and not yet reviewed by a native speaker."
+          }
+        },
+        "type": "object",
+        "required": [
+          "messages"
+        ],
+        "title": "ChatRequest"
+      },
+      "ChatResponse": {
+        "properties": {
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "type": "array",
+            "title": "Citations"
+          },
+          "filters_applied": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Filters Applied"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SchoolSummary"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "tool_calls": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Tool Calls",
+            "default": []
+          },
+          "usage": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Usage",
+            "description": "Model calls and tokens used by this turn (for quota monitoring)."
+          },
+          "degraded": {
+            "type": "boolean",
+            "title": "Degraded",
+            "description": "True when the AI model was unavailable and only structured results are returned.",
+            "default": false
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "answer",
+          "citations",
+          "filters_applied",
+          "results"
+        ],
+        "title": "ChatResponse"
+      },
+      "Child": {
+        "properties": {
+          "age": {
+            "type": "integer",
+            "maximum": 21.0,
+            "minimum": 0.0,
+            "title": "Age"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "age"
+        ],
+        "title": "Child"
+      },
+      "ChildPathway": {
+        "properties": {
+          "child_index": {
+            "type": "integer",
+            "title": "Child Index"
+          },
+          "age": {
+            "type": "integer",
+            "title": "Age"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "current_stage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "infant_toddler",
+                  "pre_k",
+                  "elementary",
+                  "middle",
+                  "high"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Stage"
+          },
+          "grade_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grade Label"
+          },
+          "stages": {
+            "items": {
+              "$ref": "#/components/schemas/PathwayStage"
+            },
+            "type": "array",
+            "title": "Stages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "child_index",
+          "age",
+          "name",
+          "current_stage",
+          "grade_label",
+          "stages"
+        ],
+        "title": "ChildPathway"
+      },
+      "ChildPlan": {
+        "properties": {
+          "child_index": {
+            "type": "integer",
+            "title": "Child Index"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "age_now": {
+            "type": "integer",
+            "title": "Age Now"
+          },
+          "age_at_cutoff": {
+            "type": "integer",
+            "title": "Age At Cutoff"
+          },
+          "age_basis": {
+            "type": "string",
+            "enum": [
+              "birth_date",
+              "estimated_from_age"
+            ],
+            "title": "Age Basis"
+          },
+          "entering": {
+            "type": "string",
+            "title": "Entering",
+            "description": "What the child is doing in the planning year, e.g. 'Kindergarten', 'VPK (Pre-K 4)', 'Grade 2', 'Past 12th grade'."
+          },
+          "stage": {
+            "type": "string",
+            "title": "Stage"
+          },
+          "transition_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transition Note"
+          },
+          "zoned": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ZoneEntry"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eligibility": {
+            "items": {
+              "$ref": "#/components/schemas/Eligibility"
+            },
+            "type": "array",
+            "title": "Eligibility"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PlanItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "child_index",
+          "name",
+          "age_now",
+          "age_at_cutoff",
+          "age_basis",
+          "entering",
+          "stage",
+          "eligibility",
+          "items"
+        ],
+        "title": "ChildPlan"
+      },
+      "Citation": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "source"
+        ],
+        "title": "Citation"
+      },
+      "CompareRequest": {
+        "properties": {
+          "ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Ids"
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat"
+          },
+          "lon": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lon"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ids"
+        ],
+        "title": "CompareRequest"
+      },
+      "CompareResponse": {
+        "properties": {
+          "schools": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Schools"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/CompareRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "schools",
+          "rows"
+        ],
+        "title": "CompareResponse"
+      },
+      "CompareRow": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "cells": {
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            },
+            "type": "array",
+            "title": "Cells"
+          },
+          "best_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Best Index",
+            "description": "Only set for numeric official fields where more is better."
+          },
+          "best_rule": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Best Rule"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "cells"
+        ],
+        "title": "CompareRow"
+      },
+      "DatesResponse": {
+        "properties": {
+          "dates": {
+            "items": {
+              "$ref": "#/components/schemas/KeyDate"
+            },
+            "type": "array",
+            "title": "Dates"
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "dates"
+        ],
+        "title": "DatesResponse"
+      },
+      "Eligibility": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "enum": [
+              "vpk",
+              "kindergarten"
+            ],
+            "title": "Key"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "result": {
+            "type": "string",
+            "enum": [
+              "eligible",
+              "later",
+              "not_eligible"
+            ],
+            "title": "Result"
+          },
+          "exact": {
+            "type": "boolean",
+            "title": "Exact",
+            "description": "False when computed from age only; the September 1 cut-off then makes it an estimate."
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year",
+            "description": "School year the child first qualifies, for result=later."
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          },
+          "field": {
+            "$ref": "#/components/schemas/Field"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "result",
+          "exact",
+          "explanation",
+          "field"
+        ],
+        "title": "Eligibility"
+      },
+      "Field": {
+        "properties": {
+          "value": {
+            "title": "Value"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "official",
+              "derived",
+              "reported_by_school",
+              "curated",
+              "not_available"
+            ],
+            "title": "Status"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "description": "Dataset or rule the value comes from (for not_available: where we looked)."
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of",
+            "description": "Date the underlying data is current to (or was retrieved)."
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method",
+            "description": "How the value was obtained or computed."
+          },
+          "why": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Why",
+            "description": "not_available only: why the value is missing."
+          },
+          "suggested_action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggested Action",
+            "description": "not_available only: what the family can do next."
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "source"
+        ],
+        "title": "Field",
+        "description": "One value plus where it came from."
+      },
+      "GeocodeResult": {
+        "properties": {
+          "lat": {
+            "type": "number",
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "title": "Lon"
+          },
+          "matched_address": {
+            "type": "string",
+            "title": "Matched Address"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "confidence": {
+            "type": "number",
+            "title": "Confidence",
+            "description": "0-1. Address-point matches are high; a ZIP centroid is deliberately low."
+          },
+          "precision": {
+            "type": "string",
+            "enum": [
+              "address",
+              "zip"
+            ],
+            "title": "Precision"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method"
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lat",
+          "lon",
+          "matched_address",
+          "source",
+          "confidence",
+          "precision",
+          "method"
+        ],
+        "title": "GeocodeResult"
+      },
+      "GuideEntry": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "program": {
+            "type": "string",
+            "title": "Program"
+          },
+          "flag_labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Flag Labels"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "schools_nearby": {
+            "type": "integer",
+            "title": "Schools Nearby",
+            "description": "Private schools within 5 miles whose FLDOE directory entry lists this program."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "program",
+          "flag_labels",
+          "summary",
+          "schools_nearby"
+        ],
+        "title": "GuideEntry"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "KeyDate": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "date": {
+            "type": "string",
+            "title": "Date"
+          },
+          "approximate": {
+            "type": "boolean",
+            "title": "Approximate"
+          },
+          "days_until": {
+            "type": "integer",
+            "title": "Days Until",
+            "description": "Negative once the date has passed."
+          },
+          "applies_to": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Applies To"
+          },
+          "field": {
+            "$ref": "#/components/schemas/Field"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "date",
+          "approximate",
+          "days_until",
+          "applies_to",
+          "field"
+        ],
+        "title": "KeyDate"
+      },
+      "Login": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Password"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "Login"
+      },
+      "MeResponse": {
+        "properties": {
+          "user": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "user"
+        ],
+        "title": "MeResponse"
+      },
+      "MergeBody": {
+        "properties": {
+          "ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 200,
+            "title": "Ids",
+            "description": "School ids saved as a guest; unknown ids are skipped."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "ids"
+        ],
+        "title": "MergeBody"
+      },
+      "Nearby": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "park",
+              "library"
+            ],
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "distance_mi": {
+            "$ref": "#/components/schemas/Field"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "name",
+          "address",
+          "distance_mi"
+        ],
+        "title": "Nearby"
+      },
+      "PasswordChange": {
+        "properties": {
+          "current_password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Current Password"
+          },
+          "new_password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "New Password"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "current_password",
+          "new_password"
+        ],
+        "title": "PasswordChange"
+      },
+      "PasswordConfirm": {
+        "properties": {
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Password"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "password"
+        ],
+        "title": "PasswordConfirm"
+      },
+      "PathwayOption": {
+        "properties": {
+          "place_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Place Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kind"
+          },
+          "label": {
+            "$ref": "#/components/schemas/Field"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "label"
+        ],
+        "title": "PathwayOption"
+      },
+      "PathwayRequest": {
+        "properties": {
+          "lat": {
+            "type": "number",
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "title": "Lon"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/Child"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "minItems": 1,
+            "title": "Children"
+          },
+          "free_only": {
+            "type": "boolean",
+            "title": "Free Only",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "lat",
+          "lon",
+          "children"
+        ],
+        "title": "PathwayRequest"
+      },
+      "PathwayResponse": {
+        "properties": {
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/ChildPathway"
+            },
+            "type": "array",
+            "title": "Children"
+          },
+          "zones": {
+            "$ref": "#/components/schemas/ZonesResult"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "children",
+          "zones"
+        ],
+        "title": "PathwayResponse"
+      },
+      "PathwayStage": {
+        "properties": {
+          "stage": {
+            "type": "string",
+            "enum": [
+              "infant_toddler",
+              "pre_k",
+              "elementary",
+              "middle",
+              "high"
+            ],
+            "title": "Stage"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "ages": {
+            "type": "string",
+            "title": "Ages"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "past",
+              "current",
+              "future"
+            ],
+            "title": "Status"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/PathwayOption"
+            },
+            "type": "array",
+            "title": "Options"
+          },
+          "estimate_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate Note"
+          },
+          "key_dates": {
+            "items": {
+              "$ref": "#/components/schemas/KeyDate"
+            },
+            "type": "array",
+            "title": "Key Dates",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "stage",
+          "label",
+          "ages",
+          "status",
+          "options"
+        ],
+        "title": "PathwayStage"
+      },
+      "PlanChild": {
+        "properties": {
+          "age": {
+            "type": "integer",
+            "maximum": 21.0,
+            "minimum": 0.0,
+            "title": "Age",
+            "description": "Age today. Ignored when birth_date is given."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "birth_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Birth Date",
+            "description": "Optional. Exact eligibility depends on the September 1 cut-off, so a birth date gives exact answers; without it everything is estimated from age and labelled so."
+          }
+        },
+        "type": "object",
+        "required": [
+          "age"
+        ],
+        "title": "PlanChild"
+      },
+      "PlanItem": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closes_soon",
+              "upcoming",
+              "closed",
+              "rolling",
+              "info"
+            ],
+            "title": "Status"
+          },
+          "deadline": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/KeyDate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rule_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Rule Ids",
+            "default": []
+          },
+          "field": {
+            "$ref": "#/components/schemas/Field",
+            "description": "Provenance of the main claim in `detail` (curated rule with its verification level, or an official/derived data field)."
+          },
+          "link": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "explore",
+                  "pathway",
+                  "scholarships"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Link"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "detail",
+          "status",
+          "field"
+        ],
+        "title": "PlanItem"
+      },
+      "PlanRequest": {
+        "properties": {
+          "lat": {
+            "type": "number",
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "title": "Lon"
+          },
+          "lang": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "en",
+                  "es",
+                  "ht"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lang",
+            "description": "Language of the generated text. Omit to use the X-Lang header (English when absent). Translations are AI-written and not yet reviewed by a native speaker; English is authoritative."
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/PlanChild"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "minItems": 1,
+            "title": "Children"
+          },
+          "free_only": {
+            "type": "boolean",
+            "title": "Free Only",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "lat",
+          "lon",
+          "children"
+        ],
+        "title": "PlanRequest"
+      },
+      "PlanResponse": {
+        "properties": {
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es",
+              "ht"
+            ],
+            "title": "Lang",
+            "default": "en"
+          },
+          "school_year": {
+            "type": "string",
+            "title": "School Year"
+          },
+          "cutoff_date": {
+            "type": "string",
+            "title": "Cutoff Date"
+          },
+          "today": {
+            "type": "string",
+            "title": "Today"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/ChildPlan"
+            },
+            "type": "array",
+            "title": "Children"
+          },
+          "key_dates": {
+            "items": {
+              "$ref": "#/components/schemas/KeyDate"
+            },
+            "type": "array",
+            "title": "Key Dates"
+          },
+          "scholarship_guide": {
+            "items": {
+              "$ref": "#/components/schemas/GuideEntry"
+            },
+            "type": "array",
+            "title": "Scholarship Guide"
+          },
+          "scholarship_intro": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Field"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "school_year",
+          "cutoff_date",
+          "today",
+          "children",
+          "key_dates",
+          "scholarship_guide"
+        ],
+        "title": "PlanResponse"
+      },
+      "ProfileUpdate": {
+        "properties": {
+          "profile": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Profile",
+            "description": "Opaque to the API (address, children, priorities, language...). At most 16 KB of JSON."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "profile"
+        ],
+        "title": "ProfileUpdate"
+      },
+      "Provenance": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "as_of": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "As Of"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source"
+        ],
+        "title": "Provenance"
+      },
+      "SaveBody": {
+        "properties": {
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "SaveBody"
+      },
+      "SavedItem": {
+        "properties": {
+          "place_id": {
+            "type": "string",
+            "title": "Place Id"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          },
+          "saved_at": {
+            "type": "string",
+            "title": "Saved At"
+          },
+          "school": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SchoolSummary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null when the school is no longer in the dataset."
+          }
+        },
+        "type": "object",
+        "required": [
+          "place_id",
+          "note",
+          "saved_at"
+        ],
+        "title": "SavedItem"
+      },
+      "SavedResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SavedItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "limit"
+        ],
+        "title": "SavedResponse"
+      },
+      "SchoolDetail": {
+        "properties": {
+          "school": {
+            "$ref": "#/components/schemas/SchoolSummary"
+          },
+          "how_to_apply": {
+            "items": {
+              "$ref": "#/components/schemas/ApplyStep"
+            },
+            "type": "array",
+            "title": "How To Apply"
+          },
+          "nearby_parks": {
+            "items": {
+              "$ref": "#/components/schemas/Nearby"
+            },
+            "type": "array",
+            "title": "Nearby Parks"
+          },
+          "nearby_libraries": {
+            "items": {
+              "$ref": "#/components/schemas/Nearby"
+            },
+            "type": "array",
+            "title": "Nearby Libraries"
+          },
+          "questions_to_ask": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Questions To Ask"
+          },
+          "links": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Links"
+          },
+          "zones": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ZonesResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "school",
+          "how_to_apply",
+          "nearby_parks",
+          "nearby_libraries",
+          "questions_to_ask",
+          "links"
+        ],
+        "title": "SchoolDetail"
+      },
+      "SchoolSummary": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "public",
+              "charter",
+              "private",
+              "early_learning"
+            ],
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "zip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Zip"
+          },
+          "lat": {
+            "type": "number",
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "title": "Lon"
+          },
+          "identity_source": {
+            "$ref": "#/components/schemas/Provenance"
+          },
+          "stages": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "grades": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "distance_mi": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Field"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "zoned": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Field"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state_grade": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "gains_ela": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "gains_math": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "enrollment": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "tuition": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "aftercare": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "is_magnet": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "specialties": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "ese": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "scholarship": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "website": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "license": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Field"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "flags": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "online_school",
+                "grade_match_unverified"
+              ]
+            },
+            "type": "array",
+            "title": "Flags",
+            "description": "online_school: a virtual school with no campus to visit (its distance is only the office address). grade_match_unverified: the state grade was joined on a school number whose official names differ; confirm it is the same school."
+          },
+          "match_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Match Score"
+          },
+          "score_breakdown": {
+            "items": {
+              "$ref": "#/components/schemas/ScoreFactor"
+            },
+            "type": "array",
+            "title": "Score Breakdown",
+            "default": []
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons",
+            "default": []
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "address",
+          "city",
+          "zip",
+          "lat",
+          "lon",
+          "identity_source",
+          "stages",
+          "grades",
+          "state_grade",
+          "gains_ela",
+          "gains_math",
+          "enrollment",
+          "tuition",
+          "aftercare",
+          "is_magnet",
+          "specialties",
+          "ese",
+          "scholarship",
+          "phone",
+          "website"
+        ],
+        "title": "SchoolSummary"
+      },
+      "ScoreFactor": {
+        "properties": {
+          "factor": {
+            "type": "string",
+            "title": "Factor"
+          },
+          "points": {
+            "type": "number",
+            "title": "Points"
+          },
+          "max_points": {
+            "type": "number",
+            "title": "Max Points"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "factor",
+          "points",
+          "max_points",
+          "detail"
+        ],
+        "title": "ScoreFactor"
+      },
+      "SearchMeta": {
+        "properties": {
+          "origin": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Origin"
+          },
+          "total_matching": {
+            "type": "integer",
+            "title": "Total Matching"
+          },
+          "returned": {
+            "type": "integer",
+            "title": "Returned"
+          },
+          "filters_applied": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Filters Applied"
+          },
+          "excluded": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Excluded",
+            "description": "How many candidates each hard filter removed."
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes",
+            "default": []
+          },
+          "zones": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ZonesResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "data_available": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "type": "object",
+            "title": "Data Available",
+            "description": "Which optional datasets are loaded, e.g. state_grades, learning_gains, scholarship_flags, magnet_themes, ese_signals; lets a client disable a filter that cannot match."
+          }
+        },
+        "type": "object",
+        "required": [
+          "origin",
+          "total_matching",
+          "returned",
+          "filters_applied"
+        ],
+        "title": "SearchMeta"
+      },
+      "SearchResponse": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SchoolSummary"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/SearchMeta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results",
+          "meta"
+        ],
+        "title": "SearchResponse"
+      },
+      "Signup": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Password"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "title": "Name",
+            "default": ""
+          },
+          "profile": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile",
+            "description": "Optional: the profile the family built as a guest, saved with the new account."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "Signup"
+      },
+      "User": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "profile": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Profile"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "name",
+          "created_at",
+          "profile"
+        ],
+        "title": "User"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "ZoneEntry": {
+        "properties": {
+          "school_source_id": {
+            "type": "string",
+            "title": "School Source Id"
+          },
+          "school_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "School Name"
+          },
+          "place_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Place Id",
+            "description": "Matching id in /api/schools, when the school is in the database."
+          },
+          "field": {
+            "$ref": "#/components/schemas/Field"
+          }
+        },
+        "type": "object",
+        "required": [
+          "school_source_id",
+          "school_name",
+          "field"
+        ],
+        "title": "ZoneEntry"
+      },
+      "ZoneShapes": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "FeatureCollection",
+            "title": "Type",
+            "default": "FeatureCollection"
+          },
+          "features": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Features",
+            "description": "Each feature: a (Multi)Polygon plus properties level, school_name, school_source_id, place_id, source, url, as_of, method."
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "features",
+          "note"
+        ],
+        "title": "ZoneShapes",
+        "description": "GeoJSON FeatureCollection of the attendance zones that contain a location, for drawing on a map."
+      },
+      "ZonesResult": {
+        "properties": {
+          "lat": {
+            "type": "number",
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "title": "Lon"
+          },
+          "elementary": {
+            "items": {
+              "$ref": "#/components/schemas/ZoneEntry"
+            },
+            "type": "array",
+            "title": "Elementary"
+          },
+          "middle": {
+            "items": {
+              "$ref": "#/components/schemas/ZoneEntry"
+            },
+            "type": "array",
+            "title": "Middle"
+          },
+          "high": {
+            "items": {
+              "$ref": "#/components/schemas/ZoneEntry"
+            },
+            "type": "array",
+            "title": "High"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lat",
+          "lon",
+          "elementary",
+          "middle",
+          "high",
+          "note"
+        ],
+        "title": "ZonesResult"
+      }
+    }
+  }
+}

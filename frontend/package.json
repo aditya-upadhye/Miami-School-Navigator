@@ -1,0 +1,24 @@
+{
+  "name": "miami-dade-school-navigator",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Miami-Dade School Navigator: explore, compare and plan school options from preschool to career.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}
