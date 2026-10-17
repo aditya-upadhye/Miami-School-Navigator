@@ -96,9 +96,11 @@ export default function ResultsList({ results, resultsTitle, sortLabel, loading,
                 </span>
                 {r.fits && <span style={{ fontSize: 12.5, color: 'var(--ink2)' }}>{r.fits}</span>}
               </span>
-              <span style={{ flexShrink: 0, padding: '3px 9px', borderRadius: 999, background: 'var(--accent-tint)', color: 'var(--accent-ink)', fontWeight: 700, fontSize: 13 }}>
-                {t('explore.card.match', { n: r.match })}
-              </span>
+              {r.match != null && (
+                <span style={{ flexShrink: 0, padding: '3px 9px', borderRadius: 999, background: 'var(--accent-tint)', color: 'var(--accent-ink)', fontWeight: 700, fontSize: 13 }}>
+                  {t('explore.card.match', { n: r.match })}
+                </span>
+              )}
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
               <Link viewTransition to={`/school/${r.id}`} style={{ ...small, background: 'var(--accent-grad)', color: 'var(--on-accent)' }}>

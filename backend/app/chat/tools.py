@@ -3,6 +3,7 @@ citation-tagged JSON so the model can cite every claim."""
 from __future__ import annotations
 
 import json
+import re
 from typing import Any
 
 from ..domain import STAGES, stage_for_age
@@ -41,7 +42,7 @@ TOOLS: list[dict] = [
          "free_only": {"type": "boolean"}, "grade_min": {"type": "string", "enum": ["A", "B", "C", "D", "F"], "description": "Public/charter state grade floor"},
          "specialties": {"type": "array", "items": {"type": "string"}}, "priorities": {"type": "array", "items": {"type": "string"}},
          "ese": {"type": "boolean"}, "scholarship": {"type": "boolean"},
-         "sort": {"type": "string", "enum": ["match", "distance", "grade", "name"]}, "limit": {"type": "integer", "description": "Max 10"}},
+         "sort": {"type": "string", "enum": ["match", "distance", "grade", "name"]}, "limit": {"type": "integer", "description": "Default 5, max 10. Leave it out so the list matches the family's map"}},
          "required": []}},
     {"name": "get_school",
      "description": "Full detail for one school id: fields, how to apply (with sources), nearby parks/libraries, and questions to ask the school.",
@@ -59,6 +60,17 @@ TOOLS: list[dict] = [
      "input_schema": {"type": "object", "properties": {**LOC, "children": {"type": "array", "items": {"type": "object", "properties": {
          "age": {"type": "integer"}, "name": {"type": "string"}}, "required": ["age"]}}, "free_only": {"type": "boolean"}, "radius_mi": {"type": "number"}},
          "required": ["lat", "lon", "children"]}},
+    {"name": "save_children",
+     "description": ("Remember the children the family tells you about (name and age) so the app keeps them, uses them to pick and rank schools and can filter the map by child. "
+                     "Call it whenever the family states a child's age or name that is not already in the profile, or corrects one. Pass only what they said; never guess an age. "
+                     "Children already in the profile are kept; a child with the same name is updated."),
+     "input_schema": {"type": "object", "properties": {"children": {"type": "array", "maxItems": 8, "items": {"type": "object", "properties": {
+         "age": {"type": "integer", "minimum": 0, "maximum": 21}, "name": {"type": "string"}}, "required": ["age"]}}}, "required": ["children"]}},
+    {"name": "remember",
+     "description": ("Keep a short note about the family for every later chat: a lasting preference or need (for example 'wants a bilingual program', 'worried about long commutes', "
+                     "'Ana has an IEP'), a decision, or a school they liked or ruled out (name it). Use the family's own words, one short sentence each. Do NOT note small talk, "
+                     "questions, or school facts (those come from tools). Notes already remembered are kept; do not repeat them."),
+     "input_schema": {"type": "object", "properties": {"notes": {"type": "array", "maxItems": 6, "items": {"type": "string"}}}, "required": ["notes"]}},
     {"name": "update_map_filters",
      "description": ("Change the filters on the family's map (the Explore page next to this chat). Call it ONLY when the family clearly tells you to apply, set, show, "
                      "filter, change, update or reset something on the map, or says yes to your offer to apply filters. For a question or when they are just exploring, "
@@ -73,11 +85,82 @@ TOOLS: list[dict] = [
          "only_programs": {"type": "boolean", "description": "True to show only schools with those programs; false to just rank them higher"},
          "ese": {"type": "boolean", "description": "Schools with exceptional student education (special needs) support"},
          "values": {"type": "array", "items": {"type": "string", "enum": ["academics", "programs", "popularity", "proximity"]}, "description": "What matters most"},
-         "view": {"type": "string", "enum": ["top", "all"], "description": "top = the 5 best matches, all = everything nearby by distance"}},
+         "view": {"type": "string", "enum": ["top", "all"], "description": "top = the 5 best matches, all = everything nearby by distance"},
+         "child": {"type": "string", "description": "Show schools for one child: pass the child's name from the profile, or 'all' for every child, or 'any' for no child filter"}},
          "required": []}},
 ]
 
 TOOL_NAMES = {t["name"] for t in TOOLS}
+
+
+# What the family just asked for in plain words. The model is told to pass these filters itself; this makes sure the search (and so the
+# map, which copies the search's filters) reflects them even when it does not.
+_ESE = re.compile(r"special[- ]needs|special education|\bese\b|\biep\b|\b504\b|disabilit|autis|dyslex|\badhd\b|wheelchair|learning difference|necesidades especiales|educaci[oó]n especial|discapacidad|autismo|bezwen espesyal|andikap|otis", re.I)
+_PROGRAMS = {"STEM": re.compile(r"\bstem\b", re.I), "Arts": re.compile(r"\barts?\b|\bartes\b|\bmusic\b", re.I), "Bilingual": re.compile(r"bilingual|biling[uü]e|bileng", re.I),
+             "IB": re.compile(r"\bIB\b|international baccalaureate", re.I), "Montessori": re.compile(r"montessori", re.I)}
+_KINDS = {"charter": re.compile(r"\bcharter|ch[aá]rter", re.I), "private": re.compile(r"\bprivate|privad[ao]|pwive", re.I), "public": re.compile(r"\bpublic|p[uú]blic[ao]|piblik", re.I)}
+_FREE = re.compile(r"\bfree\b|no tuition|tuition[- ]free|gratis|gratuit", re.I)
+
+
+def asked_for(text: str) -> dict:
+    """Filters named in the family's latest message: ese, programs (ranked), kinds, free_only."""
+    out: dict[str, Any] = {}
+    if _ESE.search(text):
+        out["ese"] = True
+    progs = [p for p, rx in _PROGRAMS.items() if rx.search(text)]
+    if progs:
+        out["priorities"] = progs
+    kinds = [k for k, rx in _KINDS.items() if rx.search(text)]
+    if kinds:
+        out["kinds"] = kinds
+    if _FREE.search(text):
+        out["free_only"] = True
+    return out
+
+
+_PROPS = {t["name"]: set(t["input_schema"].get("properties", {})) for t in TOOLS}
+
+
+def _tidy_args(name: str, args: dict | None) -> dict:
+    """Models sometimes pass a location as one object (`point`, `location`) or add arguments the tool does not have: fix the first, drop the second."""
+    args = dict(args or {})
+    for key in ("point", "location", "coordinates", "coords", "center"):
+        v = args.pop(key, None)
+        if isinstance(v, dict):
+            args.setdefault("lat", v.get("lat", v.get("latitude")))
+            args.setdefault("lon", v.get("lon", v.get("lng", v.get("longitude"))))
+    allowed = _PROPS.get(name, set())
+    return {k: v for k, v in args.items() if k in allowed}
+
+
+def clean_map_filters(raw: dict | None) -> dict:
+    """The family's current map search, reduced to safe values: Jarvis's searches start from it so its schools match the map."""
+    raw = raw or {}
+    out: dict[str, Any] = {}
+    try:
+        if raw.get("radius_mi") is not None:
+            out["radius_mi"] = min(25.0, max(1.0, float(raw["radius_mi"])))
+        if raw.get("limit") is not None:
+            out["limit"] = min(10, max(1, int(raw["limit"])))
+    except (TypeError, ValueError):
+        pass
+    for key, allowed in (("kinds", ("public", "charter", "private", "early_learning")), ("stage", tuple(STAGES))):
+        v = [x for x in raw.get(key) or [] if x in allowed] if isinstance(raw.get(key), list) else []
+        if v:
+            out[key] = v
+    for key in ("specialties", "priorities"):
+        if isinstance(raw.get(key), list):
+            out[key] = [str(x)[:40] for x in raw[key][:10]]
+    if isinstance(raw.get("values"), list):
+        out["values"] = [v for v in raw["values"] if v in schools_svc.VALUES]
+    for key in ("free_only", "ese"):
+        if raw.get(key) is not None:
+            out[key] = bool(raw[key])
+    if raw.get("grade_min") in ("A", "B", "C", "D", "F"):
+        out["grade_min"] = raw["grade_min"]
+    if raw.get("sort") in ("match", "distance"):
+        out["sort"] = raw["sort"]
+    return out
 DOWNTOWN_MIAMI = (25.7617, -80.1918)
 
 
@@ -89,13 +172,18 @@ class ToolBox:
     language; the model translates per its prompt. `lang` (the request language) only decides the text of the school summaries that are
     returned to the family next to the answer."""
 
-    def __init__(self, nav, book: CitationBook, profile, lang: str | None = None) -> None:
+    def __init__(self, nav, book: CitationBook, profile, lang: str | None = None, map_filters: dict | None = None, user_text: str = "") -> None:
         self.nav, self.book, self.profile = nav, book, profile
+        self.asked = asked_for(user_text)
+        self.mf = clean_map_filters(map_filters)
         self.lang = lang or current_lang()
         self.results: list[SchoolSummary] = []
         self.filters_applied: dict[str, Any] = {}
         self.calls: list[dict] = []
         self.map_update: dict[str, Any] | None = None  # filters the family asked to put on the map (the UI applies them)
+        self.geo: dict[str, Any] | None = None  # the last place the model looked up with `geocode`
+        self.origin: dict[str, Any] | None = None  # where the last school search was centred, when that is not the family's own location
+        self.profile_update: dict[str, Any] | None = None  # details the family told us in the chat (the app stores them on this device)
 
     # ---- compact views ----
     def _school(self, s: SchoolSummary) -> dict:
@@ -144,6 +232,8 @@ class ToolBox:
             self.book = real_book
 
     def _run(self, name: str, args: dict) -> dict:
+        if name in TOOL_NAMES:
+            args = _tidy_args(name, args)
         self.calls.append({"tool": name, "input": args})
         if name not in TOOL_NAMES:
             return {"error": f"unknown tool '{name}'"}
@@ -166,6 +256,7 @@ class ToolBox:
     def _t_geocode(self, q: str) -> dict:
         g = geocode_svc.geocode(self.nav, q)
         c = self.book.cite(g.source, g.url, g.as_of, "official" if g.precision == "address" else "derived")
+        self.geo = {"lat": g.lat, "lon": g.lon, "label": g.matched_address, "precision": g.precision}
         out = {"lat": g.lat, "lon": g.lon, "matched_address": g.matched_address, "precision": g.precision, "confidence": g.confidence, "cite": c}
         if g.note:
             out["note"] = g.note
@@ -176,29 +267,45 @@ class ToolBox:
         return self._zones(zones_svc.zoned_for(self.nav, lat, lon))
 
     def _t_search_schools(self, lat=None, lon=None, radius_mi=None, q=None, kinds=None, ages=None, stages=None, free_only=None, grade_min=None,
-                          specialties=None, priorities=None, ese=None, scholarship=None, sort="match", limit=6) -> dict:
+                          specialties=None, priorities=None, ese=None, scholarship=None, sort=None, limit=None) -> dict:
         if q and lat is None and lon is None and self.profile.lat is None:
             lat, lon = DOWNTOWN_MIAMI  # name lookup before we know where the family lives: search the whole county from the center
         else:
             lat, lon = self._loc(lat, lon)
+        if not q:  # a search centred somewhere other than the family's own location (they asked about another place): the app moves the map there
+            far = self.profile.lat is None or abs(lat - self.profile.lat) > 0.0005 or abs(lon - self.profile.lon) > 0.0005
+            near_geo = self.geo and abs(lat - self.geo["lat"]) < 0.0005 and abs(lon - self.geo["lon"]) < 0.0005
+            self.origin = ({"lat": lat, "lon": lon, "label": self.geo["label"] if near_geo else None, "precision": self.geo["precision"] if near_geo else None} if far else None)
+        mf = {} if q else self.mf  # a name lookup is not a map search; anything else starts from what the map shows, so the lists match
         st = list(stages or [])
+        if not st and not ages and not q:
+            ages = [] if mf.get("stage") else [c.age for c in self.profile.children]  # the children the family told us about
+            st = list(mf.get("stage") or [])
         for a in ages or []:
             s = stage_for_age(int(a))
             if s and s not in st:
                 st.append(s)
-        free = self.profile.free_only if free_only is None else free_only  # the family's stated preference wins when the model omits it
-        pri = priorities if priorities is not None else self.profile.priorities
-        resp = schools_svc.search(self.nav, lat=lat, lon=lon, radius_mi=float(radius_mi or (25 if q else 3)), q=q, kinds=kinds or None, stages=st or None,
-                                  free_only=bool(free), grade_min=grade_min, specialties=specialties or None, ese=bool(ese),
-                                  scholarship=bool(scholarship), sort=sort, limit=min(int(limit or 6), 10), priorities=pri or None,
-                                  values=[v for v in self.profile.values if v in schools_svc.VALUES] or None)  # the family's own stated values; the model cannot change them
+        if not q:  # what they just said wins over the map's current setting, unless the model chose a value itself
+            ese = self.asked.get("ese") if ese is None else ese
+            kinds = kinds or self.asked.get("kinds")
+            free_only = self.asked.get("free_only") if free_only is None else free_only
+            if priorities is None and self.asked.get("priorities"):
+                priorities = list(dict.fromkeys([*mf.get("priorities", self.profile.priorities), *self.asked["priorities"]]))
+        free = (mf.get("free_only", self.profile.free_only)) if free_only is None else free_only  # the family's stated preference wins when the model omits it
+        pri = priorities if priorities is not None else mf.get("priorities", self.profile.priorities)
+        vals = mf.get("values") if "values" in mf else self.profile.values
+        resp = schools_svc.search(self.nav, lat=lat, lon=lon, radius_mi=float(radius_mi or mf.get("radius_mi") or (25 if q else 3)), q=q, kinds=kinds or mf.get("kinds") or None,
+                                  stages=st or None, free_only=bool(free), grade_min=grade_min or mf.get("grade_min"), specialties=specialties or mf.get("specialties") or None,
+                                  ese=bool(mf.get("ese") if ese is None else ese), scholarship=bool(scholarship), sort=sort or mf.get("sort", "match"),
+                                  limit=min(int(limit or mf.get("limit") or 5), 10), priorities=pri or None,
+                                  values=[v for v in vals if v in schools_svc.VALUES] or None)  # the family's own stated values; the model cannot change them
         self.results, self.filters_applied = resp.results, resp.meta.filters_applied
         return {"schools": [self._school(s) for s in resp.results], "total_matching": resp.meta.total_matching,
                 "filters_applied": resp.meta.filters_applied, "excluded_by_filter": resp.meta.excluded, "notes": resp.meta.notes,
                 "zones": self._zones(resp.meta.zones) if resp.meta.zones else None}
 
     def _t_update_map_filters(self, reset=None, radius_mi=None, kinds=None, free_only=None, grade_min=None, programs=None, only_programs=None,
-                              ese=None, values=None, view=None) -> dict:
+                              ese=None, values=None, view=None, child=None) -> dict:
         upd: dict[str, Any] = {}
         if reset:
             upd["reset"] = True
@@ -219,10 +326,51 @@ class ToolBox:
             upd["values"] = [v for v in values if v in schools_svc.VALUES]
         if view in ("top", "all"):
             upd["view"] = view
+        if child is not None:
+            names = [(c.name or "").strip().casefold() for c in self.profile.children]
+            key = str(child).strip().casefold()
+            if key in ("all", "any"):
+                upd["kid"] = key
+            elif key and key in names:
+                upd["kid"] = names.index(key)
         if not upd:
             return {"error": "No valid filter was given. Pass at least one filter to apply."}
         self.map_update = {**(self.map_update or {}), **upd}
         return {"applied": upd, "note": "The map updates as soon as your answer is shown. Tell the family in one sentence what you changed."}
+
+    def _t_save_children(self, children=None) -> dict:
+        merged = [c.model_copy() for c in self.profile.children]
+        for raw in (children or [])[:8]:
+            try:
+                age = int(raw["age"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if not 0 <= age <= 21:
+                continue
+            name = " ".join(str(raw.get("name") or "").split())[:40] or None
+            same = next((c for c in merged if name and c.name and c.name.casefold() == name.casefold()), None)
+            if same is None and not name:
+                same = next((c for c in merged if not c.name and c.age == age), None)
+            if same is not None:
+                same.age = age
+            elif len(merged) < 8:
+                merged.append(Child(age=age, name=name))
+        self.profile.children = merged
+        self.profile_update = {"children": [c.model_dump() for c in merged]}
+        return {"saved": self.profile_update["children"], "note": "Saved on the family's device. Use these children from now on and tell them in one sentence what you saved."}
+
+    def _t_remember(self, notes=None) -> dict:
+        have = list(self.profile.memory)
+        seen = {n.casefold() for n in have}
+        for raw in (notes or [])[:6]:
+            n = " ".join(str(raw).split())[:200]
+            if n and n.casefold() not in seen:
+                have.append(n)
+                seen.add(n.casefold())
+        have = have[-30:]  # the newest 30 notes
+        self.profile.memory = have
+        self.profile_update = {**(self.profile_update or {}), "memory": have}
+        return {"remembered": have, "note": "Saved on the family's device for later chats. Do not announce every note; mention it briefly only if it helps."}
 
     def _t_get_school(self, school_id: str, lat=None, lon=None) -> dict:
         lat = lat if lat is not None else self.profile.lat

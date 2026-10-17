@@ -1510,11 +1510,20 @@
             "type": "array",
             "title": "Values",
             "default": []
+          },
+          "memory": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Memory",
+            "description": "Notes Jarvis kept from earlier chats (preferences, worries, schools the family liked), in short sentences. The app stores them on the family's device and sends them back."
           }
         },
         "type": "object",
         "title": "ChatProfile",
-        "description": "What the family has already told us. Held for the request only; nothing is stored."
+        "description": "What the family has already told us. Held for the request only; the server stores nothing (the app keeps it on the family's device)."
       },
       "ChatRequest": {
         "properties": {
@@ -1534,6 +1543,25 @@
             "title": "Map Available",
             "description": "True when the chat is shown next to the map, so Jarvis may change the map filters (reply `map_update`).",
             "default": false
+          },
+          "map_next": {
+            "type": "boolean",
+            "title": "Map Next",
+            "description": "True when the map is on the next page (the onboarding chat): Jarvis offers to show the results on the map and, when asked, returns `map_update` so the app opens the map with those filters.",
+            "default": false
+          },
+          "map_filters": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Map Filters",
+            "description": "The family's current map search (radius_mi, kinds, stage, free_only, grade_min, specialties, ese, priorities, values, sort, limit). Jarvis's school searches default to it, so the schools it names are the schools on the map."
           },
           "lang": {
             "anyOf": [
@@ -1615,6 +1643,38 @@
             "title": "Warnings",
             "default": []
           },
+          "origin": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin",
+            "description": "Where Jarvis's school search was centred (lat, lon, label, precision) when the family asked about a place other than their own location, so the app can move the map there."
+          },
+          "cached": {
+            "type": "boolean",
+            "title": "Cached",
+            "description": "True when this answer was served from the answer cache instead of being generated again.",
+            "default": false
+          },
+          "profile_update": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Update",
+            "description": "Details the family told Jarvis in the chat, for the app to keep on their device: `children` (the full list of {name, age}). Set only when they mentioned a child."
+          },
           "map_update": {
             "anyOf": [
               {
@@ -1626,7 +1686,7 @@
               }
             ],
             "title": "Map Update",
-            "description": "Filters the family asked Jarvis to put on the map (radius_mi, kinds, free_only, grade_min, programs, only_programs, ese, values, view, reset). Set only when they asked for a change."
+            "description": "Filters the family asked Jarvis to put on the map (radius_mi, kinds, free_only, grade_min, programs, only_programs, ese, values, view, kid, reset). Set only when they asked for a change."
           }
         },
         "type": "object",

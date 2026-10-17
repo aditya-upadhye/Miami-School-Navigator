@@ -54,6 +54,8 @@ class Settings:
     )
     llm_max_tool_calls: int = 4  # spec: max 4 tool calls per chat turn
     http_timeout: float = 60.0
+    chat_cache_ttl: float = field(default_factory=lambda: float(os.getenv("CHAT_CACHE_TTL_SECONDS", 7 * 24 * 3600)))  # 0 turns the answer cache off
+    chat_cache_max: int = field(default_factory=lambda: int(os.getenv("CHAT_CACHE_MAX_ENTRIES", 5000)))
 
     @property
     def snapshot_dir(self) -> Path:
