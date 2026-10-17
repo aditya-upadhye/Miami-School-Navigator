@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+data/navigator.db
+data/navigator.db-*
+.pytest_cache/
+
+# raw downloads (may contain contact details)
+data/raw/
+data/users.db*

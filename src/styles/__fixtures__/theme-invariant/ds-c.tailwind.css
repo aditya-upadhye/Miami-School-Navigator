@@ -1,5 +1,0 @@
-@theme inline {
-  --color-secondary-tone: var(--secondary-tone);
-  --color-secondary-tone-foreground: var(--secondary-tone-foreground);
-}
-@utility font-display { font-family: var(--font-display); }

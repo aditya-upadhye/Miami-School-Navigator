@@ -1,0 +1,9 @@
+{
+  "_readme": "Human-verified magnet programs. Add one entry per school after checking it against the district's magnet catalog (miamimagnets.org). Leave this list empty rather than guess: schools missing here are reported as 'magnet status not available'. Fields: source_id (county school ID, e.g. '7301') or name; themes (list of strings as the catalog words them); verified_by; verified_on (YYYY-MM-DD); catalog_url (the exact page you checked).",
+  "as_of": null,
+  "source": {
+    "title": "M-DCPS Magnet Programs catalog (curated by hand)",
+    "url": "https://www.miamimagnets.org/"
+  },
+  "schools": []
+}

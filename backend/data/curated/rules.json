@@ -1,0 +1,374 @@
+{
+  "_readme": "Curated application rules and key dates. Every entry has a source URL and a verified_on date. `verification` says how well it is confirmed: confirmed_district_source (an M-DCPS or state page checked on verified_on), single_secondary_source (one non-district page; confirm before relying on it), unconfirmed_project_spec (stated in the project spec, not independently found). Re-check the unconfirmed ones on dadeschools.net before the demo and update verification + verified_on. Added levels: other_district_policies (consistent across several Florida district policies that cite the statute; not M-DCPS or statute text itself). Each rule has i18n.es.text and i18n.ht.text and each date i18n.<lang>.label (AI-written translations, not yet reviewed by a native speaker; English is authoritative).",
+  "as_of": "2026-10-16",
+  "rules": [
+    {
+      "id": "magnet_window",
+      "applies_to": [
+        "public"
+      ],
+      "title": "Magnet application window (2027-28)",
+      "text": "The online magnet application for the 2027-28 school year opens October 1, 2026 and closes January 15, 2027.",
+      "source": "Miami Springs Preparatory Academy 6-12 (school page); prior-cycle dates confirmed by M-DCPS release of Jan 13, 2026 (deadline Jan 15, 2026) and WLRN, Sept 30, 2025 (opened Oct 1, 2025)",
+      "url": "https://miamispringshawks.net/2025-2026-magnet-registration-instructions/",
+      "verified_on": "2026-10-15",
+      "verification": "single_secondary_source",
+      "i18n": {
+        "es": {
+          "text": "La solicitud magnet en línea para el año escolar 2027-28 abre el 1 de octubre de 2026 y cierra el 15 de enero de 2027."
+        },
+        "ht": {
+          "text": "Aplikasyon magnet sou entènèt pou ane eskolè 2027-28 la louvri 1ye oktòb 2026 epi li fèmen 15 janvye 2027."
+        }
+      }
+    },
+    {
+      "id": "magnet_how_to_apply",
+      "applies_to": [
+        "public"
+      ],
+      "title": "Where to apply",
+      "text": "Apply through the M-DCPS Parent Portal on dadeschools.net: log in with an Apple or Google account and open the Admissions Application tile. Magnet and VPK applications are accepted exclusively through the Admissions tab. Program details are at miamimagnets.org.",
+      "source": "M-DCPS press release, January 13, 2026",
+      "url": "https://news.dadeschools.net/cmnc/new/37651",
+      "verified_on": "2026-10-15",
+      "verification": "confirmed_district_source",
+      "i18n": {
+        "es": {
+          "text": "Presente la solicitud en el Portal para Padres de M-DCPS en dadeschools.net: inicie sesión con una cuenta de Apple o Google y abra el icono de Solicitud de Admisión (Admissions Application). Las solicitudes magnet y de VPK se aceptan exclusivamente en la pestaña de Admisiones (Admissions). Los detalles de los programas están en miamimagnets.org."
+        },
+        "ht": {
+          "text": "Aplike atravè Pòtal Paran M-DCPS la sou dadeschools.net: konekte ak yon kont Apple oswa Google epi louvri tuil Aplikasyon Admisyon an (Admissions Application). Aplikasyon magnet ak VPK yo aksepte sèlman atravè onglè Admisyon an (Admissions). Ou ka jwenn detay pwogram yo sou miamimagnets.org."
+        }
+      }
+    },
+    {
+      "id": "magnet_programs_limit",
+      "applies_to": [
+        "public"
+      ],
+      "title": "How many programs you can list",
+      "text": "A family can list up to 5 magnet programs on one application (project spec: up to 5 programs at 5 schools).",
+      "source": "Project spec; a 2024 news article also reports up to five programs per application",
+      "url": "https://caribbeantoday.com/sections/fyi/unlocking-the-path-to-educational-excellence-navigating-miami-dade-county-public-schools-magnet-application-process",
+      "verified_on": "2026-10-15",
+      "verification": "unconfirmed_project_spec",
+      "i18n": {
+        "es": {
+          "text": "Una familia puede incluir hasta 5 programas magnet en una solicitud (especificación del proyecto: hasta 5 programas en 5 escuelas)."
+        },
+        "ht": {
+          "text": "Yon fanmi ka mete jiska 5 pwogram magnet sou yon sèl aplikasyon (espesifikasyon pwojè a: jiska 5 pwogram nan 5 lekòl)."
+        }
+      }
+    },
+    {
+      "id": "magnet_lottery",
+      "applies_to": [
+        "public"
+      ],
+      "title": "How magnet seats are assigned",
+      "text": "Seats are generally assigned by random lottery. Visual and Performing Arts programs require an audition and International programs require language proficiency testing.",
+      "source": "2024 news article on the M-DCPS magnet process (secondary source)",
+      "url": "https://caribbeantoday.com/sections/fyi/unlocking-the-path-to-educational-excellence-navigating-miami-dade-county-public-schools-magnet-application-process",
+      "verified_on": "2026-10-15",
+      "verification": "single_secondary_source",
+      "i18n": {
+        "es": {
+          "text": "Los cupos generalmente se asignan por sorteo al azar. Los programas de Artes Visuales y Escénicas requieren una audición y los programas Internacionales requieren una prueba de dominio del idioma."
+        },
+        "ht": {
+          "text": "Anjeneral yo bay plas yo pa tiraj o aza. Pwogram Atizay Vizyèl ak Atizay Spektak yo mande yon odisyon, epi pwogram Entènasyonal yo mande yon tès konpetans nan lang."
+        }
+      }
+    },
+    {
+      "id": "magnet_zoned_must_apply",
+      "applies_to": [
+        "public"
+      ],
+      "title": "Zoned students still need to apply",
+      "text": "A child who lives in a magnet school's attendance zone must still submit a magnet application to attend the magnet program.",
+      "source": "Project spec (not independently confirmed)",
+      "url": "https://www.miamimagnets.org/",
+      "verified_on": "2026-10-15",
+      "verification": "unconfirmed_project_spec",
+      "i18n": {
+        "es": {
+          "text": "Un niño que vive en la zona de asistencia de una escuela magnet debe presentar de todos modos una solicitud magnet para asistir al programa magnet."
+        },
+        "ht": {
+          "text": "Yon timoun ki rete nan zòn lekòl magnet la dwe toujou soumèt yon aplikasyon magnet pou li ka ale nan pwogram magnet la."
+        }
+      }
+    },
+    {
+      "id": "magnet_results",
+      "applies_to": [
+        "public"
+      ],
+      "title": "When results come out",
+      "text": "Magnet results are expected around March 15, 2027.",
+      "source": "Project spec (not independently confirmed)",
+      "url": "https://www.miamimagnets.org/",
+      "verified_on": "2026-10-15",
+      "verification": "unconfirmed_project_spec",
+      "i18n": {
+        "es": {
+          "text": "Se esperan los resultados magnet alrededor del 15 de marzo de 2027."
+        },
+        "ht": {
+          "text": "Yo atann rezilta magnet yo anviwon 15 mas 2027."
+        }
+      }
+    },
+    {
+      "id": "vpk_age",
+      "applies_to": [
+        "early_learning",
+        "public",
+        "charter",
+        "private"
+      ],
+      "title": "VPK eligibility",
+      "text": "Florida's free Voluntary Prekindergarten (VPK) is for children who live in Florida and turn 4 on or before September 1 of the program year.",
+      "source": "Florida Department of Education: Florida's Voluntary Prekindergarten Education Program",
+      "url": "https://www.fldoe.org/schools/early-learning/parents/vpk-parents",
+      "verified_on": "2026-10-15",
+      "verification": "confirmed_district_source",
+      "i18n": {
+        "es": {
+          "text": "El Prekínder Voluntario (VPK) gratuito de Florida es para niños que viven en Florida y cumplen 4 años el 1 de septiembre del año del programa o antes."
+        },
+        "ht": {
+          "text": "Prekindègatèn Volontè (VPK) gratis Florid la se pou timoun ki rete Florid epi ki fè 4 an anvan oswa nan dat 1ye septanm ane pwogram nan."
+        }
+      }
+    },
+    {
+      "id": "vpk_apply",
+      "applies_to": [
+        "early_learning",
+        "public"
+      ],
+      "title": "Applying for VPK in M-DCPS",
+      "text": "Families can apply for select high-interest M-DCPS VPK programs by the January 15 deadline; other VPK programs accept applications at any time on a first-come, first-served basis.",
+      "source": "M-DCPS press release, January 13, 2026",
+      "url": "https://news.dadeschools.net/cmnc/new/37651",
+      "verified_on": "2026-10-15",
+      "verification": "confirmed_district_source",
+      "i18n": {
+        "es": {
+          "text": "Las familias pueden solicitar ciertos programas VPK de M-DCPS de alta demanda antes de la fecha límite del 15 de enero; los demás programas VPK aceptan solicitudes en cualquier momento por orden de llegada."
+        },
+        "ht": {
+          "text": "Fanmi yo ka aplike pou kèk pwogram VPK M-DCPS ki gen anpil demann anvan dat limit 15 janvye a; lòt pwogram VPK yo aksepte aplikasyon nenpòt ki lè selon premye ki vini, premye ki sèvi."
+        }
+      }
+    },
+    {
+      "id": "scholarships",
+      "applies_to": [
+        "private"
+      ],
+      "title": "Private school scholarships",
+      "text": "Florida school-choice scholarships for private school tuition are administered through approved scholarship funding organizations such as Step Up For Students and the AAA Scholarship Foundation. Whether a given private school accepts a scholarship must be confirmed with the school.",
+      "source": "Project spec (not independently confirmed); Step Up For Students and AAA Scholarship Foundation",
+      "url": "https://www.stepupforstudents.org/",
+      "verified_on": "2026-10-15",
+      "verification": "unconfirmed_project_spec",
+      "i18n": {
+        "es": {
+          "text": "Las becas de Florida para elegir escuela que ayudan a pagar la matrícula de escuelas privadas las administran organizaciones de financiamiento de becas aprobadas, como Step Up For Students y la AAA Scholarship Foundation. Si una escuela privada acepta una beca debe confirmarse con la escuela."
+        },
+        "ht": {
+          "text": "Bous Florid pou chwazi lekòl ki ede peye frè lekòl prive yo jere pa òganizasyon finansman bous ki apwouve tankou Step Up For Students ak AAA Scholarship Foundation. Fòk ou konfime ak lekòl la si yon lekòl prive aksepte yon bous."
+        }
+      }
+    },
+    {
+      "id": "charter_lottery",
+      "applies_to": [
+        "charter"
+      ],
+      "title": "Charter school admission",
+      "text": "Charter schools run their own enrollment and lotteries: apply directly to each charter school and ask for its deadline.",
+      "source": "Project spec (not independently confirmed)",
+      "url": "https://www.fldoe.org/schools/school-choice/charter-schools/",
+      "verified_on": "2026-10-15",
+      "verification": "unconfirmed_project_spec",
+      "i18n": {
+        "es": {
+          "text": "Las escuelas chárter manejan su propia inscripción y sorteos: solicite directamente en cada escuela chárter y pregunte por su fecha límite."
+        },
+        "ht": {
+          "text": "Lekòl charter yo gen pwòp enskripsyon ak tiraj yo: aplike dirèkteman nan chak lekòl charter epi mande dat limit li."
+        }
+      }
+    },
+    {
+      "id": "kindergarten_age",
+      "applies_to": [
+        "public",
+        "charter"
+      ],
+      "title": "Kindergarten age",
+      "text": "A child can start public kindergarten if they turn 5 on or before September 1 of the school year (s. 1003.21, Florida Statutes, as applied by Florida school districts).",
+      "source": "Duval, Lafayette and Sarasota district policies citing s. 1003.21, F.S. (not M-DCPS and not the statute text)",
+      "url": "https://www.dcps.duvalschools.org/o/aaes/page/how-do-i-register-my-kindergarten-child/",
+      "verified_on": "2026-10-16",
+      "verification": "other_district_policies",
+      "i18n": {
+        "es": {
+          "text": "Un niño puede empezar el kínder público si cumple 5 años el 1 de septiembre del año escolar o antes (art. 1003.21 de los Estatutos de Florida, tal como lo aplican los distritos escolares de Florida)."
+        },
+        "ht": {
+          "text": "Yon timoun ka kòmanse kindègatèn piblik si li fè 5 an anvan oswa nan dat 1ye septanm ane eskolè a (atik 1003.21, Lwa Florid yo, jan distrik lekòl Florid yo aplike l)."
+        }
+      }
+    },
+    {
+      "id": "scholarship_fes_eo_ftc",
+      "applies_to": [
+        "private"
+      ],
+      "title": "FES Educational Options and Florida Tax Credit scholarships",
+      "text": "These two Step Up For Students scholarships help pay private school tuition for Florida K-12 students who are eligible for public school. Income affects the order in which funding is awarded, not whether a family can apply. Award amounts vary with grade and county. Only schools that take part can accept them: ask each school.",
+      "source": "Third-party summaries of Step Up For Students programs (Outschool, Tutero); Step Up's Private School Family Handbook is the official source",
+      "url": "https://www.stepupforstudents.org/?p=67764",
+      "verified_on": "2026-10-16",
+      "verification": "single_secondary_source",
+      "i18n": {
+        "es": {
+          "text": "Estas dos becas de Step Up For Students ayudan a pagar la matrícula de escuelas privadas para estudiantes de K-12 de Florida que son elegibles para la escuela pública. Los ingresos afectan el orden en que se otorgan los fondos, no si una familia puede solicitar. Los montos varían según el grado y el condado. Solo las escuelas participantes pueden aceptarlas: pregunte a cada escuela."
+        },
+        "ht": {
+          "text": "De bous Step Up For Students sa yo ede peye frè lekòl prive pou elèv K-12 Florid ki kalifye pou lekòl piblik. Revni a afekte lòd yo bay finansman an, pa si yon fanmi ka aplike. Montan yo varye selon klas la ak konte a. Se sèlman lekòl ki patisipe ki ka aksepte yo: mande chak lekòl."
+        }
+      }
+    },
+    {
+      "id": "scholarship_fes_ua",
+      "applies_to": [
+        "private"
+      ],
+      "title": "FES Unique Abilities scholarship",
+      "text": "For students from age 3 through grade 12 (or up to age 22) who have a qualifying diagnosis such as autism, Down syndrome, dyslexia or ADHD. Eligibility depends on the child's diagnosis, not on income. A school listing it takes part in the program, which does not by itself show what services it provides: ask.",
+      "source": "Third-party summaries of Step Up For Students programs (Outschool, Tutero); Step Up's Private School Family Handbook is the official source",
+      "url": "https://www.stepupforstudents.org/?p=67764",
+      "verified_on": "2026-10-16",
+      "verification": "single_secondary_source",
+      "i18n": {
+        "es": {
+          "text": "Para estudiantes desde los 3 años hasta el grado 12 (o hasta los 22 años) con un diagnóstico que califique, como autismo, síndrome de Down, dislexia o TDAH. La elegibilidad depende del diagnóstico del niño, no de los ingresos. Una escuela que figura en la lista participa en el programa, lo cual no muestra por sí solo qué servicios ofrece: pregunte."
+        },
+        "ht": {
+          "text": "Pou elèv ki gen 3 an jiska klas 12 (oswa jiska 22 an) ki gen yon dyagnostik ki kalifye tankou otis, sendwòm Down, disleksi oswa TDAH. Eligibilite a depann de dyagnostik timoun nan, pa de revni. Yon lekòl ki nan lis la patisipe nan pwogram nan, sa ki pa montre pou kont li ki sèvis li bay: mande."
+        }
+      }
+    },
+    {
+      "id": "scholarship_pep",
+      "applies_to": [
+        "private"
+      ],
+      "title": "Personalized Education Program (PEP) scholarship",
+      "text": "For parent-directed learning such as homeschooling, for children who are 5 by September 1. Sources disagree on whether PEP is open to new students for 2026-27, so check stepupforstudents.org before counting on it.",
+      "source": "Third-party summaries of Step Up For Students programs (Outschool, Tutero); sources conflict on 2026-27 capacity",
+      "url": "https://www.stepupforstudents.org/",
+      "verified_on": "2026-10-16",
+      "verification": "single_secondary_source",
+      "i18n": {
+        "es": {
+          "text": "Para el aprendizaje dirigido por los padres, como la educación en el hogar, para niños que tienen 5 años al 1 de septiembre. Las fuentes no coinciden sobre si PEP está abierto a nuevos estudiantes para 2026-27, así que consulte stepupforstudents.org antes de contar con él."
+        },
+        "ht": {
+          "text": "Pou aprantisaj ki dirije pa paran tankou lekòl lakay, pou timoun ki gen 5 an anvan 1ye septanm. Sous yo pa dakò si PEP louvri pou nouvo elèv pou 2026-27, kidonk gade stepupforstudents.org anvan ou konte sou li."
+        }
+      }
+    }
+  ],
+  "dates": [
+    {
+      "id": "magnet_opens",
+      "label": "Magnet applications open (2027-28)",
+      "date": "2026-10-01",
+      "approximate": false,
+      "applies_to": [
+        "public"
+      ],
+      "rule_id": "magnet_window",
+      "i18n": {
+        "es": {
+          "label": "Abren las solicitudes magnet (2027-28)"
+        },
+        "ht": {
+          "label": "Aplikasyon magnet louvri (2027-28)"
+        }
+      }
+    },
+    {
+      "id": "magnet_closes",
+      "label": "Magnet applications close (2027-28)",
+      "date": "2027-01-15",
+      "approximate": false,
+      "applies_to": [
+        "public"
+      ],
+      "rule_id": "magnet_window",
+      "i18n": {
+        "es": {
+          "label": "Cierran las solicitudes magnet (2027-28)"
+        },
+        "ht": {
+          "label": "Aplikasyon magnet fèmen (2027-28)"
+        }
+      }
+    },
+    {
+      "id": "magnet_results",
+      "label": "Magnet results expected (approximately)",
+      "date": "2027-03-15",
+      "approximate": true,
+      "applies_to": [
+        "public"
+      ],
+      "rule_id": "magnet_results",
+      "i18n": {
+        "es": {
+          "label": "Resultados magnet previstos (aproximadamente)"
+        },
+        "ht": {
+          "label": "Rezilta magnet yo prevwa (apeprè)"
+        }
+      }
+    },
+    {
+      "id": "vpk_cutoff",
+      "label": "VPK: child must be 4 on or before this date (2027-28 program year)",
+      "date": "2027-09-01",
+      "approximate": false,
+      "applies_to": [
+        "early_learning",
+        "public",
+        "charter",
+        "private"
+      ],
+      "rule_id": "vpk_age",
+      "i18n": {
+        "es": {
+          "label": "VPK: el niño debe tener 4 años en esta fecha o antes (año del programa 2027-28)"
+        },
+        "ht": {
+          "label": "VPK: timoun nan dwe gen 4 an nan dat sa a oswa anvan (ane pwogram 2027-28)"
+        }
+      }
+    }
+  ],
+  "planning": {
+    "school_year": "2027-28",
+    "age_cutoff": "2027-09-01",
+    "cutoff_source_rule": "vpk_age",
+    "note": "Florida measures VPK and kindergarten age on September 1 of the school year. The plan assumes the 2027-28 year, matching the open magnet application window."
+  }
+}
