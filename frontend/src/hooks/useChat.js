@@ -11,17 +11,16 @@ export function chatProfile(p) {
     children: (p.children ?? []).map((c) => ({ age: c.age, name: c.name || undefined })),
     free_only: !!p.freeOnly,
     priorities: p.priorities ?? [],
+    values: p.values ?? [],
   };
 }
 
 /**
- * Conversation with Navi (POST /api/chat). messages: {role, content, citations?, results?, warnings?, degraded?}.
+ * Conversation with Jarvis (POST /api/chat). messages: {role, content, citations?, results?, warnings?, degraded?}.
  * Only role + content are sent back as history.
  */
 export function useChat({ blankProfile = false } = {}) {
-  const { profile: stored } = useProfile();
-  // The onboarding chat starts blank for a new family instead of assuming the demo family's address.
-  const profile = blankProfile && stored.isDemo ? { lang: stored.lang, children: [] } : stored;
+  const { profile } = useProfile(); // nothing is assumed about a new family: with no address the assistant asks for one
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

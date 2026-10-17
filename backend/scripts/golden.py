@@ -28,7 +28,7 @@ def tools_used(r: dict) -> list[str]:
 
 
 def asserted(r: dict, name: str) -> dict:
-    return next((c["input"] for c in r.get("tool_calls", []) if c["tool"] == name), {})  # {} when the tool was never called: a clean FAIL, not a crash
+    return next(c["input"] for c in r["tool_calls"] if c["tool"] == name)
 
 
 @dataclass
@@ -105,7 +105,7 @@ def c9(r):
 
 
 def c10(r):
-    return need("compare" in tools_used(r), "did not call compare") + need(len(asserted(r, "compare").get("ids", [])) == 3, "compare did not receive 3 ids") + need(len(r["results"]) == 3, "did not return 3 schools")
+    return need("compare" in tools_used(r), "did not call compare") + need(len(asserted(r, "compare")["ids"]) == 3, "compare did not receive 3 ids") + need(len(r["results"]) == 3, "did not return 3 schools")
 
 
 CASES = [
@@ -126,9 +126,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--base-url", help="call a running service instead of the in-process app")
     ap.add_argument("--pause", type=float, default=8.0, help="seconds between cases, to stay under per-minute model quotas (default 8)")
-    ap.add_argument("--only", help="comma-separated case numbers to run, e.g. 2,10")
     args = ap.parse_args()
-    only = {int(x) for x in args.only.split(",")} if args.only else None
     if args.base_url:
         import httpx
 
@@ -143,7 +141,7 @@ def main() -> int:
         post = lambda body: tc.post("/api/chat", json=body).json()  # noqa: E731
 
     failed = skipped = 0
-    for n, case in enumerate(c for c in CASES if only is None or c.id in only):
+    for n, case in enumerate(CASES):
         if n and args.pause:
             time.sleep(args.pause)
         r = post({"messages": [{"role": "user", "content": m} for m in case.messages], "profile": case.profile, "lang": case.lang})
@@ -157,8 +155,7 @@ def main() -> int:
         failed += status == "FAIL"
         skipped += status == "SKIP"
         print(f"[{status}] {case.id:>2}. {case.name}" + ("" if status == "PASS" else "\n        - " + "\n        - ".join(why)))
-    ran = len(only) if only else len(CASES)
-    print(f"\n{ran - failed - skipped} passed, {failed} failed, {skipped} skipped")
+    print(f"\n{len(CASES) - failed - skipped} passed, {failed} failed, {skipped} skipped")
     return 1 if failed else 0
 
 

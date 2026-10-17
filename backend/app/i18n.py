@@ -480,11 +480,43 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
         "Calificación estatal {grade} ({year})",
         "Nòt leta {grade} ({year})",
     ),
+    "score.popularity.detail": (
+        "{pct}% of seats filled ({enrolled} of {capacity})",
+        "{pct}% de los cupos ocupados ({enrolled} de {capacity})",
+        "{pct}% plas yo ranpli ({enrolled} sou {capacity})",
+    ),
+    "score.popularity.reason": ("Popular: {pct}% of seats filled", "Popular: {pct}% de los cupos ocupados", "Popilè: {pct}% plas yo ranpli"),
+    "note.search.popularity": (
+        "Popularity here means how full a school is (enrollment compared with capacity). The county publishes no application or waitlist data, so it is only a rough signal.",
+        "Aquí, popularidad significa qué tan lleno está una escuela (matrícula frente a capacidad). El condado no publica datos de solicitudes ni listas de espera, por lo que es solo una señal aproximada.",
+        "Isit la, popilarite vle di kantite plas ki ranpli nan yon lekòl (enskripsyon konpare ak kapasite). Konte a pa pibliye done sou aplikasyon oswa lis datant, kidonk se jis yon siyal apwoksimatif.",
+    ),
+    "err.bad_values.message": (
+        "'{value}' is not one of the things you can value most.",
+        "'{value}' no es una de las cosas que puede valorar más.",
+        "'{value}' pa youn nan bagay ou ka bay plis valè yo.",
+    ),
+    "err.bad_values.action": ("Choose from: {values}.", "Elija entre: {values}.", "Chwazi nan: {values}."),
     "score.grade.reason": ("State grade {grade}", "Calificación estatal {grade}", "Nòt leta {grade}"),
     "score.grade.none": (
-        "No state grade available (not scored)",
-        "No hay calificación estatal disponible (no se puntuó)",
-        "Pa gen nòt leta disponib (pa konte nan nòt la)",
+        "No state grade available (counted as neutral)",
+        "No hay calificación estatal disponible (se cuenta como neutral)",
+        "Pa gen nòt leta disponib (konte kòm net)",
+    ),
+    "score.grade.neutral": (
+        "No state grade available: counted as neutral (half the points)",
+        "No hay calificación estatal disponible: se cuenta como neutral (la mitad de los puntos)",
+        "Pa gen nòt leta disponib: konte kòm net (mwatye pwen yo)",
+    ),
+    "score.grade.private": (
+        "Florida publishes no school grade for this kind of school: counted as neutral (half the points)",
+        "Florida no publica calificación escolar para este tipo de escuela: se cuenta como neutral (la mitad de los puntos)",
+        "Florid pa pibliye nòt lekòl pou kalite lekòl sa a: konte kòm net (mwatye pwen yo)",
+    ),
+    "score.popularity.neutral": (
+        "No enrollment and capacity numbers: counted as neutral (half the points)",
+        "No hay cifras de matrícula y capacidad: se cuenta como neutral (la mitad de los puntos)",
+        "Pa gen chif enskripsyon ak kapasite: konte kòm net (mwatye pwen yo)",
     ),
     "score.priorities.detail": (
         "{hits} of {total} priorities matched",
@@ -528,9 +560,9 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
         "Matche espesyalite a itilize tèm magnet yo verifye alamen lè yo egziste; sinon, mo kle nan non ofisyèl lekòl la.",
     ),
     "note.search.nograde": (
-        "Some public/charter schools show no state grade because the state published none or the data is not loaded; they are not penalized in the score.",
-        "Algunas escuelas públicas o chárter no muestran calificación estatal porque el estado no publicó ninguna o los datos no están cargados; no se penalizan en la puntuación.",
-        "Gen kèk lekòl piblik/charter ki pa montre nòt leta paske eta a pa pibliye okenn oswa done yo pa chaje; sa pa bese nòt matche yo.",
+        "Some public/charter schools show no state grade because the state published none or the data is not loaded; the score counts that as neutral (half the points), not as zero.",
+        "Algunas escuelas públicas o chárter no muestran calificación estatal porque el estado no publicó ninguna o los datos no están cargados; la puntuación lo cuenta como neutral (la mitad de los puntos), no como cero.",
+        "Gen kèk lekòl piblik/charter ki pa montre nòt leta paske eta a pa pibliye okenn oswa done yo pa chaje; nòt la konte sa kòm net (mwatye pwen yo), pa kòm zewo.",
     ),
     # ---- questions to ask the school
     "q.private.tuition": (
@@ -718,23 +750,6 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
     ),
     "chat.amount_unverified": ("[amount not verified]", "[monto no verificado]", "[montan pa verifye]"),
     # ---- errors: err.<code>.message / err.<code>.action (ApiError); err.http.<status> (generic HTTP errors)
-    # ---- accounts
-    "err.invalid_email.message": ("That email address does not look right.", "Esa dirección de correo no parece válida.", "Adrès imèl sa a pa sanble ki kòrèk."),
-    "err.invalid_email.action": ("Check it for typos and try again.", "Revise que no tenga errores e inténtelo de nuevo.", "Verifye si pa gen fòt ladan l epi eseye ankò."),
-    "err.email_taken.message": ("An account with this email already exists.", "Ya existe una cuenta con este correo.", "Gen yon kont ki deja egziste ak imèl sa a."),
-    "err.email_taken.action": ("Sign in instead.", "Inicie sesión en su lugar.", "Konekte olye de sa."),
-    "err.invalid_credentials.message": ("The email or password is not correct.", "El correo o la contraseña no son correctos.", "Imèl la oswa modpas la pa kòrèk."),
-    "err.invalid_credentials.action": ("Try again, or create an account.", "Inténtelo de nuevo o cree una cuenta.", "Eseye ankò, oswa kreye yon kont."),
-    "err.not_signed_in.message": ("You need to sign in first.", "Primero debe iniciar sesión.", "Ou dwe konekte anvan."),
-    "err.not_signed_in.action": ("Sign in and try again.", "Inicie sesión e inténtelo de nuevo.", "Konekte epi eseye ankò."),
-    "err.too_many_attempts.message": ("Too many sign-in attempts.", "Demasiados intentos de inicio de sesión.", "Twòp tantativ koneksyon."),
-    "err.too_many_attempts.action": ("Wait about 15 minutes and try again.", "Espere unos 15 minutos e inténtelo de nuevo.", "Tann apeprè 15 minit epi eseye ankò."),
-    "err.wrong_password.message": ("The password is not correct.", "La contraseña no es correcta.", "Modpas la pa kòrèk."),
-    "err.wrong_password.action": ("Re-enter your current password.", "Vuelva a escribir su contraseña actual.", "Ekri modpas ou genyen kounye a ankò."),
-    "err.saved_limit.message": ("You have reached the limit of 200 saved schools.", "Ha llegado al límite de 200 escuelas guardadas.", "Ou rive nan limit 200 lekòl ou ka sove."),
-    "err.saved_limit.action": ("Remove one you no longer need, then save again.", "Quite una que ya no necesite y guarde de nuevo.", "Retire youn ou pa bezwen ankò, epi sove ankò."),
-    "err.profile_too_large.message": ("The saved profile is too large.", "El perfil guardado es demasiado grande.", "Pwofil ou sove a twò gwo."),
-    "err.profile_too_large.action": ("Remove some details and try again.", "Quite algunos detalles e inténtelo de nuevo.", "Retire kèk detay epi eseye ankò."),
     "err.bad_radius.message": (
         "radius_mi must be between 0 and 25.",
         "radius_mi debe estar entre 0 y 25.",
@@ -800,6 +815,46 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
         "Try '2250 NW 2nd Ave, Miami 33127' or '33127'.",
         "Pruebe con '2250 NW 2nd Ave, Miami 33127' o '33127'.",
         "Eseye '2250 NW 2nd Ave, Miami 33127' oswa '33127'.",
+    ),
+    "err.email_taken.message": (
+        "An account with this email already exists.",
+        "Ya existe una cuenta con este correo electrónico.",
+        "Gen yon kont ak imèl sa a deja.",
+    ),
+    "err.email_taken.action": (
+        "Sign in instead, or use a different email.",
+        "Inicie sesión, o use otro correo electrónico.",
+        "Konekte olye de sa, oswa itilize yon lòt imèl.",
+    ),
+    "err.invalid_credentials.message": (
+        "The email or password is not correct.",
+        "El correo electrónico o la contraseña no son correctos.",
+        "Imèl la oswa modpas la pa kòrèk.",
+    ),
+    "err.invalid_credentials.action": (
+        "Check both and try again, or create an account.",
+        "Revise ambos e inténtelo de nuevo, o cree una cuenta.",
+        "Verifye tou de epi eseye ankò, oswa kreye yon kont.",
+    ),
+    "err.unauthenticated.message": (
+        "You are not signed in.",
+        "No ha iniciado sesión.",
+        "Ou pa konekte.",
+    ),
+    "err.unauthenticated.action": (
+        "Sign in and try again.",
+        "Inicie sesión e inténtelo de nuevo.",
+        "Konekte epi eseye ankò.",
+    ),
+    "err.too_many_attempts.message": (
+        "Too many sign-in attempts for this email.",
+        "Demasiados intentos de inicio de sesión con este correo electrónico.",
+        "Twòp tantativ koneksyon ak imèl sa a.",
+    ),
+    "err.too_many_attempts.action": (
+        "Wait 15 minutes and try again.",
+        "Espere 15 minutos e inténtelo de nuevo.",
+        "Tann 15 minit epi eseye ankò.",
     ),
     "err.geocode_not_found.message": (
         "Could not find a location for '{q}'.",
@@ -955,9 +1010,9 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
         "Lekòl piblik ak charter nan Florid pa mande frè lekòl (kèk frè pou inifòm, swen apre lekòl oswa aktivite ka aplike)",
     ),
     "m.magnet_verified": (
-        "Hand-verified against the magnet catalog by {who}",
-        "Verificado manualmente con el catálogo magnet por {who}",
-        "{who} verifye alamen ak katalòg magnet la",
+        "Taken from the magnet catalog: {who}",
+        "Tomado del catálogo magnet: {who}",
+        "Pran nan katalòg magnet la: {who}",
     ),
     "m.project_member": ("a project member", "un miembro del proyecto", "yon manm pwojè a"),
     "m.themes": (

@@ -58,7 +58,6 @@ export default function SchoolHero({ school: s, links, profile }) {
           {[s.address, s.city, s.zip].filter(Boolean).join(', ')}
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
-          <SaveButton id={s.id} name={s.name} labeled />
           {!isMissing(s.website) && (
             <a href={s.website.value} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 700 }}>
               {t('school.hero.website')}
@@ -70,6 +69,7 @@ export default function SchoolHero({ school: s, links, profile }) {
           <Link to="/pathway" style={{ fontWeight: 700 }}>
             {t('school.hero.pathway')}
           </Link>
+          <SaveButton id={s.id} name={s.name} />
         </div>
       </section>
       <aside
@@ -102,9 +102,9 @@ export default function SchoolHero({ school: s, links, profile }) {
         <span style={{ fontSize: 22, fontFamily: "'Outfit', sans-serif", fontWeight: 700 }}>
           {online
             ? t('school.hero.online')
-            : t(profile.isDemo ? 'school.hero.distDemo' : 'school.hero.distYou', {
-                miles: miles(s.distance_mi),
-              })}
+            : profile.hasLocation
+              ? t('school.hero.distYou', { miles: miles(s.distance_mi) })
+              : t('school.hero.noAddress')}
         </span>
         <span style={{ fontSize: 15, color: '#ECE8FA' }}>
           {online

@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 const STORAGE_KEY = 'sn-theme';
 
-// Dark is the default, matching the prototype. Storage can throw (private mode, blocked cookies), so every
+// Dark is the default, matching the original design. Storage can throw (private mode, blocked cookies), so every
 // access is guarded and the app simply falls back to the default.
 function readStoredDark() {
   try {
@@ -11,7 +11,7 @@ function readStoredDark() {
   } catch {
     /* ignore */
   }
-  return true;
+  return true; // dark by default, as in the original design; a visitor's own choice is remembered
 }
 
 const ThemeContext = createContext(null);

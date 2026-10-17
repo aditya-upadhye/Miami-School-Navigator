@@ -6,13 +6,13 @@ export const onboarding = {
     'onboarding.title': 'How would you like to start?',
     'onboarding.lede':
       'Pick one. You can switch any time: the assistant and the filters share what you tell them.',
-    'onboarding.mode.chat.title': 'Talk to the assistant',
+    'onboarding.mode.chat.title': 'Talk to the AI assistant',
     'onboarding.mode.chat.body': 'Type your questions in your own words. We find your top 5.',
     'onboarding.mode.form.title': 'Fill a quick form',
     'onboarding.mode.form.body': 'About 2 minutes. We find your top 5.',
     'onboarding.mode.skip.body': 'Go straight to the map with up to 10 schools near you.',
     'onboarding.skipExplore': 'Skip, just explore',
-    'onboarding.chat.label': 'Chat with Navi',
+    'onboarding.chat.label': 'Chat with Jarvis',
     'onboarding.chat.intro':
       'Tell me your address or ZIP and your children’s ages. I only use county, state and curated data, and I cite it.',
     'onboarding.chat.map': 'Go to the map',
@@ -48,6 +48,10 @@ export const onboarding = {
     'onboarding.error.where': 'Enter an address or ZIP code in Miami-Dade so we can find your zoned schools.',
     'onboarding.form.finding': 'Finding your address…',
     'onboarding.form.submit': 'Find my top 5 schools',
+    'onboarding.form.remember': 'Remember me on this device',
+    'onboarding.form.rememberHelp':
+      'Saves your address, children and preferences in this browser so you do not have to enter them again. Do not tick this on a shared computer.',
+    'onboarding.form.forget': 'Forget my info',
     'onboarding.summary.title': 'Your search so far',
     'onboarding.summary.home': 'Home',
     'onboarding.summary.children': 'Children',
@@ -57,7 +61,7 @@ export const onboarding = {
     'onboarding.summary.priorities': 'Priorities',
     'onboarding.summary.none': 'None yet',
     'onboarding.summary.note':
-      "We'll pin your top 5 matches on the map. Refine anything later with filters or by asking Navi.",
+      "We'll pin your top 5 matches on the map. Refine anything later with filters or by asking Jarvis.",
     'onboarding.form.switchChat': 'Prefer to talk? Switch to chat',
     'onboarding.grade.infant': 'Infant care',
     'onboarding.grade.toddler': 'Toddler care',
@@ -73,14 +77,14 @@ export const onboarding = {
     'onboarding.title': '¿Cómo le gustaría comenzar?',
     'onboarding.lede':
       'Elija una. Puede cambiar en cualquier momento: el asistente y los filtros comparten lo que usted les indique.',
-    'onboarding.mode.chat.title': 'Hable con el asistente',
+    'onboarding.mode.chat.title': 'Hable con el asistente de IA',
     'onboarding.mode.chat.body':
       'Escriba sus preguntas con sus propias palabras. Encontramos sus 5 mejores opciones.',
     'onboarding.mode.form.title': 'Complete un formulario rápido',
     'onboarding.mode.form.body': 'Unos 2 minutos. Encontramos sus 5 mejores opciones.',
     'onboarding.mode.skip.body': 'Vaya directo al mapa con hasta 10 escuelas cerca de usted.',
     'onboarding.skipExplore': 'Omitir y solo explorar',
-    'onboarding.chat.label': 'Chatear con Navi',
+    'onboarding.chat.label': 'Chatear con Jarvis',
     'onboarding.chat.intro':
       'Dígame su dirección o código postal y las edades de sus hijos. Solo uso datos del condado, del estado y datos curados, y los cito.',
     'onboarding.chat.map': 'Ir al mapa',
@@ -118,6 +122,10 @@ export const onboarding = {
       'Ingrese una dirección o código postal en Miami-Dade para que podamos encontrar sus escuelas asignadas por zona.',
     'onboarding.form.finding': 'Buscando su dirección…',
     'onboarding.form.submit': 'Encontrar mis 5 mejores escuelas',
+    'onboarding.form.remember': 'Recordarme en este dispositivo',
+    'onboarding.form.rememberHelp':
+      'Guarda su dirección, sus hijos y sus preferencias en este navegador para que no tenga que volver a escribirlos. No marque esto en una computadora compartida.',
+    'onboarding.form.forget': 'Olvidar mis datos',
     'onboarding.summary.title': 'Su búsqueda hasta ahora',
     'onboarding.summary.home': 'Casa',
     'onboarding.summary.children': 'Niños',
@@ -127,7 +135,7 @@ export const onboarding = {
     'onboarding.summary.priorities': 'Prioridades',
     'onboarding.summary.none': 'Ninguna todavía',
     'onboarding.summary.note':
-      'Marcaremos en el mapa sus 5 mejores coincidencias. Ajuste lo que quiera más adelante con los filtros o preguntando a Navi.',
+      'Marcaremos en el mapa sus 5 mejores coincidencias. Ajuste lo que quiera más adelante con los filtros o preguntando a Jarvis.',
     'onboarding.form.switchChat': '¿Prefiere hablar? Cambie al chat',
     'onboarding.grade.infant': 'Cuidado de bebés',
     'onboarding.grade.toddler': 'Cuidado de niños pequeños',
@@ -142,13 +150,13 @@ export const onboarding = {
     'onboarding.skipMap': 'Ale dirèkteman sou kat la',
     'onboarding.title': 'Ki jan ou ta renmen kòmanse?',
     'onboarding.lede': 'Chwazi youn. Ou ka chanje nenpòt ki lè: asistan an ak filtre yo pataje sa ou di yo.',
-    'onboarding.mode.chat.title': 'Pale ak asistan an',
+    'onboarding.mode.chat.title': 'Pale ak asistan IA a',
     'onboarding.mode.chat.body': 'Tape kesyon ou yo ak pwòp mo ou. Nou jwenn 5 pi bon chwa ou yo.',
     'onboarding.mode.form.title': 'Ranpli yon ti fòm rapid',
     'onboarding.mode.form.body': 'Anviwon 2 minit. Nou jwenn 5 pi bon chwa ou yo.',
     'onboarding.mode.skip.body': 'Ale dirèkteman sou kat la ak jiska 10 lekòl ki toupre ou.',
     'onboarding.skipExplore': 'Sote, jis eksplore',
-    'onboarding.chat.label': 'Pale ak Navi',
+    'onboarding.chat.label': 'Pale ak Jarvis',
     'onboarding.chat.intro':
       'Di m adrès ou oswa ZIP ou ak laj timoun ou yo. Mwen sèlman itilize done konte a, eta a ak done ki seleksyone ak swen, epi mwen site yo.',
     'onboarding.chat.map': 'Ale sou kat la',
@@ -185,6 +193,10 @@ export const onboarding = {
       'Antre yon adrès oswa yon kòd ZIP nan Miami-Dade pou nou ka jwenn lekòl ki asiyen pa zòn pou ou.',
     'onboarding.form.finding': 'N ap chèche adrès ou…',
     'onboarding.form.submit': 'Jwenn 5 pi bon lekòl mwen yo',
+    'onboarding.form.remember': 'Sonje m sou aparèy sa a',
+    'onboarding.form.rememberHelp':
+      'Sa sove adrès ou, timoun ou yo ak preferans ou nan navigatè sa a pou ou pa bezwen antre yo ankò. Pa make sa sou yon òdinatè pataje.',
+    'onboarding.form.forget': 'Bliye enfòmasyon mwen',
     'onboarding.summary.title': 'Rechèch ou jiska kounye a',
     'onboarding.summary.home': 'Kay',
     'onboarding.summary.children': 'Timoun',
@@ -194,7 +206,7 @@ export const onboarding = {
     'onboarding.summary.priorities': 'Priyorite',
     'onboarding.summary.none': 'Poko gen',
     'onboarding.summary.note':
-      'Nou pral make 5 pi bon matche ou yo sou kat la. Ou ka ajiste nenpòt bagay pita ak filtre yo oswa lè w mande Navi.',
+      'Nou pral make 5 pi bon matche ou yo sou kat la. Ou ka ajiste nenpòt bagay pita ak filtre yo oswa lè w mande Jarvis.',
     'onboarding.form.switchChat': 'Ou prefere pale? Pase sou chat la',
     'onboarding.grade.infant': 'Swen pou tibebe',
     'onboarding.grade.toddler': 'Swen pou timoun piti',

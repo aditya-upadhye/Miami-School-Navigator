@@ -1,4 +1,4 @@
-// Shared text: data-field formatters, kinds and stages, theme toggle, Navi conversation, header search. Keys start with 'shared.' or are
+// Shared text: data-field formatters, kinds and stages, theme toggle, Jarvis conversation, header search. Keys start with 'shared.' or are
 // grouped under kind./stage./specialty. English is authoritative; Spanish and Haitian Creole are AI-written and unreviewed.
 export const shared = {
   en: {
@@ -40,9 +40,9 @@ export const shared = {
     'shared.navi.sources': 'Sources ({n})',
     'shared.navi.degraded': 'The AI assistant was unavailable, so this is a structured list, not an answer.',
     'shared.navi.headsUp': 'Heads up: {warnings}.',
-    'shared.navi.thinking': 'Navi is looking this up…',
+    'shared.navi.thinking': 'Jarvis is looking this up…',
     'shared.navi.placeholder': 'Ask about any school or deadline',
-    'shared.navi.messageAria': 'Message Navi',
+    'shared.navi.messageAria': 'Message Jarvis',
     'shared.navi.send': 'Send',
     'shared.navi.asOf': 'as of {date}',
   },
@@ -86,9 +86,9 @@ export const shared = {
     'shared.navi.degraded':
       'El asistente de IA no estaba disponible, así que esto es una lista estructurada, no una respuesta.',
     'shared.navi.headsUp': 'Atención: {warnings}.',
-    'shared.navi.thinking': 'Navi está buscando esto…',
+    'shared.navi.thinking': 'Jarvis está buscando esto…',
     'shared.navi.placeholder': 'Pregunte sobre cualquier escuela o fecha límite',
-    'shared.navi.messageAria': 'Mensaje para Navi',
+    'shared.navi.messageAria': 'Mensaje para Jarvis',
     'shared.navi.send': 'Enviar',
     'shared.navi.asOf': 'al {date}',
   },
@@ -131,9 +131,9 @@ export const shared = {
     'shared.navi.sources': 'Sous ({n})',
     'shared.navi.degraded': 'Asistan AI a pa t disponib, kidonk sa a se yon lis estriktire, pa yon repons.',
     'shared.navi.headsUp': 'Atansyon: {warnings}.',
-    'shared.navi.thinking': 'Navi ap chèche sa a…',
+    'shared.navi.thinking': 'Jarvis ap chèche sa a…',
     'shared.navi.placeholder': 'Mande sou nenpòt lekòl oswa dat limit',
-    'shared.navi.messageAria': 'Mesaj pou Navi',
+    'shared.navi.messageAria': 'Mesaj pou Jarvis',
     'shared.navi.send': 'Voye',
     'shared.navi.asOf': 'nan dat {date}',
   },

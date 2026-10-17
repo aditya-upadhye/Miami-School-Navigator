@@ -2,7 +2,6 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import LeafletMap from '../../components/LeafletMap';
 import { useI18n } from '../../i18n';
-import SaveButton from '../../saved/SaveButton';
 
 const glass = {
   background: 'var(--glass)',
@@ -33,24 +32,6 @@ function Stat({ label, value }) {
   );
 }
 
-function Legend({ children, dot }) {
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-      <span
-        style={{
-          width: 18,
-          height: 18,
-          borderRadius: 9,
-          border: '2px solid #FFFFFF',
-          boxShadow: '0 0 0 1px var(--line2)',
-          ...dot,
-        }}
-      />
-      {children}
-    </span>
-  );
-}
-
 export default function MapStage({
   caption,
   closePop,
@@ -66,8 +47,6 @@ export default function MapStage({
   pop,
   radiusMi,
   reset,
-  zoneNote,
-  zoneToggles,
   zoneLevels,
   zones,
 }) {
@@ -78,16 +57,16 @@ export default function MapStage({
     <section
       id="map"
       aria-label={t('explore.map.aria')}
-      style={{ flex: '999 1 640px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12 }}
+      style={{ flex: '1 1 560px', minWidth: 0, height: 'var(--explore-h)', minHeight: 440, display: 'flex', flexDirection: 'column' }}
     >
       <div
         className="sn-map"
         style={{
           position: 'relative',
           width: '100%',
-          aspectRatio: '10 / 7.4',
-          minHeight: 420,
-          borderRadius: 24,
+          flex: 1,
+          minHeight: 0,
+          borderRadius: 20,
           overflow: 'hidden',
           border: '1px solid var(--edge)',
           boxShadow: 'var(--shadow)',
@@ -297,7 +276,7 @@ export default function MapStage({
                   borderRadius: 12,
                   background: 'var(--accent-grad)',
                   boxShadow: 'var(--accent-shadow)',
-                  color: '#FFFFFF',
+                  color: 'var(--on-accent)',
                   fontWeight: 700,
                   fontSize: 15,
                   textDecoration: 'none',
@@ -323,7 +302,6 @@ export default function MapStage({
               >
                 {pop.cmpLabel}
               </button>
-              <SaveButton id={pop.id} name={pop.name} />
             </div>
             {pop.website && (
               <a
@@ -372,7 +350,7 @@ export default function MapStage({
                 border: 0,
                 background: 'var(--accent-grad)',
                 boxShadow: 'var(--accent-shadow)',
-                color: '#FFFFFF',
+                color: 'var(--on-accent)',
                 font: "700 15px 'Figtree', sans-serif",
                 cursor: 'pointer',
               }}
@@ -408,8 +386,8 @@ export default function MapStage({
         <span
           style={{
             position: 'absolute',
-            left: 14,
-            bottom: 26,
+            left: 120,
+            bottom: 16,
             zIndex: 20,
             padding: '4px 10px',
             borderRadius: 8,
@@ -422,69 +400,6 @@ export default function MapStage({
         </span>
       </div>
 
-      {zoneToggles.length > 0 && (
-        <div
-          role="group"
-          aria-label={t('explore.zone.aria')}
-          style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}
-        >
-          <span style={{ fontSize: 14, fontWeight: 700 }}>{t('explore.zone.heading')}</span>
-          {zoneToggles.map((z) => (
-            <button
-              key={z.level}
-              type="button"
-              aria-pressed={z.on}
-              onClick={z.toggle}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                minHeight: 40,
-                padding: '0 14px',
-                borderRadius: 999,
-                border: `2px solid ${z.color}`,
-                background: z.on ? 'var(--glass)' : 'transparent',
-                color: 'var(--ink)',
-                font: "600 14px 'Figtree', sans-serif",
-                cursor: 'pointer',
-                opacity: z.on ? 1 : 0.65,
-              }}
-            >
-              <span
-                style={{
-                  width: 12,
-                  height: 12,
-                  borderRadius: 3,
-                  background: z.color,
-                  opacity: z.on ? 1 : 0.4,
-                }}
-              />
-              {z.label}
-            </button>
-          ))}
-          <span style={{ flexBasis: '100%', fontSize: 13, color: 'var(--ink3)' }}>{zoneNote}</span>
-        </div>
-      )}
-
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          gap: '8px 18px',
-          fontSize: 14,
-          color: 'var(--ink2)',
-        }}
-      >
-        <Legend dot={{ background: 'var(--accent-grad)' }}>{t('explore.legend.match')}</Legend>
-        <Legend dot={{ background: '#F6C343' }}>{t('explore.legend.cmp')}</Legend>
-        <Legend dot={{ background: 'var(--ink)' }}>{t('explore.legend.selected')}</Legend>
-        <Legend dot={{ background: '#DC2626' }}>{t('explore.legend.home')}</Legend>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ width: 22, height: 14, borderRadius: 7, border: '2px dashed var(--accent)' }} />
-          {t('explore.filters.travel')}
-        </span>
-      </div>
     </section>
   );
 }

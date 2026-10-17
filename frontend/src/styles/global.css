@@ -35,9 +35,9 @@ button:focus-visible {
   --accent-ink: #5440a8;
   --accent-tint: linear-gradient(135deg, #eee9fc, #fbe9f4);
   --accent-grad: linear-gradient(135deg, #6f5bd6 0%, #9a5fd2 52%, #c95fa6 100%);
+  --on-accent: #ffffff; /* text on an accent fill */
   --accent-shadow: 0 6px 16px rgba(107, 84, 201, 0.28);
-  --page:
-    radial-gradient(
+  --page: radial-gradient(
       900px 620px at 8% -6%,
       rgba(170, 150, 240, 0.28),
       transparent 62%
@@ -76,8 +76,7 @@ button:focus-visible {
     rgba(255, 255, 255, 0.34)
   );
   --seg-on: #ffffff;
-  --shadow:
-    0 10px 34px rgba(50, 30, 110, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow: 0 10px 34px rgba(50, 30, 110, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   --panel-dark: linear-gradient(
     135deg,
     rgba(27, 24, 48, 0.94),
@@ -102,7 +101,21 @@ button:focus-visible {
   --c-play: #f5dde4;
   --grad-text: linear-gradient(120deg, #2a2060, #6b54c9 55%, #c0529a);
   --ink-inv: #ffffff;
-  --danger: #b91c1c;
+  --landing-bg: #f7f5fc;
+  --hero-grad: linear-gradient(120deg, #e8e2fb 0%, #dfe4fb 46%, #fbe9f4 100%);
+  --pastel-pink: #fbe3f0;
+  --pastel-lav: #e6e0fb;
+  --pastel-yellow: #fbefc9;
+  --pastel-mint: #dce6fb;
+  --cta: #f6c343; /* the yellow call-to-action button; its text is always dark */
+  --cta-ink: #1b1830; /* welcome page: one flat colour, nothing behind the text */
+  --surface: #ffffff;
+  --surface-line: #dcd6ee;
+  --teal: #5a6fd6;
+  --teal-ink: #3f4fb3;
+  --teal-tint: #e0e5fb;
+  --blue-ink: #3943b5;
+  --blue-tint: #e4e7fb;
   color-scheme: light;
 }
 .theme-root[data-theme="dark"] {
@@ -114,9 +127,9 @@ button:focus-visible {
     rgba(240, 182, 224, 0.12)
   );
   --accent-grad: linear-gradient(135deg, #6f5bd6 0%, #9a5fd2 52%, #c95fa6 100%);
+  --on-accent: #ffffff; /* text on an accent fill */
   --accent-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-  --page:
-    radial-gradient(
+  --page: radial-gradient(
       900px 620px at 8% -6%,
       rgba(120, 90, 230, 0.28),
       transparent 62%
@@ -155,8 +168,7 @@ button:focus-visible {
     rgba(255, 255, 255, 0.03)
   );
   --seg-on: rgba(255, 255, 255, 0.16);
-  --shadow:
-    0 12px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   --panel-dark: linear-gradient(
     135deg,
     rgba(201, 187, 255, 0.14),
@@ -166,8 +178,7 @@ button:focus-visible {
   --scene-filter: brightness(0.6) saturate(0.9);
   --map-filter: invert(0.92) hue-rotate(180deg) saturate(0.8) brightness(0.95)
     contrast(1.05);
-  --pin-glow:
-    0 0 0 3px rgba(201, 187, 255, 0.22), 0 0 22px rgba(201, 187, 255, 0.7);
+  --pin-glow: 0 0 0 3px rgba(201, 187, 255, 0.22), 0 0 22px rgba(201, 187, 255, 0.7);
   --stage-bg: linear-gradient(180deg, #14122a 0%, #1a1736 60%, #241f48 100%);
   --plane-shadow: 0 40px 60px rgba(0, 0, 0, 0.7);
   --bld-front: linear-gradient(180deg, #3c3668, #272347);
@@ -183,11 +194,37 @@ button:focus-visible {
   --c-play: #4a2f44;
   --grad-text: linear-gradient(120deg, #f1eeff, #c9bbff 50%, #f0b6e0);
   --ink-inv: #121020;
-  --danger: #fca5a5;
+  --landing-bg: #14112a;
+  --hero-grad: linear-gradient(120deg, #1a1438 0%, #221a4a 50%, #2a1440 100%);
+  --pastel-pink: rgba(240, 150, 210, 0.16);
+  --pastel-lav: rgba(150, 140, 240, 0.2);
+  --pastel-yellow: rgba(120, 180, 255, 0.15);
+  --pastel-mint: rgba(110, 150, 240, 0.18);
+  --cta: #f6c343;
+  --cta-ink: #1b1830;
+  --surface: #1f1b3d;
+  --surface-line: #3a3466;
+  --teal: #5a6fd6;
+  --teal-ink: #aab6ff;
+  --teal-tint: rgba(120, 140, 240, 0.2);
+  --blue-ink: #aeb6ff;
+  --blue-tint: rgba(130, 140, 240, 0.2);
   color-scheme: dark;
 }
 .theme-toggle:hover {
   filter: brightness(1.1);
+}
+.land-card {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.land-card:hover,
+.land-card:focus-visible {
+  border-color: var(--accent) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(50, 30, 110, 0.18);
 }
 .theme-root h1 {
   background: var(--grad-text);
@@ -247,3 +284,40 @@ button:focus-visible {
 .sn-home { position: relative; display: flex; width: 30px; height: 30px; align-items: center; justify-content: center; border: 3px solid #fff; border-radius: 50%; background: #dc2626; box-sizing: border-box; box-shadow: 0 2px 6px rgba(16, 35, 46, 0.35); }
 .sn-home-label { position: absolute; left: 34px; top: 4px; padding: 1px 8px; border-radius: 999px; background: var(--glass); color: var(--ink); font: 700 12px 'Figtree', sans-serif; box-shadow: 0 1px 4px rgba(16, 35, 46, 0.3); }
 .sn-pin, .sn-home-icon { background: transparent; border: 0; }
+
+/* Sliders: a light track and an orange thumb. (The browser's own track colour is derived from --accent and turns dark on a bright orange.) */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line2);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-top: -8px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  background: var(--accent-grad);
+  box-shadow: 0 2px 6px rgba(43, 42, 58, 0.3);
+}
+input[type="range"]::-moz-range-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line2);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  background: #6b54c9;
+  box-shadow: 0 2px 6px rgba(43, 42, 58, 0.3);
+}

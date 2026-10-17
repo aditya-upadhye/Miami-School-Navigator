@@ -1,6 +1,6 @@
 import OnboardingHeader from './OnboardingHeader';
-import ModePicker from './ModePicker';
 import ChatPanel from './ChatPanel';
+import ModeSwitcher from './ModeSwitcher';
 import FamilyForm from './FamilyForm';
 import ThemeShell from '../../components/ThemeShell';
 import { useOnboarding } from './useOnboarding';
@@ -12,11 +12,7 @@ export default function Onboarding() {
     addKid,
     budgetLabel,
     budgets,
-    chatBg,
-    chatBorder,
     chatOn,
-    formBg,
-    formBorder,
     formOn,
     kidCount,
     kids,
@@ -24,9 +20,9 @@ export default function Onboarding() {
     onRadius,
     onWhere,
     pickChat,
-    pickForm,
     prioSummary,
     prios,
+    valueChips,
     radius,
     radiusLabel,
     removeKid,
@@ -59,22 +55,13 @@ export default function Onboarding() {
               lineHeight: 1.05,
             }}
           >
-            {t('onboarding.title')}
+            {t(chatOn ? 'onboarding.mode.chat.title' : 'onboarding.mode.form.title')}
           </h1>
           <p style={{ margin: 0, maxWidth: 720, fontSize: 18, lineHeight: 1.5, color: 'var(--ink2)' }}>
-            {t('onboarding.lede')}
+            {t(chatOn ? 'onboarding.mode.chat.body' : 'onboarding.mode.form.body')}
           </p>
         </div>
-        <ModePicker
-          chatBg={chatBg}
-          chatBorder={chatBorder}
-          chatOn={chatOn}
-          formBg={formBg}
-          formBorder={formBorder}
-          formOn={formOn}
-          pickChat={pickChat}
-          pickForm={pickForm}
-        />
+        <ModeSwitcher chatOn={chatOn} formOn={formOn} />
         {chatOn && <ChatPanel />}
         {formOn && (
           <FamilyForm
@@ -89,6 +76,7 @@ export default function Onboarding() {
             pickChat={pickChat}
             prioSummary={prioSummary}
             prios={prios}
+            valueChips={valueChips}
             radius={radius}
             radiusLabel={radiusLabel}
             removeKid={removeKid}

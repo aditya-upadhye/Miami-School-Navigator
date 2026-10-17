@@ -249,6 +249,7 @@ class ChatProfile(BaseModel):
     children: list[Child] = []
     free_only: bool = False
     priorities: list[str] = []
+    values: list[str] = []  # what matters most: academics, programs, popularity, proximity
 
 
 class ChatRequest(BaseModel):

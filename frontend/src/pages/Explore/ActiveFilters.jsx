@@ -12,7 +12,7 @@ export default function ActiveFilters({ filters, hiddenTotal }) {
         flexWrap: 'wrap',
         alignItems: 'center',
         gap: 8,
-        padding: '0 clamp(16px, 3vw, 40px) 14px',
+        padding: '0 0 4px',
       }}
     >
       <span style={{ fontSize: 14, fontWeight: 700 }}>

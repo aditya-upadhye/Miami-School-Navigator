@@ -1,44 +1,63 @@
+import { useEffect, useState } from 'react';
 import AppHeader from '../../components/AppHeader';
-import OnboardedNotice from '../../components/OnboardedNotice';
+import BackButton from '../../components/BackButton';
 import ThemeShell from '../../components/ThemeShell';
-import ActiveFilters from './ActiveFilters';
+import { useI18n } from '../../i18n';
 import ComparePanel from './ComparePanel';
+import { CompareTray } from './CompareTray';
 import DatesList from './DatesList';
-import ExploreIntro from './ExploreIntro';
-import FiltersPanel from './FiltersPanel';
+import ExplorePanel from './ExplorePanel';
 import MapStage from './MapStage';
-import NaviChat from './NaviChat';
-import ResultsList from './ResultsList';
+import JarvisChat from './JarvisChat';
 import { useExplore } from './useExplore';
 
+/** Map first: a fixed slim header, the map filling the screen, and one side panel (matches + filters) that can be hidden.
+ *  Compare and key dates sit below the map. Talk to Jarvis is in the header's top-right corner; Back floats at the bottom-left. */
 export default function Explore() {
   const x = useExplore();
+  const { t } = useI18n();
+  const [panelOpen, setPanelOpen] = useState(true);
+  // The compare bar is only needed while the table is out of sight; once the table is on screen it would just cover rows.
+  const [tableInView, setTableInView] = useState(false);
+  useEffect(() => {
+    const el = document.getElementById('compare');
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(([e]) => setTableInView(e.isIntersecting), { threshold: 0.15 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const cmpProps = {
+    clearCmp: x.clearCmp,
+    cmpCols: x.cmpCols,
+    cmpCountLabel: x.cmpCountLabel,
+    cmpFull: x.cmpFull,
+    cmpHead: x.cmpHead,
+    cmpMessage: x.cmpMessage,
+    cmpMinW: x.cmpMinW,
+    cmpRows: x.cmpRows,
+    hasCmp: x.hasCmp,
+    noCmp: x.noCmp,
+  };
   return (
     <ThemeShell paddingBottom={96}>
-      <AppHeader active="explore" showSearch onSearch={x.searchLocation} onAskNavi={x.toggleChat} />
-      <OnboardedNotice />
+      <AppHeader active="explore" showSearch compact onSearch={x.searchLocation} onAskJarvis={x.toggleChat} />
       {x.locationError && (
-        <p
-          role="alert"
-          style={{
-            margin: 0,
-            padding: '10px clamp(16px, 3vw, 40px)',
-            background: 'rgba(220,38,38,0.14)',
-            color: 'var(--ink)',
-          }}
-        >
+        <p role="alert" style={{ margin: 0, padding: '10px clamp(16px, 3vw, 40px)', background: 'rgba(220,38,38,0.14)', color: 'var(--ink)' }}>
           {x.locationError}
         </p>
       )}
-      <ExploreIntro badge={x.badge} kids={x.kids} subtitle={x.subtitle} title={x.title} views={x.views} />
-      <ActiveFilters filters={x.activeFilters} hiddenTotal={x.hiddenTotal} />
+      {/* Wide screens: map and panel fill the screen under the header. Narrow screens: a shorter map, with the panel stacked below it. */}
+      <style>{'@media (max-width: 1000px) { .explore-main { --explore-h: 64vh !important; } }'}</style>
       <main
+        className="explore-main"
         style={{
+          '--explore-h': 'calc(100vh - 100px)',
+          position: 'relative',
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'flex-start',
-          gap: 24,
-          padding: '0 clamp(16px, 3vw, 40px)',
+          gap: 14,
+          padding: '12px clamp(10px, 1.6vw, 24px) 0',
         }}
       >
         <MapStage
@@ -57,78 +76,49 @@ export default function Explore() {
           radiusMi={x.radiusMi}
           reset={x.reset}
           zoneLevels={x.zoneLevels}
-          zoneNote={x.zoneNote}
-          zoneToggles={x.zoneToggles}
           zones={x.zones}
         />
-        <FiltersPanel
-          onRadius={x.onRadius}
-          radius={x.radius}
-          radiusLabel={x.radiusLabel}
-          reset={x.reset}
-          onlySpec={x.onlySpec}
-          specNote={x.specNote}
-          specs={x.specs}
-          toggleOnlySpec={x.toggleOnlySpec}
-          switches={x.switches}
-          toggleChat={x.toggleChat}
-          types={x.types}
-        />
+        {panelOpen ? (
+          <ExplorePanel x={x} onHide={() => setPanelOpen(false)} />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setPanelOpen(true)}
+            style={{
+              position: 'absolute',
+              right: 'calc(clamp(10px, 1.6vw, 24px) + 62px)',
+              top: 26,
+              zIndex: 40,
+              minHeight: 44,
+              padding: '0 16px',
+              borderRadius: 999,
+              border: 0,
+              background: 'var(--panel-dark)',
+              color: '#FFFFFF',
+              font: "700 14.5px 'Figtree', sans-serif",
+              boxShadow: '0 6px 20px rgba(16,35,46,0.3)',
+              cursor: 'pointer',
+            }}
+          >
+            ‹ {t('menu.panel.show')}
+          </button>
+        )}
       </main>
-      <ComparePanel
-        clearCmp={x.clearCmp}
-        cmpCols={x.cmpCols}
-        cmpCountLabel={x.cmpCountLabel}
-        cmpFull={x.cmpFull}
-        cmpHead={x.cmpHead}
-        cmpMessage={x.cmpMessage}
-        cmpMinW={x.cmpMinW}
-        cmpRows={x.cmpRows}
-        hasCmp={x.hasCmp}
-        noCmp={x.noCmp}
-      />
-      <ResultsList
-        empty={x.noResults}
-        error={x.error}
-        loading={x.loading}
-        notes={x.notes}
-        results={x.results}
-        resultsTitle={x.resultsTitle}
-        sortLabel={x.sortLabel}
-      />
-      <DatesList dates={x.dates} />
-      <button
-        type="button"
-        aria-expanded={x.chatOpen}
-        onClick={x.toggleChat}
-        style={{
-          position: 'fixed',
-          right: 24,
-          bottom: 24,
-          zIndex: 60,
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 10,
-          minHeight: 56,
-          padding: '0 20px 0 10px',
-          borderRadius: 999,
-          border: 0,
-          background: 'var(--panel-dark)',
-          backdropFilter: 'blur(18px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(18px) saturate(150%)',
-          color: '#FFFFFF',
-          font: "700 16px 'Figtree', sans-serif",
-          boxShadow: '0 10px 30px rgba(16,35,46,0.35)',
-          cursor: 'pointer',
-        }}
-      >
-        <svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true">
-          <circle cx="20" cy="20" r="20" fill="#2A2650" />
-          <path d="M20 9 L25 25 L20 21.5 L15 25 Z" fill="#F6C343" />
-        </svg>
-        {x.chatButtonLabel}
-      </button>
-      {x.chatOpen && <NaviChat toggleChat={x.toggleChat} />}
+      <div style={{ paddingTop: 24 }}>
+        <DatesList dates={x.dates} />
+        <ComparePanel {...cmpProps} />
+      </div>
+      <div style={{ position: 'fixed', left: 16, bottom: 16, zIndex: 60 }}>
+        <BackButton fallback="/" />
+      </div>
+      {!x.noCmp && !tableInView && (
+        <CompareTray
+          head={x.cmpHead}
+          countLabel={x.cmpCountLabel}
+          onOpen={() => document.getElementById('compare')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        />
+      )}
+      {x.chatOpen && <JarvisChat toggleChat={x.toggleChat} />}
     </ThemeShell>
   );
 }

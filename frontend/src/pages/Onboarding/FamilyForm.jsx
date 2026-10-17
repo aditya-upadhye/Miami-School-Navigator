@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useI18n } from '../../i18n';
+import { useProfile } from '../../profile/ProfileProvider';
 
 export default function FamilyForm({
   addKid,
@@ -13,6 +14,7 @@ export default function FamilyForm({
   pickChat,
   prioSummary,
   prios,
+  valueChips,
   radius,
   radiusLabel,
   removeKid,
@@ -22,6 +24,7 @@ export default function FamilyForm({
   submitting,
 }) {
   const { t } = useI18n();
+  const { remember, setRemember, forget } = useProfile();
   return (
     <section
       aria-label={t('onboarding.form.label')}
@@ -131,7 +134,7 @@ export default function FamilyForm({
                   border: 0,
                   background: 'var(--accent-grad)',
                   boxShadow: 'var(--accent-shadow)',
-                  color: '#FFFFFF',
+                  color: 'var(--on-accent)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -396,6 +399,53 @@ export default function FamilyForm({
             ))}
           </div>
         </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: 20, fontWeight: 700 }}>{t('values.title')}</span>
+          <span style={{ fontSize: 14, color: 'var(--ink2)' }}>{t('values.help')}</span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {valueChips.map((c, i) => (
+              <button
+                key={i}
+                type="button"
+                aria-pressed={c.on}
+                title={c.tip}
+                onClick={c.pick}
+                style={{ minHeight: 44, padding: '0 16px', borderRadius: 999, border: `1.5px solid ${c.border}`, background: c.bg, color: c.fg, font: "600 15px 'Figtree', sans-serif", cursor: 'pointer' }}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 10, fontWeight: 600, cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
+              style={{ width: 20, height: 20 }}
+            />
+            {t('onboarding.form.remember')}
+          </label>
+          <span style={{ fontSize: 14, color: 'var(--ink2)' }}>{t('onboarding.form.rememberHelp')}</span>
+          {remember && (
+            <button
+              type="button"
+              onClick={forget}
+              style={{
+                alignSelf: 'flex-start',
+                border: 0,
+                background: 'none',
+                padding: 0,
+                color: 'var(--accent-ink)',
+                font: "700 14px 'Figtree', sans-serif",
+                cursor: 'pointer',
+              }}
+            >
+              {t('onboarding.form.forget')}
+            </button>
+          )}
+        </div>
         {error && (
           <p
             role="alert"
@@ -433,7 +483,7 @@ export default function FamilyForm({
               borderRadius: 14,
               background: 'var(--accent-grad)',
               boxShadow: 'var(--accent-shadow)',
-              color: '#FFFFFF',
+              color: 'var(--on-accent)',
               fontSize: 17,
               fontWeight: 700,
               border: 0,

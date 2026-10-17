@@ -2,36 +2,52 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { api } from '../api/client';
 import { setCurrentLang } from '../i18n/current';
 
-// The fictional demo family from the project brief: used until a real family enters their own details, so every screen works
-// on first load. It is always labelled as a demo in the UI.
-export const DEMO_PROFILE = {
-  isDemo: true,
-  address: '2250 NW 2nd Ave, Miami, FL 33127',
-  matchedAddress: '2250 NW 2nd Ave, Miami, FL 33127',
-  lat: 25.79866,
-  lon: -80.19998,
-  precision: 'address',
-  children: [
-    { name: 'Leo', age: 3 },
-    { name: 'Maya', age: 7 },
-  ],
-  freeOnly: true,
-  priorities: ['STEM'],
+// What we know about a family before they tell us anything: nothing. There is no sample family, address or children; every screen shows
+// an honest "tell us where you live" prompt until a real address is entered.
+export const EMPTY_PROFILE = {
+  address: '',
+  matchedAddress: '',
+  lat: null,
+  lon: null,
+  precision: null,
+  children: [],
+  freeOnly: false,
+  priorities: [],
+  values: [],
   radius: 3,
   lang: 'en',
 };
 
-// Addresses are personal data: keep the profile in sessionStorage only (cleared when the tab closes), never localStorage.
+/** True once a real location has been entered. Search, zoning, pathway and the planner all need one. */
+export const hasLocation = (p) => p.lat != null && p.lon != null;
+
+// Addresses are personal data: by default the profile is kept in sessionStorage only (cleared when the tab closes). Only when the
+// family ticks "Remember me on this device" (REMEMBER_KEY) is it also kept in localStorage, until they choose "Forget my info".
 const KEY = 'sn-profile';
+const REMEMBER_KEY = 'sn-remember';
+
+function isRemembered() {
+  try {
+    return window.localStorage.getItem(REMEMBER_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
 
 function load() {
   try {
-    const raw = window.sessionStorage.getItem(KEY);
-    if (raw) return { ...DEMO_PROFILE, ...JSON.parse(raw) };
+    const raw =
+      window.sessionStorage.getItem(KEY) ?? (isRemembered() ? window.localStorage.getItem(KEY) : null);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      // Earlier versions kept a sample family (Leo and Maya, a Wynwood address) in this tab's storage. Never load it: start empty.
+      if (saved.isDemo) return { ...EMPTY_PROFILE, lang: saved.lang ?? EMPTY_PROFILE.lang };
+      return { ...EMPTY_PROFILE, ...saved };
+    }
   } catch {
-    /* storage unavailable or corrupt: fall back to the demo family */
+    /* storage unavailable or corrupt: start empty */
   }
-  return DEMO_PROFILE;
+  return EMPTY_PROFILE;
 }
 
 // The county returns addresses in capitals ("1 LINCOLN RD"); show them in a readable case, keeping directions and ZIPs intact.
@@ -49,43 +65,58 @@ const ProfileContext = createContext(null);
 
 export function ProfileProvider({ children }) {
   const [profile, setProfile] = useState(load);
+  const [remember, setRememberState] = useState(isRemembered);
   setCurrentLang(profile.lang); // synchronous on purpose: children's effects (API calls) run before this component's effects
 
   useEffect(() => {
     try {
       window.sessionStorage.setItem(KEY, JSON.stringify(profile));
+      // Only a family's own details (an address was entered) are remembered on the device.
+      if (remember && hasLocation(profile)) window.localStorage.setItem(KEY, JSON.stringify(profile));
     } catch {
       /* ignore */
     }
-  }, [profile]);
+  }, [profile, remember]);
 
   // Tell the browser and screen readers which language the page is in.
   useEffect(() => {
     document.documentElement.lang = profile.lang ?? 'en';
   }, [profile.lang]);
 
-  const updateProfile = useCallback((patch) => setProfile((p) => ({ ...p, isDemo: false, ...patch })), []);
+  const updateProfile = useCallback((patch) => setProfile((p) => ({ ...p, ...patch })), []);
   const patchProfile = useCallback((patch) => setProfile((p) => ({ ...p, ...patch })), []);
-  const resetToDemo = useCallback(() => setProfile(DEMO_PROFILE), []);
-  const setLang = useCallback((lang) => setProfile((p) => ({ ...p, lang })), []);
-  /** Make `next` the active profile as is (used when a signed-in family's profile arrives from the server). */
-  const replaceProfile = useCallback((next) => setProfile(next), []);
-  /** Sign-out: back to the demo family so the previous family's address does not stay on screen. Keeps the display language. */
-  const clearProfile = useCallback(() => {
+
+  /** Tick or untick "Remember me on this device". Unticking also erases what was stored. */
+  const setRemember = useCallback((on) => {
+    setRememberState(on);
+    try {
+      if (on) window.localStorage.setItem(REMEMBER_KEY, '1');
+      else {
+        window.localStorage.removeItem(REMEMBER_KEY);
+        window.localStorage.removeItem(KEY);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  /** "Forget my info": erase the stored profile and start empty again (the saved-schools list is separate). */
+  const forget = useCallback(() => {
+    setRemember(false);
     try {
       window.sessionStorage.removeItem(KEY);
     } catch {
       /* ignore */
     }
-    setProfile((p) => ({ ...DEMO_PROFILE, lang: p.lang }));
-  }, []);
+    setProfile((p) => ({ ...EMPTY_PROFILE, lang: p.lang }));
+  }, [setRemember]);
+  const setLang = useCallback((lang) => setProfile((p) => ({ ...p, lang })), []);
 
   /** Geocode an address or ZIP and make it the family's location. Throws ApiError (with a next step) if it cannot be found. */
   const setLocation = useCallback(async (query) => {
     const g = await api.geocode(query);
     setProfile((p) => ({
       ...p,
-      isDemo: false,
       address: query,
       matchedAddress: tidyAddress(g.matched_address),
       lat: g.lat,
@@ -95,18 +126,10 @@ export function ProfileProvider({ children }) {
     return g;
   }, []);
 
+  const shown = useMemo(() => ({ ...profile, hasLocation: hasLocation(profile) }), [profile]);
   const value = useMemo(
-    () => ({
-      profile,
-      updateProfile,
-      patchProfile,
-      resetToDemo,
-      setLang,
-      setLocation,
-      replaceProfile,
-      clearProfile,
-    }),
-    [profile, updateProfile, patchProfile, resetToDemo, setLang, setLocation, replaceProfile, clearProfile],
+    () => ({ profile: shown, updateProfile, patchProfile, setLang, setLocation, remember, setRemember, forget }),
+    [shown, updateProfile, patchProfile, setLang, setLocation, remember, setRemember, forget],
   );
   return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>;
 }

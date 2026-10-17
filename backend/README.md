@@ -15,7 +15,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 cp .env.example .env                  # add GEMINI_API_KEY for the chat agent (everything else works without it)
 .venv/bin/python scripts/llm_check.py   # confirm the model can do tool calling
 .venv/bin/uvicorn app.main:app --no-access-log      # http://localhost:8000/docs
-.venv/bin/python -m pytest                           # 320 tests, offline
+.venv/bin/python -m pytest                           # 267 tests, offline
 ```
 
 The database (`data/navigator.db`) is built on first start from the committed county snapshots in `data/snapshots/`
@@ -36,9 +36,12 @@ addresses from query strings. Docker: `docker build -t navigator . && docker run
    names differ a lot, e.g. "MAST Academy"). For charters it is not guaranteed, so a number match whose names do not resemble each other is
    **rejected** rather than risk showing another school's grade; those are listed under `fldoe_school_grades.charter_number_matches_rejected_for_name_mismatch`
    in `/api/meta/quality` for a human to resolve (7 today, e.g. "BridgePrep Academy of Miami-Dade" vs "BridgePrep Academy of Doral").
-2. **Magnet themes** (`data/curated/magnet_themes.json`): add 20-30 schools after checking each against the district's magnet
-   catalog. It ships empty on purpose (nothing is guessed): magnet status is `not_available` until you do. Specialty matching otherwise
-   falls back to keywords in the official school name, labelled `derived`.
+2. **Magnet themes** (`data/curated/magnet_themes.json`): loaded 2026-10-17 for 118 schools from the M-DCPS Magnet Program Catalog 2027-2028
+   (English PDF, pages 16-22; the catalog's LOC# equals the county school ID). The PDF text was extracted by a script and spot-checked, **not yet
+   reviewed by a person**; the catalog's footnote markers (auditions, language proficiency, enhanced criteria) are removed from the theme names,
+   so families must check the catalog for those. Robert Morgan Educational Center is left out (not in the county school layers). Schools not
+   listed stay `not_available`; specialty matching otherwise falls back to keywords in the school name, labelled `derived`. Refresh each year when
+   the new catalog is published.
 
 Also re-verify the rules marked `single_secondary_source` / `unconfirmed_project_spec` in `data/curated/rules.json` on dadeschools.net
 (listed in `/api/meta/quality` notes). The 2026-27 cycle dates were confirmed by an M-DCPS release; the 2027-28 window
@@ -59,24 +62,14 @@ Also re-verify the rules marked `single_secondary_source` / `unconfirmed_project
 | `GET /api/dates` | key dates from `rules.json`, each with source, verification level and `days_until` |
 | `POST /api/chat` `{messages, profile, lang?}` | `{answer, citations[], filters_applied, results[]}` (+ `tool_calls`, `degraded`, `warnings`) |
 | `GET /api/meta/quality` | dataset freshness and counts, zone self-check, FLDOE join coverage, rule verification |
+| `POST /api/auth/signup` `{name,email,password>=8,zip?}` | create an account; returns `{token, expires_at, user}` |
+| `POST /api/auth/login` `{email,password}` | sign in; same response. 5 wrong passwords per email pause sign-in for 15 minutes |
+| `GET /api/auth/me` | the signed-in user (`Authorization: Bearer <token>`), or 401 |
+| `POST /api/auth/logout` | ends the session (204) |
 | `GET /api/health` | liveness |
-| `POST /api/auth/signup` `{email,password,name?,profile?}` / `login` / `logout` | accounts: sets an HttpOnly `sn_session` cookie. Passwords are hashed with scrypt; the same 401 answers an unknown email and a wrong password; 5 failed logins per email and client per 15 minutes returns 429 |
-| `GET /api/auth/me` | `{user}` or `{user: null}` when signed out (not an error) |
-| `POST /api/auth/password`, `POST /api/auth/delete-account` | change password (other devices are signed out) / delete the account, profile (including the address), saved schools and sessions. Both need the current password |
-| `PUT /api/me/profile` `{profile, name?}` | the family's profile (address, children, priorities, language), stored as opaque JSON up to 16 KB |
-| `GET /api/me/saved?lat&lon`, `PUT/DELETE /api/me/saved/{id}`, `POST /api/me/saved/merge {ids}` | saved schools (max 200, optional note), each returned with the same `SchoolSummary` as search; `merge` adds guest saves after sign-in |
 
 The contract is exported to [openapi.json](openapi.json) (`python scripts/export_openapi.py`) and served at `/openapi.json`. Errors are
 always `{"error": {"code", "message", "suggested_action"}}`, in the request language (see Languages below).
-
-## Accounts and privacy
-
-Accounts live in their own SQLite file (`USERS_DB_PATH`, default `data/users.db`, git-ignored), so rebuilding the school database can never
-delete families' data. Signed-in families' profiles, **including the address they typed**, are stored server-side so they follow them to
-another device; the account can be deleted at any time (`POST /api/auth/delete-account`) and that removes the address with it. Guests are
-unchanged: nothing is stored. The school endpoints still never return an email field; the only email stored is the family's own sign-in email.
-For an https deployment set `COOKIE_SECURE=true`; for a frontend on another site set `COOKIE_SAMESITE=none` (needs secure) and list its origin
-in `CORS_ORIGINS`. Not built: password reset by email (no mail service), social login, and the login throttle is per process (in memory).
 
 ## Data sources (ingested once; handlers never call county servers)
 
@@ -96,21 +89,39 @@ redistributing; the MIT license covers this code only. Each layer was pulled wit
 snapshots (gzip GeoJSON, 1.2 MB) double as the "county down" fallback. Refresh with `python -m app.ingest.build --refresh` (falls back to
 the snapshot on failure); schedule it nightly if you like.
 
+Accounts (`app/auth.py`): family name, email and optional ZIP, kept in a separate SQLite file (`USERS_DB_PATH`, default `data/users.db`, git-ignored, back it
+up) and never in the school database. Passwords are salted scrypt hashes; a sign-in token is random and only its SHA-256 is stored; sessions last 30 days;
+unknown emails and wrong passwords get the same answer. The token travels in a Bearer header, so serve the API over HTTPS in production. Not built:
+password reset, email verification, and a way to delete an account.
+
 Privacy: county `EMAIL` and daycare contact-name fields are never ingested, and email addresses found in other county cells (two
 private-school "website" values) are dropped. Geocode lookups are cached in memory for an hour and never written to disk or logs.
 
 ## Match score (no black box)
 
-`score = 100 x earned / possible`, summed over the factors that *apply* to a school; every factor is returned in `score_breakdown`
-with `reasons[]`. Factors that cannot be scored (e.g. no state grade) are left out of `possible` rather than counted as zero.
+`score = 100 x earned / possible`, summed over a school's factors. Every factor is returned in `score_breakdown` with `reasons[]`, so any score can be
+audited. The score is **not** mostly about distance: distance carries 15 of 100 points (it used to carry 30), and the family's travel limit
+(`radius_mi`) is still a hard cutoff, so a better fit a little farther away can outrank the closest school without ever going past the limit.
 
 | Factor | Max | Applies to |
 | --- | --- | --- |
-| Zoned for this address | 25 | public schools |
-| Distance (linear over the search radius) | 30 | all |
+| Zoned for this address | 15 | public schools |
+| Distance (linear over the search radius) | 15 | all (not online schools) |
 | State grade (A 1.0, B 0.75, C 0.4, D 0.15, F 0) | 20 | public and charter with a grade |
 | Priority matches (share of requested priorities) | 15 | when `priorities` is given |
+| Popularity: how full the school is, `(enrollment / capacity - 0.5) / 0.5`, 0 to 1 | 10 | schools with both numbers (mostly public) |
 | Accepts scholarships | 10 | private, when `scholarship=true` |
+
+**What matters most (`values`).** `values=academics,programs,popularity,proximity` counts those factors extra for that family only (state grade x2.5,
+priority matches x2.5, popularity x3, distance and zoning x2). They re-rank, they never filter, and an unknown value is a 422 (`bad_values`).
+
+**Popularity is a proxy, and it says so.** The county publishes no application, waitlist or rating data, so "popular" means seats filled
+(enrollment compared with capacity). The search notes say this whenever `popularity` is valued.
+
+**Unknown is neutral, not hidden and not zero.** When a factor cannot be scored for a school (no state grade, no enrollment numbers, or a kind of
+school Florida does not grade, such as private and early-learning programs) it counts as half of its points, and the breakdown shows it with an
+explanation. This stops a school we know nothing about from beating a known-good one because it is a little closer. (Earlier versions left
+such factors out of the total, which let a day-care with only a distance score show as a 98% match.)
 
 Hard filters: stage (age fit), free-only (keeps public and charter; private and child care have no public prices), grade floor, specialties,
 ESE, scholarship. `meta.excluded` reports how many candidates each removed, and `meta.notes` states each filter's limits.
@@ -142,19 +153,12 @@ into each request). The adapter also drops `temperature` or `tool_choice` automa
 
 Privacy note: free tiers of hosted APIs may use prompts to improve their products (Google's does, per its published terms; check the current
 terms). Chat prompts can contain a family's address, so use a paid tier, a provider with no-training terms, or a local model for real users;
-the fictional demo family is fine anywhere. `/api/meta/quality` shows the active provider and model, never the key.
+a made-up test address is fine anywhere. `/api/meta/quality` shows the active provider and model, never the key.
 
 Server-side checks, not just prompting, so a weaker model stays verifiable: a hard 4-call budget (extra calls get an error result and the final
 model call has tools disabled); tool results are compact JSON where every field carries a `cite` id, citation markers are validated against
 that registry and renumbered `[1]..[n]` (unknown ids stripped); any dollar amount that no tool returned triggers one rewrite, then
 redaction; if the model is unavailable, unconfigured, or fails mid-turn, `/api/chat` returns structured results with `degraded: true`.
-
-**Outages and backup models.** The free Google endpoint sometimes answers `500 INTERNAL` for a while (seen on 2026-10-16). Each route retries three times; then the next route is tried:
-
-1. the main model (`LLM_MODEL`; `LLM_FALLBACK_MODEL` adds a second model on the same provider),
-2. the routes in `LLM_BACKUPS`, e.g. `nvidia:google/gemma-4-31b-it,cerebras:qwen-3.8-27b@600` (`provider:model[@max calls per UTC day]`).
-
-Each backup uses its own provider's key (`NVIDIA_API_KEY`, `CEREBRAS_API_KEY`, ...), never the main key. A failed route is skipped for 60 s (10 minutes after a bad key or unknown model). Paid providers (cerebras, openai, together, openrouter) default to a **600 calls a day** cap so a loop cannot drain credit (`@0` removes it); the counters live in the process and reset on restart or at 00:00 UTC. The chain is built once and shared by all requests, so cooldowns and caps are remembered. `GET /api/health` lists the routes (never keys); `python scripts/llm_check.py --backups` checks each one. If every route fails the chat degrades to a structured list that still reads a ZIP, street address and children's ages from what the family typed; it never invents an answer. Checked on 2026-10-17: with the main model deliberately broken, NVIDIA's `google/gemma-4-31b-it` alone and Cerebras' `qwen-3.8-27b` alone each passed all 10 golden cases.
 
 **Tested against a real model (2026-10-15):** with `gemma-4-26b-a4b-it` on Google's free tier and `LLM_RPM=15`, all 10 golden cases in
 `scripts/golden.py` passed in one run (about 2 s per model call), including Spanish and Haitian Creole. That is one run, not a guarantee:
@@ -206,7 +210,7 @@ ids from the family's input survive translation, and that no English template te
 FLDOE, FES, FTC, PEP, Step Up For Students) are kept as written. Get them reviewed before real families rely on them, especially the Creole and the legal-sounding
 texts (rules, eligibility, "confirm with the district" caveats, error messages).
 
-## Data quality checks (show in the demo)
+## Data quality checks
 
 * Own-point-in-own-zone: **99.6%** of public schools' points fall inside their own attendance zone (target 95%); failures are listed in
   `/api/meta/quality`.

@@ -1,9 +1,1444 @@
 {
-  "_readme": "Human-verified magnet programs. Add one entry per school after checking it against the district's magnet catalog (miamimagnets.org). Leave this list empty rather than guess: schools missing here are reported as 'magnet status not available'. Fields: source_id (county school ID, e.g. '7301') or name; themes (list of strings as the catalog words them); verified_by; verified_on (YYYY-MM-DD); catalog_url (the exact page you checked).",
-  "as_of": null,
-  "source": {
-    "title": "M-DCPS Magnet Programs catalog (curated by hand)",
-    "url": "https://www.miamimagnets.org/"
+ "_readme": "Magnet programs per school, taken from the M-DCPS Magnet Program Catalog 2027-2028 (English PDF, school listing on pages 16-22; LOC# in the catalog equals the county school ID). Themes are the program names as the catalog words them, with its footnote markers removed (* auditions required, ** language proficiency required, *** Key Biscayne residency priority, double-dagger enhanced criteria): families must check the catalog for those requirements. Extracted automatically and spot-checked; a person should review before real families rely on it. Fields: source_id (county school ID); themes; verified_by; verified_on (YYYY-MM-DD); catalog_url.",
+ "as_of": "2026-10-17",
+ "source": {
+  "title": "M-DCPS Magnet Program Catalog 2027-2028",
+  "url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+ },
+ "schools": [
+  {
+   "source_id": "7001",
+   "name": "Miami-Dade Online Academy",
+   "themes": [
+    "Virtual K-12 Online"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
   },
-  "schools": []
+  {
+   "source_id": "7581",
+   "name": "iPrep Academy",
+   "themes": [
+    "Int’l Education/Global Focus"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "1561",
+   "name": "Earlington Heights Elementary",
+   "themes": [
+    "Int’l Baccalaureate - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "0771",
+   "name": "William A. Chapman Elementary",
+   "themes": [
+    "STEAM (Science, Technology, Engineering, Arts and Mathematics)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5021",
+   "name": "Ben Sheppard Elementary",
+   "themes": [
+    "STEM (Science, Technology, Engineering and Mathematics)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "4381",
+   "name": "Dr. Henry E. Perrine Academy of the Arts",
+   "themes": [
+    "Art",
+    "Dance",
+    "Music",
+    "Theatre"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "0721",
+   "name": "George Washington Carver Elementary",
+   "themes": [
+    "Int’l Education - Spanish",
+    "Int’l Studies - Italian"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "2181",
+   "name": "Joella C. Good Elementary",
+   "themes": [
+    "Montessori"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5131",
+   "name": "North Dade Center For Modern Languages Elementary",
+   "themes": [
+    "Int’l Language - French",
+    "Int’l Language - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "3901",
+   "name": "North Hialeah Elementary",
+   "themes": [
+    "STEM - Environmental Science"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "3431",
+   "name": "Phyllis Ruth Miller Elementary",
+   "themes": [
+    "Montessori"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "3621",
+   "name": "Coconut Palm K-8 Academy",
+   "themes": [
+    "Agriscience Engineering",
+    "Medical Technology"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "0122",
+   "name": "Dr. Rolando Espinosa K-8 Center",
+   "themes": [
+    "Communications"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5831",
+   "name": "Henry S. West Laboratory School",
+   "themes": [
+    "Global Focus"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "3101",
+   "name": "Frank C. Martin K-8 Center",
+   "themes": [
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5141",
+   "name": "Hubert O. Sibley K-8 Center",
+   "themes": [
+    "STArts (Science, Technology, and Arts Exploration & Innovation)",
+    "Visual/Graphic Arts"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5561",
+   "name": "Frances S. Tucker Elementary",
+   "themes": [
+    "STArts (Science, Technology, and Arts Exploration & Innovation)",
+    "Dance/Kinetic Movement"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "2901",
+   "name": "Leisure City K-8 Center",
+   "themes": [
+    "RITMO - Mariachi"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "2911",
+   "name": "Linda Lentin K-8 Center",
+   "themes": [
+    "STEM: Robotics"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "1401",
+   "name": "Charles R. Drew K-8 Center",
+   "themes": [
+    "Dance",
+    "Music"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "4441",
+   "name": "Pine Lake Elementary",
+   "themes": [
+    "STEM: Botany & Zoology"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "4881",
+   "name": "Scott Lake Elementary",
+   "themes": [
+    "Montessori"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5641",
+   "name": "Village Green Elementary",
+   "themes": [
+    "Classical Education"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "0561",
+   "name": "W.J. Bryan Elementary",
+   "themes": [
+    "Museums"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5401",
+   "name": "Sunset Elementary",
+   "themes": [
+    "Int’l Studies - French",
+    "Int’l Studies - German",
+    "Int’l Studies - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "3191",
+   "name": "Ada Merritt K-8 Center",
+   "themes": [
+    "Int’l Baccalaureate/Int’l Studies - Spanish",
+    "Int’l Baccalaureate/Int’l Studies - Portuguese"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "0041",
+   "name": "Air Base K-8 Center for International Education",
+   "themes": [
+    "Cambridge Int’l - French",
+    "Cambridge Int’l - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "0451",
+   "name": "Doolin/Bowman Foster Ashe Elementary",
+   "themes": [
+    "STArts2 (Science, Technology, and Arts Exploration & Innovation)",
+    "Digital Music Production"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "0801",
+   "name": "Citrus Grove K-8 Center",
+   "themes": [
+    "STArts2 (Science, Technology, and Arts Exploration & Innovation)",
+    "Digital Music Production"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7351",
+   "name": "Arthur & Polly Mays Conservatory of The Arts",
+   "themes": [
+    "Art",
+    "Band",
+    "Chorus",
+    "Dance",
+    "Orchestra/Guitar",
+    "Theatre / Set Design",
+    "Entertainment Technology",
+    "Fashion Design",
+    "Arts Exploration (GRADES K-5)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6021",
+   "name": "Arvida Middle",
+   "themes": [
+    "Forensic Science",
+    "Global Studies",
+    "Band"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6111",
+   "name": "Cutler Bay Middle",
+   "themes": [
+    "(COAST) Cutler Bay Ocean Academy of Science & Technology",
+    "Criminal Justice & Forensic Science"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6023",
+   "name": "Andover Middle",
+   "themes": [
+    "Cambridge Int’l"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5003",
+   "name": "South Dade Middle",
+   "themes": [
+    "Medical Health Sciences Academy"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "3501",
+   "name": "Morningside K-8 Center",
+   "themes": [
+    "French/Haitian Creole",
+    "Int’l Education - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5241",
+   "name": "South Miami K-8 Center",
+   "themes": [
+    "Computer Art Technology (CAT) (GRADES 6-8)",
+    "Art (GRADES 3-5)",
+    "Dance (GRADES 3-5)",
+    "Theatre (GRADES 3-5)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6281",
+   "name": "Thomas Jefferson Biscayne Gardens K-8 Academy",
+   "themes": [
+    "STArts2 (Science, Technology, and Arts Exploration & Innovation)",
+    "Digital Music Production"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "5321",
+   "name": "Southside Preparatory Academy",
+   "themes": [
+    "Museums"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "0009",
+   "name": "Venetian Parc Academy",
+   "themes": [
+    "Reggio Emilia (PK ONLY)",
+    "STEM - Mastery-Based Learning (GRADES K-4 ONLY)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6501",
+   "name": "Miami Lakes Middle",
+   "themes": [
+    "Cambridge Int’l/Legal Studies"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6631",
+   "name": "North Miami Middle",
+   "themes": [
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6681",
+   "name": "Palm Springs Middle",
+   "themes": [
+    "Multimedia Entertainment Technology"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6041",
+   "name": "Paul W. Bell Middle",
+   "themes": [
+    "Cambridge Int’l"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6741",
+   "name": "Ponce de Leon Middle",
+   "themes": [
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Italian",
+    "Int’l Baccalaureate - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6761",
+   "name": "Redland Middle",
+   "themes": [
+    "Agriscience",
+    "Robotics"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6591",
+   "name": "North Dade Center Middle",
+   "themes": [
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6571",
+   "name": "Norland Middle",
+   "themes": [
+    "Art",
+    "Band/Jazz",
+    "Chorus",
+    "Dance",
+    "Theatre"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6801",
+   "name": "Riviera Middle",
+   "themes": [
+    "RamTech (Robotics and Multimedia)",
+    "Culinary Arts (GRADES 6)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6921",
+   "name": "Lamar Louise Curry Middle",
+   "themes": [
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Spanish",
+    "Information Technology"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6161",
+   "name": "Lawton Chiles Middle",
+   "themes": [
+    "Biomedical",
+    "Cambridge Int’l",
+    "Forensic Science"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6071",
+   "name": "George Washington Carver Middle",
+   "themes": [
+    "Int’l Education - French (GRADE 6 ONLY)",
+    "Int’l Education - German (GRADE 6 ONLY)",
+    "Int’l Education - Spanish (GRADE 6 ONLY)",
+    "Int’l Education - Italian (GRADE 6 ONLY)",
+    "Int’l Studies - French",
+    "Int’l Studies - German",
+    "Int’l Studies - Italian",
+    "Int’l Studies - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6221",
+   "name": "Hammocks Middle",
+   "themes": [
+    "Pre-Law",
+    "Apple™ Coding"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6331",
+   "name": "Kinloch Park Middle",
+   "themes": [
+    "Cambridge Int’l"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6301",
+   "name": "John F. Kennedy Middle",
+   "themes": [
+    "BEAT (Biomedical/Environmental/Agriscience/Technology)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6771",
+   "name": "Jorge Mas Canosa Middle",
+   "themes": [
+    "Cambridge Int’l"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6351",
+   "name": "Lake Stevens Middle",
+   "themes": [
+    "Apple™ Coding"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6361",
+   "name": "Jose De Diego Middle",
+   "themes": [
+    "Engineering & Robotics",
+    "Visual Arts - Art"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6411",
+   "name": "Horace Mann Middle",
+   "themes": [
+    "Medical Health Sciences",
+    "Music/Entertainment Technology",
+    "STEM: Coding"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6441",
+   "name": "Howard D. Mcmillan Middle",
+   "themes": [
+    "Cambridge Int’l/Robotics Engineering",
+    "Medical Health Sciences"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6231",
+   "name": "Hialeah Middle",
+   "themes": [
+    "Dance",
+    "Music",
+    "Theatre",
+    "Visual Arts"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6001",
+   "name": "Herbert A. Ammons Middle",
+   "themes": [
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7051",
+   "name": "G. Holmes Braddock Senior High",
+   "themes": [
+    "Cambridge Int’l",
+    "iPrep Academy",
+    "Information Technology"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7101",
+   "name": "Coral Reef Senior High",
+   "themes": [
+    "Agriscience",
+    "Engineering",
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Spanish",
+    "Int’l Baccalaureate - German",
+    "Legal",
+    "Medical & Allied Health Sciences",
+    "Art",
+    "Chorus",
+    "Dance",
+    "Instrumental",
+    "Strings",
+    "Theatre"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7781",
+   "name": "Felix Varela Senior High",
+   "themes": [
+    "Global Studies",
+    "iPrep Academy",
+    "Veterinary Science",
+    "Apple™ Coding",
+    "Artificial Intelligence"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6081",
+   "name": "Cutler Bay Senior High",
+   "themes": [
+    "COAST (Cutler Bay Ocean Academy of Science & Technology)",
+    "Digital Business Marketing",
+    "Hospitality & Tourism",
+    "Liberal Arts"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7081",
+   "name": "Design & Architecture Senior High",
+   "themes": [
+    "Architecture/Interior Design",
+    "Entertainment Technology/Film",
+    "Fashion Design",
+    "Industrial Design/Product & Transportation",
+    "Visual Communications/Graphic Design"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7141",
+   "name": "Dr. Michael M. Krop Senior High",
+   "themes": [
+    "Art",
+    "Dance",
+    "Instrumental",
+    "Strings",
+    "Theatre"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7071",
+   "name": "Coral Gables Senior High",
+   "themes": [
+    "Int’l Finance",
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Italian",
+    "Int’l Baccalaureate - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7021",
+   "name": "Center For International Education: A Cambridge A S",
+   "themes": [
+    "Cambridge Int’l"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7161",
+   "name": "Maritime & Science Technology Academy",
+   "themes": [
+    "Cambridge Int’l (GRADES 6-8)",
+    "Cambridge Int’l - Global Studies (GRADES 9-12)",
+    "Cambridge Int’l - STEM (Science, Technology, Engineering, and Mathematics) (GRADES 9-12)",
+    "Maritime & Science Technology (GRADES 9-12)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7511",
+   "name": "Miami Springs Senior High",
+   "themes": [
+    "Aviation & Aerospace Engineering",
+    "Hospitality & Tourism",
+    "iTech Academy"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6052",
+   "name": "Miami Arts Studio 6-12 at Zelda Glazer",
+   "themes": [
+    "Band",
+    "Chorus",
+    "Dance",
+    "Orchestra",
+    "Theatre",
+    "Visual Arts",
+    "Broadcasting",
+    "Technical Production",
+    "Entertainment Law"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7056",
+   "name": "Young Men's Preparatory Academy Senior High",
+   "themes": [
+    "Leadership"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7055",
+   "name": "Young Women's Preparatory Academy",
+   "themes": [
+    "Leadership"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7011",
+   "name": "American Senior High",
+   "themes": [
+    "Biomedical Careers",
+    "Cambridge Int’l"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7751",
+   "name": "Barbara Goleman Senior High",
+   "themes": [
+    "AP Capstone",
+    "STEM: AP Capstone",
+    "Cybersecurity",
+    "Information Systems Technology",
+    "Digital Marketing",
+    "Financial Technologies",
+    "Forensic Science",
+    "Law Enforcement/Intelligence Studies"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7791",
+   "name": "Booker T. Washington Senior High",
+   "themes": [
+    "SpaceHUB (GRADE 9-10 ONLY) - Aerospace Engineering & Manufacturing",
+    "SpaceHUB (GRADE 9-10 ONLY) - Aerospace Robotics & Coding",
+    "SpaceHUB (GRADE 9-10 ONLY) - Aerospace Technology & Design"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7008",
+   "name": "Biotech@Richmond Heights 9-12 High School",
+   "themes": [
+    "Conservation Biology"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7291",
+   "name": "Jose Marti Mathematics & Science Technology Academy",
+   "themes": [
+    "MAST (Math & Science Technology) (GRADES 6-8)",
+    "MAST Environmental STEM (GRADES 9-12)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7459",
+   "name": "iPrep Academy North",
+   "themes": [
+    "Cambridge Int’l/Artificial Intelligence in collaboration with LEGO® Education"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6961",
+   "name": "West Miami Middle",
+   "themes": [
+    "Apple™ Coding",
+    "M.E.T. (Marine Environmental Science /Technology)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6901",
+   "name": "W. R. Thomas Middle",
+   "themes": [
+    "Cambridge Int’l"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6881",
+   "name": "South Miami Middle",
+   "themes": [
+    "Broadcast",
+    "Band",
+    "Chorus",
+    "Dance",
+    "Orchestra",
+    "Theatre",
+    "Visual Art and Photography"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6861",
+   "name": "Southwood Middle",
+   "themes": [
+    "Art",
+    "Band",
+    "Chorus",
+    "Dance",
+    "Orchestra",
+    "Photography",
+    "Theatre"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6121",
+   "name": "Ruben Dario Middle",
+   "themes": [
+    "Medical Health Sciences"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6841",
+   "name": "Shenandoah Middle",
+   "themes": [
+    "Museums"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "6821",
+   "name": "Rockway Middle",
+   "themes": [
+    "Engineering & Robotics",
+    "Legal Studies"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7171",
+   "name": "Medical Academy For Science And Technology",
+   "themes": [
+    "Biomedical Sciences",
+    "iMed - EMR/First Responder",
+    "Pharmaceutical Sciences",
+    "Physical Therapy"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7411",
+   "name": "Miami Northwestern Senior High",
+   "themes": [
+    "Medical & Allied Health Professions",
+    "Art",
+    "Dance",
+    "Instrumental",
+    "Theatre"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7461",
+   "name": "Miami Senior High",
+   "themes": [
+    "Legal & Public Affairs",
+    "Teaching Profession"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7431",
+   "name": "Miami Palmetto Senior High",
+   "themes": [
+    "AP Capstone",
+    "iPrep Academy",
+    "AP Capstone: Forensic Investigative Academy (FIA)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7731",
+   "name": "Miami Southridge Senior High",
+   "themes": [
+    "AP Capstone",
+    "Business Innovation & Management",
+    "Coding & Application Development",
+    "Criminal Justice",
+    "Gaming Design & Animation"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7901",
+   "name": "New World School of the Arts",
+   "themes": [
+    "Art",
+    "Chorus",
+    "Dance",
+    "Strings - Instrumental",
+    "Strings - Jazz/Instrumental",
+    "Theatre - Acting",
+    "Theatre - Musical Theatre"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7531",
+   "name": "Miami Sunset Senior High",
+   "themes": [
+    "Allied Medical Sciences",
+    "Pre-Medicine",
+    "Sports Medicine",
+    "Communications: Digital Media/Multimedia Design",
+    "Cybersecurity",
+    "Engineering"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7381",
+   "name": "Miami Norland Senior High",
+   "themes": [
+    "Bio-tech & Forensic Science",
+    "Hospitality & Tourism",
+    "iPrep Academy",
+    "Sports Medicine"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7111",
+   "name": "Hialeah Senior High",
+   "themes": [
+    "Dance",
+    "Music",
+    "Theatre",
+    "Visual Arts"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7033",
+   "name": "Law Enforcement Officers Memorial Senior High",
+   "themes": [
+    "Forensic Science",
+    "Homeland Security",
+    "Law Studies"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7005",
+   "name": "iTech@Thomas A. Edison Education Center",
+   "themes": [
+    "ERP (Enterprise Resource Planning)",
+    "GIS (Geospatial Information Systems)",
+    "iCode (Microsoft Software Solutions)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7121",
+   "name": "John A. Ferguson Senior High",
+   "themes": [
+    "Culinary Arts",
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Italian",
+    "Int’l Baccalaureate - Spanish",
+    "Int’l Business & Finance",
+    "iTech - Information Technology",
+    "Medical Skills/Biomedical"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7571",
+   "name": "International Studies Preparatory Academy",
+   "themes": [
+    "Int’l Education - French",
+    "Int’l Education - Italian",
+    "Int’l Studies - French",
+    "Int’l Studies - Italian",
+    "Int’l Studies - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7151",
+   "name": "Homestead Senior High School",
+   "themes": [
+    "Hospitality & Tourism",
+    "Practical Nursing",
+    "Veterinary Science"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7031",
+   "name": "MAST @ FIU Biscayne Bay Campus",
+   "themes": [
+    "Marine & Environmental Science"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7231",
+   "name": "Miami Carol City Senior High",
+   "themes": [
+    "Electric Vehicle (EV) Automotive Technology",
+    "Legal & Public Affairs - Criminal Justice",
+    "Legal & Public Affairs - Law"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7251",
+   "name": "Miami Central Senior High",
+   "themes": [
+    "Engineering & Robotics",
+    "Global Trade & Logistics",
+    "Information Technology"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7271",
+   "name": "Miami Coral Park Senior High",
+   "themes": [
+    "Architecture",
+    "Construction",
+    "Biomedical",
+    "Engineering & Robotics"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7301",
+   "name": "Miami Edison Senior High",
+   "themes": [
+    "Artificial Intelligence",
+    "Culinary Arts",
+    "Entrepreneurship & Innovation (IYC) (GRADE 9-11 ONLY)",
+    "Medical Health Sciences (First Responder / EMT)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7391",
+   "name": "Miami Lakes Educational Center Senior High",
+   "themes": [
+    "Air Conditioning & Refrigeration",
+    "Automotive Collision Repair",
+    "Automotive Service Technology",
+    "Culinary Arts",
+    "Cambridge Int’l/Engineering",
+    "Cambridge Int’l/Global Studies",
+    "Cambridge Int’l/Journalism",
+    "Television Production",
+    "Web Design Technology",
+    "Commercial Art Technology",
+    "Computer Science and Programming",
+    "Computer Systems Technology (CISCO Networking)",
+    "Electronic Technology",
+    "Dental Assisting",
+    "EMR/First Responder",
+    "Allied Health/Medical Assisting",
+    "Introduction to Practical Nursing",
+    "Nursing Assistant",
+    "Pharmacy Technician",
+    "Financial Services"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7341",
+   "name": "Miami Jackson Senior High",
+   "themes": [
+    "Industrial Biotechnology (BioPharm)",
+    "Int’l Business & Finance"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7131",
+   "name": "Hialeah-Miami Lakes Senior High",
+   "themes": [
+    "Legal Studies",
+    "SpaceHUB (GRADES 9-11) - Aerospace Applied Engineering",
+    "SpaceHUB (GRADES 9-11) - Aerospace Applied Robotics",
+    "SpaceHUB (GRADES 9-11) - Aerospace Systems Coding",
+    "SpaceHUB (GRADES 9-11) - Aerospace Electrical Systems",
+    "SpaceHUB (GRADES 9-11) - Aerospace Science and Design"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7361",
+   "name": "Miami Killian Senior High",
+   "themes": [
+    "Cambridge Int’l",
+    "Law, Leadership & Judicial Studies",
+    "SportsPLEX (GRADE 9-10 ONLY) - Sports Business & Management",
+    "SportsPLEX (GRADE 9-10 ONLY) - Sports Media & Creative Design",
+    "SportsPLEX (GRADE 9-10 ONLY) - Sports Performance & Injury Prevention"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7029",
+   "name": "Terra Environmental Research Institute Senior High",
+   "themes": [
+    "Biomedical Research",
+    "Environmental Research & Field Studies",
+    "Robotics & Engineering Technology"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7741",
+   "name": "Southwest Miami Senior High",
+   "themes": [
+    "Banking & Finance",
+    "Information Technology - Artificial Intelligence",
+    "Information Technology - Data Science & Machine Learning"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7701",
+   "name": "South Dade Senior High",
+   "themes": [
+    "Agri-technology",
+    "Automotive Service Technology",
+    "Building Trades, Construction Design Technology & Management",
+    "Culinary Arts",
+    "Early Childcare Education",
+    "Int’l Finance, Business & Tech",
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Italian",
+    "Int’l Baccalaureate - Spanish",
+    "Health Sciences (Medical Assisting, Sports Medicine)",
+    "Legal Studies"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7721",
+   "name": "South Miami Senior High",
+   "themes": [
+    "Apple™ Coding",
+    "Graphic Design & Illustration",
+    "Band",
+    "Fine Arts",
+    "Multimedia",
+    "Broadcasting",
+    "Orchestra",
+    "Photography"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7049",
+   "name": "Westland Hialeah Senior High",
+   "themes": [
+    "Early College and Career Pathways",
+    "Health Science/Allied Health Science",
+    "Multimedia/Artificial Intelligence (AI)",
+    "Criminal Justice/Emergency Services"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7601",
+   "name": "William H. Turner Technical Arts High School",
+   "themes": [
+    "Business & Finance",
+    "Civil Engineering & Architectural Design (ACAD)",
+    "Criminal Justice",
+    "Entertainment Technology (Music/Sound Design and Television Production)",
+    "Information Technology (Digital Design/Multimedia Web Design & Technology Support Services)",
+    "Medical Sciences",
+    "Veterinary Science and Agricultural Technology (VSAT)"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7591",
+   "name": "North Miami Senior High",
+   "themes": [
+    "Business & Finance",
+    "Engineering",
+    "Health Sciences (Nursing/First Responder)",
+    "Int’l Baccalaureate - French",
+    "Int’l Baccalaureate - Spanish"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  },
+  {
+   "source_id": "7541",
+   "name": "North Miami Beach Senior High",
+   "themes": [
+    "(BEAT) Biomedical/Environmental/Agriscience/Technology",
+    "iPrep Academy"
+   ],
+   "verified_by": "extracted automatically from the catalog PDF, not yet reviewed by a person",
+   "verified_on": "2026-10-17",
+   "catalog_url": "https://yourchoicemiami.org/files/2026/09/SCPO-MAGNET-CATALOG2027-2028-FINAL2-ENG.pdf"
+  }
+ ]
 }

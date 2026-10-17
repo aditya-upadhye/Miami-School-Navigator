@@ -169,7 +169,8 @@ class ToolBox:
         pri = priorities if priorities is not None else self.profile.priorities
         resp = schools_svc.search(self.nav, lat=lat, lon=lon, radius_mi=float(radius_mi or (25 if q else 3)), q=q, kinds=kinds or None, stages=st or None,
                                   free_only=bool(free), grade_min=grade_min, specialties=specialties or None, ese=bool(ese),
-                                  scholarship=bool(scholarship), sort=sort, limit=min(int(limit or 6), 10), priorities=pri or None)
+                                  scholarship=bool(scholarship), sort=sort, limit=min(int(limit or 6), 10), priorities=pri or None,
+                                  values=[v for v in self.profile.values if v in schools_svc.VALUES] or None)  # the family's own stated values; the model cannot change them
         self.results, self.filters_applied = resp.results, resp.meta.filters_applied
         return {"schools": [self._school(s) for s in resp.results], "total_matching": resp.meta.total_matching,
                 "filters_applied": resp.meta.filters_applied, "excluded_by_filter": resp.meta.excluded, "notes": resp.meta.notes,

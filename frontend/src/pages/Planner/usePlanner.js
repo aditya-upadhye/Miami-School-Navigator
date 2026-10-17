@@ -23,7 +23,7 @@ export function usePlanner() {
     })),
   };
   const { data, error, loading } = useApi((signal) => api.plan(body, { signal }), [JSON.stringify(body)], {
-    enabled: children.length > 0,
+    enabled: children.length > 0 && profile.hasLocation,
     delay: 300,
   });
 

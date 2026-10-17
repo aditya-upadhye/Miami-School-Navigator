@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { BUDGET_OPTIONS, PRIORITY_LABEL_KEYS, PRIORITY_OPTIONS } from '../../data/family';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { BUDGET_OPTIONS, PRIORITY_LABEL_KEYS, PRIORITY_OPTIONS, VALUE_LABEL_KEYS, VALUE_OPTIONS } from '../../data/family';
 import { useI18n } from '../../i18n';
 import { useSetState } from '../../hooks/useSetState';
 import { useProfile } from '../../profile/ProfileProvider';
@@ -14,27 +14,29 @@ export function useOnboarding() {
   const { profile, setLocation, updateProfile } = useProfile();
   const { t, tp, lang } = useI18n();
   const navigate = useNavigate();
+  const [params, setParams] = useSearchParams();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
   const [s, setState] = useSetState(() => ({
-    mode: 'chat',
-    where: profile.isDemo ? '' : profile.address,
-    kids: (profile.isDemo ? [{ name: '', age: 5 }] : profile.children).map((c) => ({
+    where: profile.address ?? '',
+    kids: (profile.children.length ? profile.children : [{ name: '', age: 5 }]).map((c) => ({
       name: c.name ?? '',
       age: c.age,
       support: !!c.support,
     })),
     radius: profile.radius ?? 3,
     budget: profile.freeOnly ? 'free' : 'any',
-    prio: profile.isDemo ? [] : (profile.priorities ?? []).filter((p) => PRIORITY_OPTIONS.includes(p)),
+    prio: (profile.priorities ?? []).filter((p) => PRIORITY_OPTIONS.includes(p)),
+    values: (profile.values ?? []).filter((v) => VALUE_OPTIONS.includes(v)),
   }));
 
   const updateKid = (i, patch) =>
     setState((st) => ({ kids: st.kids.map((k, idx) => (idx === i ? { ...k, ...patch } : k)) }));
 
-  const chatOn = s.mode === 'chat';
-  const formOn = s.mode === 'form';
+  // The mode lives in the URL (?mode=chat | form), so the switcher and the browser's Back button agree.
+  const formOn = params.get('mode') === 'form';
+  const chatOn = !formOn;
   const n = s.kids.length;
 
   const submit = async () => {
@@ -50,9 +52,10 @@ export function useOnboarding() {
         children: s.kids.map((k) => ({ name: k.name.trim() || undefined, age: k.age, support: k.support })),
         freeOnly: s.budget === 'free',
         priorities: s.prio,
+        values: s.values,
         radius: s.radius,
       });
-      navigate('/explore', { state: { onboarded: true } });
+      navigate('/explore');
     } catch (e) {
       setError(`${e.message} ${e.suggestedAction ?? ''}`.trim());
     } finally {
@@ -63,12 +66,7 @@ export function useOnboarding() {
   return {
     chatOn,
     formOn,
-    chatBorder: chatOn ? 'var(--accent)' : 'var(--line)',
-    chatBg: chatOn ? 'var(--accent-tint)' : 'var(--glass2)',
-    formBorder: formOn ? 'var(--accent)' : 'var(--line)',
-    formBg: formOn ? 'var(--accent-tint)' : 'var(--glass2)',
-    pickChat: () => setState({ mode: 'chat' }),
-    pickForm: () => setState({ mode: 'form' }),
+    pickChat: () => setParams({ mode: 'chat' }, { replace: true }),
 
     where: s.where,
     onWhere: (e) => setState({ where: e.target.value }),
@@ -119,6 +117,10 @@ export function useOnboarding() {
         pick: () => setState((st) => ({ prio: toggleInList(st.prio, p) })),
         ...chip(on),
       };
+    }),
+    valueChips: VALUE_OPTIONS.map((v) => {
+      const on = s.values.includes(v);
+      return { label: t(VALUE_LABEL_KEYS[v]), tip: t(`${VALUE_LABEL_KEYS[v]}.tip`), on, pick: () => setState((st) => ({ values: toggleInList(st.values, v) })), ...chip(on) };
     }),
     prioSummary: s.prio.length
       ? s.prio.map((p) => t(PRIORITY_LABEL_KEYS[p])).join(', ')

@@ -2,12 +2,15 @@ import { account } from './catalog/account';
 import { core } from './catalog/core';
 import { explore } from './catalog/explore';
 import { landing } from './catalog/landing';
+import { menu } from './catalog/menu';
+import { values } from './catalog/values';
 import { onboarding } from './catalog/onboarding';
 import { pathway } from './catalog/pathway';
+import { saved } from './catalog/saved';
 import { school } from './catalog/school';
 import { shared } from './catalog/shared';
 
-export const CATALOGS = { core, landing, onboarding, explore, school, pathway, shared, account };
+export const CATALOGS = { core, landing, onboarding, explore, school, pathway, saved, account, menu, values, shared };
 
 /** All catalogs merged per language. A test fails if two catalogs define the same key. */
 export const messages = Object.fromEntries(

@@ -1,6 +1,6 @@
 import { LANGS, LANG_NAMES, useI18n } from '../i18n';
 
-/** EN / ES / HT toggle. Sets the language for Navi's replies and, on translated screens, the page text. */
+/** EN / ES / HT toggle. Sets the language for Jarvis's replies and, on translated screens, the page text. */
 export default function LanguageSwitcher() {
   const { lang, setLang, t } = useI18n();
   return (

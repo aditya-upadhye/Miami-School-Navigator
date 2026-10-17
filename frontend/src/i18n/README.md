@@ -6,7 +6,7 @@ doc you touch; never imply they are reviewed.
 ## How it works
 
 * `src/i18n/catalog/<area>.js` each export `{ en: {...}, es: {...}, ht: {...} }`. They are merged in `src/i18n/messages.js`. One file per area
-  (`core` = nav + planner + status text, `landing`, `onboarding`, `explore`, `school`, `pathway`, `shared`, `account` = sign-in, account page and saved schools). Keys are unique across files
+  (`core` = nav + planner + status text, `landing`, `onboarding`, `explore`, `school`, `pathway`, `shared`). Keys are unique across files
   (a test fails otherwise) and prefixed with the area (`explore.filters.title`). All three languages must have identical keys and identical
   `{placeholders}` (tests enforce this).
 * In a component or hook: `const { t, tp, date, monthDay, days, nf, lang } = useI18n();` (`src/i18n/index.js`).
@@ -59,7 +59,7 @@ doc you touch; never imply they are reviewed.
 | ask the school | pregunte a la escuela | mande lekòl la |
 | source / checked | fuente / verificado | sous / verifye |
 | family / child(ren) | familia / hijos, niños | fanmi / timoun |
-| Navi (the assistant) | Navi | Navi |
+| Jarvis (the assistant) | Jarvis | Jarvis |
 
 ## Testing
 

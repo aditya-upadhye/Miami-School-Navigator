@@ -6,12 +6,6 @@ Ollama, vLLM, LM Studio or OpenAI itself: change environment variables, not code
     LLM_PROVIDER   gemini (default) | groq | openrouter | together | ollama | vllm | openai | custom
     LLM_BASE_URL   override the provider preset's base URL
     LLM_MODEL      model id (default for gemini: gemma-4-26b-a4b-it; other providers need it set)
-    LLM_FALLBACK_MODEL  optional second model on the same provider and key. When the main model keeps failing with a server error,
-                   timeout or rate limit, the request is repeated once on this model, and the main model is skipped for 60 s.
-    LLM_BACKUPS    comma list of backup routes on OTHER providers, tried in order when the main route fails, e.g.
-                   nvidia:google/gemma-4-31b-it,cerebras:qwen-3.8-27b@600     (provider:model[@max calls per UTC day])
-                   Each uses its own provider's key (NVIDIA_API_KEY, CEREBRAS_API_KEY, ...), never the main key. Paid providers
-                   (cerebras, openai, together, openrouter) default to 600 calls a day so a loop cannot drain credit; `@0` = no cap.
     LLM_API_KEY    key (falls back to the provider's usual variable, e.g. GEMINI_API_KEY, GROQ_API_KEY); not needed for local servers
     LLM_TEMPERATURE  default 0.1 (the spec asks for low temperature); set it empty to leave the model default
     LLM_MAX_TOKENS, LLM_TIMEOUT
@@ -29,17 +23,13 @@ missing ids) and strips <think>/<thought> blocks.
 from __future__ import annotations
 
 import json
-import logging
 import os
 import re
-import threading
 import time
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
 import httpx
-
-log = logging.getLogger("llm")
 
 # ---------------------------------------------------------------------------------------------------------- presets
 PRESETS: dict[str, dict[str, Any]] = {
@@ -48,7 +38,6 @@ PRESETS: dict[str, dict[str, Any]] = {
     "gemini": {"base_url": "https://generativelanguage.googleapis.com/v1beta/openai", "key_env": ["GEMINI_API_KEY", "GOOGLE_API_KEY"],
                "model": "gemma-4-26b-a4b-it", "needs_key": True},
     "nvidia": {"base_url": "https://integrate.api.nvidia.com/v1", "key_env": ["NVIDIA_API_KEY"], "model": None, "needs_key": True},
-    "cerebras": {"base_url": "https://api.cerebras.ai/v1", "key_env": ["CEREBRAS_API_KEY"], "model": None, "needs_key": True},
     "groq": {"base_url": "https://api.groq.com/openai/v1", "key_env": ["GROQ_API_KEY"], "model": None, "needs_key": True},
     "openrouter": {"base_url": "https://openrouter.ai/api/v1", "key_env": ["OPENROUTER_API_KEY"], "model": None, "needs_key": True},
     "together": {"base_url": "https://api.together.xyz/v1", "key_env": ["TOGETHER_API_KEY"], "model": None, "needs_key": True},
@@ -68,7 +57,6 @@ class LlmConfig:
     provider: str = "gemini"
     base_url: str | None = None
     model: str | None = None
-    fallback_model: str | None = None
     api_key: str | None = None
     temperature: float | None = 0.1
     max_tokens: int = 4096
@@ -94,7 +82,7 @@ class LlmConfig:
         except json.JSONDecodeError:
             extra = {"__invalid__": e["LLM_EXTRA_BODY"]}
         return cls(provider=provider, base_url=(e.get("LLM_BASE_URL") or preset["base_url"] or "").rstrip("/") or None,
-                   model=e.get("LLM_MODEL") or preset["model"], fallback_model=(e.get("LLM_FALLBACK_MODEL") or "").strip() or None, api_key=key,
+                   model=e.get("LLM_MODEL") or preset["model"], api_key=key,
                    temperature=float(temp_raw) if temp_raw.strip() else None,
                    max_tokens=int(e.get("LLM_MAX_TOKENS", 4096)), timeout=float(e.get("LLM_TIMEOUT", 90)),
                    system_mode=(e.get("LLM_SYSTEM_MODE") or "auto").lower(), rpm=int(e.get("LLM_RPM") or 0), tpm=int(e.get("LLM_TPM") or 0), extra_body=extra)
@@ -119,7 +107,7 @@ class LlmConfig:
 
     def describe(self) -> dict:
         """Safe to show anywhere: never includes the key."""
-        return {"provider": self.provider, "model": self.model, "fallback_model": self.fallback_model, "base_url": self.base_url, "configured": not self.problems(),
+        return {"provider": self.provider, "model": self.model, "base_url": self.base_url, "configured": not self.problems(),
                 "problems": self.problems()}
 
 
@@ -179,7 +167,6 @@ class OpenAICompatLlm:
         self._last_call = 0.0
         self._clock = time.monotonic
         self._window: list[tuple[float, int]] = []  # (time, tokens) of recent requests, for the tokens-per-minute cap
-        self._primary_down_until = 0.0  # while in the future, requests go straight to the fallback model
 
     # ---- request building ----
     def _messages(self, system: str, messages: list[dict]) -> list[dict]:
@@ -260,29 +247,8 @@ class OpenAICompatLlm:
             return resp
         raise LlmUnavailable(f"provider kept failing ({last})")
 
-    @staticmethod
-    def _transient(exc: LlmUnavailable) -> bool:
-        """A provider-side problem a second model can get around (not a bad key, a bad request or an unknown model)."""
-        return bool(re.search(r"HTTP 5\d\d|kept failing|timed out|rate limit|cannot reach", str(exc)))
-
     def create(self, *, system: str, messages: list[dict], tools: list[dict], force_no_tools: bool = False) -> LlmTurn:
-        """One model turn. With LLM_FALLBACK_MODEL set, a transient failure of the main model is retried once on the fallback."""
-        main, fallback = self.cfg.model, self.cfg.fallback_model
-        if not fallback or fallback == main:
-            return self._create(main, system, messages, tools, force_no_tools)
-        if self._clock() < self._primary_down_until:
-            return self._create(fallback, system, messages, tools, force_no_tools)
-        try:
-            return self._create(main, system, messages, tools, force_no_tools)
-        except LlmUnavailable as exc:
-            if not self._transient(exc):
-                raise
-            log.warning("main model %s unavailable (%s); using fallback %s for the next 60 s", main, exc, fallback)
-            self._primary_down_until = self._clock() + 60
-            return self._create(fallback, system, messages, tools, force_no_tools)
-
-    def _create(self, model: str | None, system: str, messages: list[dict], tools: list[dict], force_no_tools: bool) -> LlmTurn:
-        body: dict[str, Any] = {"model": model, "max_tokens": self.cfg.max_tokens, **self.cfg.extra_body}
+        body: dict[str, Any] = {"model": self.cfg.model, "max_tokens": self.cfg.max_tokens, **self.cfg.extra_body}
         if tools:
             body["tools"] = to_openai_tools(tools)
             if force_no_tools:
@@ -319,7 +285,7 @@ class OpenAICompatLlm:
             if resp.status_code in (401, 403):
                 raise LlmUnavailable("authentication failed: check LLM_API_KEY")
             if resp.status_code == 404:
-                raise LlmUnavailable(f"model or endpoint not found: check LLM_MODEL ('{model}') and LLM_BASE_URL")
+                raise LlmUnavailable(f"model or endpoint not found: check LLM_MODEL ('{self.cfg.model}') and LLM_BASE_URL")
             raise LlmUnavailable(f"HTTP {resp.status_code}: {detail}")
         raise LlmUnavailable("provider rejected the request after adapting")
 
@@ -351,117 +317,5 @@ class OpenAICompatLlm:
                          {"input_tokens": usage.get("prompt_tokens"), "output_tokens": usage.get("completion_tokens")})
 
 
-# ------------------------------------------------------------------------------------------------------- backup chain
-PAID_PROVIDERS = {"cerebras", "openai", "together", "openrouter"}  # default daily cap applies; free tiers have their own limits
-DEFAULT_PAID_DAILY_CAP = 600
-
-
-def parse_backups(spec: str | None, primary: LlmConfig, env: dict[str, str]) -> tuple[list[tuple[LlmConfig, int]], list[str]]:
-    """LLM_BACKUPS -> [(config, daily_cap)], plus human-readable problems. Backups never borrow the main route's key."""
-    routes, problems = [], []
-    for raw in (spec or "").split(","):
-        raw = raw.strip()
-        if not raw:
-            continue
-        cap = None
-        head, sep, tail = raw.rpartition("@")
-        if sep and tail.strip().isdigit():
-            raw, cap = head, int(tail)
-        provider, colon, model = raw.partition(":")
-        provider, model = provider.strip().lower(), model.strip()
-        preset = PRESETS.get(provider)
-        if not colon or not model or preset is None or provider == "custom":
-            problems.append(f"LLM_BACKUPS entry '{raw}' must look like provider:model with a known provider ({', '.join(p for p in PRESETS if p != 'custom')})")
-            continue
-        key = next((env[k] for k in preset["key_env"] if env.get(k)), None)
-        cfg = LlmConfig(provider=provider, base_url=preset["base_url"], model=model, api_key=key, temperature=primary.temperature,
-                        max_tokens=primary.max_tokens, timeout=min(primary.timeout, 60.0), system_mode=primary.system_mode)
-        bad = cfg.problems()
-        if bad:
-            problems.append(f"backup {provider}:{model} skipped: {'; '.join(bad)}")
-            continue
-        routes.append((cfg, cap if cap is not None else (DEFAULT_PAID_DAILY_CAP if provider in PAID_PROVIDERS else 0)))
-    return routes, problems
-
-
-class ChainLlm:
-    """The main route first, then each backup, in order. A route that fails is skipped for a while (60 s for a provider problem, 10 min
-    for a bad key or unknown model); a route with a daily call cap stops at the cap until the next UTC day. Messages are in the neutral
-    OpenAI chat format, so a conversation can move between providers in the middle of a tool loop. State lives in this process only."""
-
-    COOLDOWN, COOLDOWN_CONFIG = 60.0, 600.0
-
-    def __init__(self, routes: list[tuple[str, "OpenAICompatLlm", int]], clock=time.monotonic, today=lambda: time.strftime("%Y-%m-%d", time.gmtime())):
-        self.routes = [{"label": label, "llm": llm, "cap": cap, "down_until": 0.0, "day": "", "used": 0} for label, llm, cap in routes]
-        self._clock, self._today = clock, today
-        self._lock = threading.Lock()
-        self.last_route: str | None = None
-
-    def _capped(self, r: dict) -> bool:
-        if r["day"] != self._today():
-            r["day"], r["used"] = self._today(), 0
-        return bool(r["cap"]) and r["used"] >= r["cap"]
-
-    def create(self, *, system: str, messages: list[dict], tools: list[dict], force_no_tools: bool = False) -> LlmTurn:
-        with self._lock:
-            open_routes = [r for r in self.routes if not self._capped(r)]
-            ready = [r for r in open_routes if self._clock() >= r["down_until"]]
-        if not open_routes:
-            raise LlmUnavailable("every route has reached its daily call cap")
-        errors = []
-        for r in ready or open_routes:  # when everything is cooling down, still try rather than fail without a request
-            try:
-                turn = r["llm"].create(system=system, messages=messages, tools=tools, force_no_tools=force_no_tools)
-            except LlmUnavailable as exc:
-                transient = OpenAICompatLlm._transient(exc)
-                with self._lock:
-                    r["down_until"] = self._clock() + (self.COOLDOWN if transient else self.COOLDOWN_CONFIG)
-                log.warning("route %s failed (%s); trying the next one", r["label"], exc)
-                errors.append(f"{r['label']}: {exc}")
-                continue
-            with self._lock:
-                r["used"] += 1
-                self.last_route = r["label"]
-            if r is not self.routes[0]:
-                log.info("answered by backup route %s", r["label"])
-            return turn
-        raise LlmUnavailable("; ".join(errors)[:600])
-
-
-_SHARED: dict[str, Llm] = {}
-_SHARED_LOCK = threading.Lock()
-
-
-def describe_chain(env: dict[str, str] | None = None) -> dict:
-    """Safe to show anywhere (no keys): the main route and the configured backups."""
-    cfg = LlmConfig.from_env(env)
-    e = os.environ if env is None else env
-    backups, problems = parse_backups(e.get("LLM_BACKUPS"), cfg, e)
-    out = cfg.describe()
-    out["backups"] = [{"provider": c.provider, "model": c.model, "daily_cap": cap or None} for c, cap in backups]
-    out["backup_problems"] = problems
-    return out
-
-
 def default_llm(cfg: LlmConfig | None = None, client: httpx.Client | None = None) -> Llm:
-    """The model the chat agent uses. With no arguments it is built once per distinct configuration and shared by every request, so
-    rate limits, cooldowns and daily caps are remembered between requests (a new object per request would forget them)."""
-    if cfg is not None or client is not None:
-        return OpenAICompatLlm(cfg or LlmConfig.from_env(), client)
-    main = LlmConfig.from_env()
-    e = os.environ
-    backups, problems = parse_backups(e.get("LLM_BACKUPS"), main, e)
-    for msg in problems:
-        log.warning(msg)
-    key = repr((main, backups))
-    with _SHARED_LOCK:
-        if key not in _SHARED:
-            primary = OpenAICompatLlm(main)  # raises LlmUnavailable when the main route is not configured
-            if backups:
-                routes = [(f"{main.provider}:{main.model}", primary, 0)] + [(f"{c.provider}:{c.model}", OpenAICompatLlm(c), cap) for c, cap in backups]
-                _SHARED.clear()
-                _SHARED[key] = ChainLlm(routes)
-            else:
-                _SHARED.clear()
-                _SHARED[key] = primary
-        return _SHARED[key]
+    return OpenAICompatLlm(cfg or LlmConfig.from_env(), client)

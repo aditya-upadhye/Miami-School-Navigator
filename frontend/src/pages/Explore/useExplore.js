@@ -15,6 +15,7 @@ import { useApi } from '../../hooks/useApi';
 import { useI18n } from '../../i18n';
 import { useSetState } from '../../hooks/useSetState';
 import { useProfile } from '../../profile/ProfileProvider';
+import { VALUE_LABEL_KEYS, VALUE_OPTIONS } from '../../data/family';
 import { chip, toggleInList } from '../../utils/chip';
 import { ZONE_LEVELS, ZONE_STYLE } from '../../utils/mapStyle';
 import { childName, stageForAge } from '../../utils/stages';
@@ -32,6 +33,7 @@ const initialFilters = (profile) => ({
   spec: [], // specialty chips: boost the ranking (or, with onlySpec, restrict the list)
   onlySpec: false,
   priorities: [...(profile.priorities ?? [])], // from the family profile; removable here without changing the profile
+  values: [...(profile.values ?? [])], // what matters most (academics, programs, popularity, proximity); changeable in the Filters tab
   ese: false,
   gradeB: false,
 });
@@ -57,7 +59,7 @@ export function useExplore() {
     zoneLevels: ['elementary'],
     locationError: null,
   }));
-  const home = { lat: profile.lat, lon: profile.lon };
+  const home = profile.hasLocation ? { lat: profile.lat, lon: profile.lon } : null; // null until the family enters an address
   const children = profile.children ?? [];
 
   // ---- which life stages to search for ----
@@ -68,8 +70,8 @@ export function useExplore() {
   }, [s.kid, children]);
 
   const params = {
-    lat: home.lat,
-    lon: home.lon,
+    lat: home?.lat,
+    lon: home?.lon,
     radius_mi: s.radius,
     kinds: s.kinds.length === KINDS.length ? undefined : s.kinds,
     stage: kidStages,
@@ -78,11 +80,12 @@ export function useExplore() {
     ese: s.ese,
     grade_min: s.gradeB ? 'B' : undefined,
     priorities: [...new Set([...s.priorities, ...s.spec])],
+    values: s.values,
     sort: s.view === 'top' ? 'match' : 'distance',
     limit: s.view === 'top' ? 5 : 30,
   };
   const search = useApi((signal) => api.schools(params, { signal }), [JSON.stringify(params)], {
-    enabled: s.kinds.length > 0,
+    enabled: s.kinds.length > 0 && !!home,
     delay: 250,
   });
   const visible = s.kinds.length > 0 ? (search.data?.results ?? []) : [];
@@ -92,8 +95,8 @@ export function useExplore() {
   const cmpIds = s.compare;
   const cmpKey = cmpIds.join(',');
   const cmpApi = useApi(
-    (signal) => api.compare({ ids: cmpIds, lat: home.lat, lon: home.lon }, { signal }),
-    [cmpKey, home.lat, home.lon],
+    (signal) => api.compare({ ids: cmpIds, lat: home?.lat, lon: home?.lon }, { signal }),
+    [cmpKey, home?.lat, home?.lon],
     {
       enabled: cmpIds.length > 0,
     },
@@ -115,7 +118,7 @@ export function useExplore() {
       inCmp,
       active,
       bg: active ? 'var(--ink)' : inCmp ? '#F6C343' : 'var(--accent-grad)',
-      fg: active ? 'var(--ink-inv)' : inCmp ? 'var(--ink)' : '#FFFFFF',
+      fg: active ? 'var(--ink-inv)' : inCmp ? 'var(--ink)' : 'var(--on-accent)',
     };
   };
   const cmpStyle = (inCmp) => ({
@@ -141,7 +144,7 @@ export function useExplore() {
   };
 
   // ---- map (real map: Leaflet + OpenStreetMap; zone polygons from /api/zones/geojson) ----
-  const zonesApi = useApi((signal) => api.zoneShapes(home.lat, home.lon, { signal }), [home.lat, home.lon]);
+  const zonesApi = useApi((signal) => api.zoneShapes(home.lat, home.lon, { signal }), [home?.lat, home?.lon], { enabled: !!home });
   const pins = visible.map((sc, i) => {
     const c = pinColors(sc.id);
     return {
@@ -262,7 +265,7 @@ export function useExplore() {
       best: row.best_index === i,
       missing: isMissing(f),
       title: provenance(f),
-      bg: row.best_index === i ? 'rgba(255,237,213,0.8)' : 'rgba(255,255,255,0.25)',
+      bg: row.best_index === i ? 'var(--accent-tint)' : 'transparent', // plain cells sit on the table's solid surface
     })),
   }));
   const cmpMessage = cmpApi.error
@@ -336,6 +339,9 @@ export function useExplore() {
       t('explore.active.boostsNote'),
     ),
   );
+  s.values.forEach((v) =>
+    addFilter(`value-${v}`, t(VALUE_LABEL_KEYS[v]), undefined, () => setState((st) => ({ values: st.values.filter((x) => x !== v) })), t('explore.active.boostsNote')),
+  );
   s.spec
     .filter((sp) => !s.priorities.includes(sp))
     .forEach((sp, i) =>
@@ -367,7 +373,7 @@ export function useExplore() {
     home,
     radiusMi: s.radius,
     pinsKey,
-    fitKey: JSON.stringify([home.lat, home.lon, s.radius, pins.map((p) => p.id)]),
+    fitKey: JSON.stringify([home?.lat, home?.lon, s.radius, pins.map((p) => p.id)]),
     onPick: (id) => setState({ selected: id }),
     caption: t('explore.caption'),
     zones: zonesApi.data,
@@ -387,7 +393,7 @@ export function useExplore() {
       address: profile.matchedAddress,
       kids: kidLabel,
     }),
-    badge: profile.isDemo ? t('planner.demo') : profile.precision === 'zip' ? t('explore.badge.zip') : null,
+    badge: profile.precision === 'zip' ? t('explore.badge.zip') : null,
     views: [
       { id: 'top', label: t('explore.view.top') },
       { id: 'all', label: t('explore.view.all') },
@@ -427,8 +433,9 @@ export function useExplore() {
     hasPop: !!sel,
     pop,
     closePop: () => setState({ selected: null }),
-    countLabel:
-      s.kinds.length === 0
+    countLabel: !home
+      ? t('explore.count.noAddress')
+      : s.kinds.length === 0
         ? plural(0)
         : search.loading && !search.data
           ? t('explore.searching')
@@ -439,13 +446,14 @@ export function useExplore() {
                 radius: s.radius,
               })
             : t('explore.count.all', { schools: plural(visible.length), radius: s.radius }),
-    hiddenLabel:
-      s.kinds.length === 0
+    hiddenLabel: !home
+      ? ''
+      : s.kinds.length === 0
         ? t('explore.hidden.pick')
         : hidden > 0
           ? t('explore.hidden.n', { n: nf(hidden) })
           : t('explore.hidden.none'),
-    noResults: !search.loading && !search.error && visible.length === 0,
+    noResults: !!home && !search.loading && !search.error && visible.length === 0,
 
     // filters
     radius: s.radius,
@@ -477,6 +485,14 @@ export function useExplore() {
     specNote: t('explore.filters.specNote'),
     activeFilters,
     hiddenTotal: hidden,
+    valueChips: VALUE_OPTIONS.map((v) => ({
+      label: t(VALUE_LABEL_KEYS[v]),
+      tip: t(`${VALUE_LABEL_KEYS[v]}.tip`),
+      on: s.values.includes(v),
+      pick: () => toggleIn('values', v),
+      ...chip(s.values.includes(v)),
+    })),
+    hasLocation: !!home,
     switches: switchDefs.map((w) => ({
       label: w.label,
       hint: w.hint,
@@ -509,6 +525,7 @@ export function useExplore() {
     cmpHead: (cmpData?.schools ?? []).map((x) => ({
       id: x.id,
       name: x.name,
+      kind: x.kind,
       removeLabel: t('explore.cmp.remove', { name: x.name }),
       remove: () => toggleCmp(x.id),
     })),

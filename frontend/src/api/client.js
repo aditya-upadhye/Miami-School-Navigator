@@ -1,3 +1,4 @@
+import { getToken } from '../auth/token';
 import { getLang } from '../i18n/current';
 
 // Thin client for the School Navigator backend (contract: backend/openapi.json). Every request carries X-Lang so the backend answers
@@ -26,6 +27,8 @@ function toQuery(params = {}) {
 
 async function request(path, { method = 'GET', params, body, signal } = {}) {
   const headers = { 'X-Lang': getLang() };
+  const token = getToken();
+  if (token) headers.Authorization = `Bearer ${token}`;
   if (body) headers['Content-Type'] = 'application/json';
   let res;
   try {
@@ -33,8 +36,6 @@ async function request(path, { method = 'GET', params, body, signal } = {}) {
       method,
       signal,
       headers,
-      // The session cookie: sent same-origin through the Vite proxy and cross-origin when VITE_API_BASE_URL points elsewhere.
-      credentials: 'include',
       body: body ? JSON.stringify(body) : undefined,
     });
   } catch (err) {
@@ -44,12 +45,10 @@ async function request(path, { method = 'GET', params, body, signal } = {}) {
     });
   }
   let data = null;
-  if (res.status !== 204) {
-    try {
-      data = await res.json();
-    } catch {
-      /* non-JSON error body */
-    }
+  try {
+    data = await res.json();
+  } catch {
+    /* non-JSON error body */
   }
   if (!res.ok) {
     const e = data?.error ?? {};
@@ -75,26 +74,8 @@ export const api = {
   dates: (o) => request('/dates', o),
   chat: (body, o) => request('/chat', { method: 'POST', body, ...o }),
   quality: (o) => request('/meta/quality', o),
-
-  // Accounts. Errors carry the server's message and suggested action in the family's language.
-  auth: {
-    signup: (body, o) => request('/auth/signup', { method: 'POST', body, ...o }),
-    login: (body, o) => request('/auth/login', { method: 'POST', body, ...o }),
-    logout: (o) => request('/auth/logout', { method: 'POST', ...o }),
-    me: (o) => request('/auth/me', o),
-    changePassword: (body, o) => request('/auth/password', { method: 'POST', body, ...o }),
-    deleteAccount: (body, o) => request('/auth/delete-account', { method: 'POST', body, ...o }),
-  },
-  me: {
-    putProfile: (body, o) => request('/me/profile', { method: 'PUT', body, ...o }),
-    saved: (lat, lon, o) => request('/me/saved', { params: { lat, lon }, ...o }),
-    save: (id, note, o) =>
-      request(`/me/saved/${encodeURIComponent(id)}`, {
-        method: 'PUT',
-        body: note === undefined ? undefined : { note },
-        ...o,
-      }),
-    unsave: (id, o) => request(`/me/saved/${encodeURIComponent(id)}`, { method: 'DELETE', ...o }),
-    mergeSaved: (ids, o) => request('/me/saved/merge', { method: 'POST', body: { ids }, ...o }),
-  },
+  signup: (body, o) => request('/auth/signup', { method: 'POST', body, ...o }),
+  login: (body, o) => request('/auth/login', { method: 'POST', body, ...o }),
+  me: (o) => request('/auth/me', o),
+  logout: (o) => request('/auth/logout', { method: 'POST', ...o }),
 };

@@ -18,3 +18,13 @@ export const PRIORITY_LABEL_KEYS = {
   IB: 'onboarding.priority.IB',
   Montessori: 'onboarding.priority.Montessori',
 };
+
+/** What a family can say matters most when schools are ranked. Each one counts extra in the match score (backend `values`); none of them
+ *  filters anything, and the family's travel limit is always respected. */
+export const VALUE_OPTIONS = ['academics', 'programs', 'popularity', 'proximity'];
+export const VALUE_LABEL_KEYS = {
+  academics: 'values.academics',
+  programs: 'values.programs',
+  popularity: 'values.popularity',
+  proximity: 'values.proximity',
+};
