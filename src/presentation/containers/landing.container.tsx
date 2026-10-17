@@ -6,6 +6,7 @@ import type { RepoError } from '../../domain/shared';
 import type { School } from '../../domain/entities/school';
 import { useRepositories } from '../app-context';
 import { LandingView } from '../views/landing.view';
+import { SAMPLE_SCHOOLS } from './landing-sample-schools';
 import { ScreenError, ScreenLoading } from '../screen-state';
 
 export default function LandingScreenRoute(): React.ReactElement {
@@ -56,7 +57,8 @@ export default function LandingScreenRoute(): React.ReactElement {
         <ScreenError error={loadError} onRetry={() => setReloadToken((n) => n + 1)} />
       ) : (
         <LandingView
-          schools={schools}
+          isSample={schools.length === 0}
+          schools={schools.length === 0 ? SAMPLE_SCHOOLS : schools}
           selectedId={selectedId}
           onSelect={setSelectedId}
           exploreHref={routes.explore()}

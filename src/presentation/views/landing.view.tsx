@@ -9,6 +9,7 @@ import type { School } from '@/domain/entities/school';
 
 export interface LandingViewProps {
   readonly schools: readonly School[];
+  readonly isSample?: boolean;
   readonly selectedId: string | null;
   readonly onSelect: (id: string) => void;
   readonly exploreHref: string;
@@ -17,7 +18,7 @@ export interface LandingViewProps {
 }
 
 export function LandingView(props: LandingViewProps): ReactElement {
-  const { schools, selectedId, onSelect, exploreHref, signupHref, detailHref } = props;
+  const { schools, isSample = false, selectedId, onSelect, exploreHref, signupHref, detailHref } = props;
   const selected = schools.find((s) => String(s.id) === String(selectedId));
 
   return (
@@ -41,6 +42,11 @@ export function LandingView(props: LandingViewProps): ReactElement {
         </div>
       </section>
 
+      {isSample && (
+        <p role="status" className="type-caption m-0 mx-4 rounded-card border border-border bg-muted px-3 py-2 text-text-muted md:mx-8">
+          Sample view: these pins are illustrative until real school data is added.
+        </p>
+      )}
       <section className="grid min-h-[480px] flex-1 gap-4 px-4 pb-8 md:px-8 lg:grid-cols-[1fr_320px]">
         <SchoolMapView
           schools={schools as School[]}
@@ -56,9 +62,11 @@ export function LandingView(props: LandingViewProps): ReactElement {
             <>
               <h2 className="type-row-title m-0 text-foreground">{selected.name}</h2>
               <p className="type-body m-0 text-text-body">{selected.address}</p>
-              <a href={detailHref(String(selected.id))} className={cn(buttonVariants(), 'min-h-11 w-fit')}>
-                View school details
-              </a>
+              {!isSample && (
+                <a href={detailHref(String(selected.id))} className={cn(buttonVariants(), 'min-h-11 w-fit')}>
+                  View school details
+                </a>
+              )}
             </>
           ) : (
             <p className="type-body m-0 text-text-muted">
