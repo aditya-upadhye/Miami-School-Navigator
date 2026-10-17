@@ -26,12 +26,24 @@ const STAGES = new Set(['infant_toddler', 'pre_k', 'elementary', 'middle', 'high
 const tag = (x) =>
   STAGES.has(x) ? STAGE_LABEL[x] : SPECIALTIES.has(x) ? tr(`specialty.${x}`) : titleCase(x);
 
+/** "Before & after school · 6:30am-6:00pm · Fee varies; contact the school": an aftercare value {before_care, after_care, hours, cost, provider}. */
+export function aftercareText(v) {
+  const label = v.before_care && v.after_care ? tr('shared.aftercare.both') : v.before_care ? tr('shared.aftercare.before') : v.after_care ? tr('shared.aftercare.after') : null;
+  const cost = v.cost && (/varies/i.test(v.cost) ? tr('shared.aftercare.costVaries') : v.cost);
+  const provider = v.provider && (/^school-run$/i.test(v.provider) ? tr('shared.aftercare.schoolRun') : v.provider);
+  return [label, v.hours, cost, provider].filter(Boolean).join(' · ');
+}
+
+const APPLY_CODES = new Set(['zoned', 'charter_lottery', 'magnet_application']);
+
 /** Plain-text value of a field; `fallback` is shown when the data is not available. */
 export function text(f, fallback = tr('shared.notAvailable')) {
   if (isMissing(f)) return fallback;
   const v = f.value;
-  if (Array.isArray(v)) return v.map(tag).join(', ');
+  if (Array.isArray(v)) return v.length ? v.map(tag).join(', ') : tr('shared.no'); // an empty list is a verified "none"
   if (v === true) return tr('shared.yes');
+  if (typeof v === 'string' && APPLY_CODES.has(v)) return tr(`shared.apply.${v}`);
+  if (v && typeof v === 'object' && !Array.isArray(v) && ('after_care' in v || 'before_care' in v || 'hours' in v)) return aftercareText(v);
   if (v === false) return tr('shared.no');
   if (typeof v === 'object') return JSON.stringify(v);
   return String(v);

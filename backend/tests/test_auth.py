@@ -84,3 +84,30 @@ def test_repeated_wrong_passwords_pause_sign_in(client):
 def test_errors_follow_the_request_language(client):
     r = client.post("/api/auth/login", json={"email": "x@example.com", "password": "whatever1"}, headers={"X-Lang": "es"})
     assert "no son correctos" in r.json()["error"]["message"]
+
+
+def test_an_older_users_table_is_migrated_and_its_password_still_works(tmp_path, monkeypatch):
+    """The same file once held `users(pw_hash, ...)` from an earlier accounts module; sign-in used to crash on `password_hash`."""
+    from app.accounts import hash_password as legacy_hash
+
+    path = tmp_path / "users.db"
+    old = sqlite3.connect(path)
+    old.executescript("""
+        CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, name TEXT NOT NULL DEFAULT '',
+                            pw_hash TEXT NOT NULL, created_at TEXT NOT NULL, profile TEXT NOT NULL DEFAULT '{}');
+        CREATE TABLE sessions (token_hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL, created_at TEXT NOT NULL, expires_at REAL NOT NULL);
+    """)
+    old.execute("INSERT INTO users (email, name, pw_hash, created_at) VALUES (?,?,?,?)",
+                ("Alex@Gmail.com", "", legacy_hash("old password 1"), "2026-10-17T16:29:21Z"))
+    old.execute("INSERT INTO sessions VALUES ('x', 1, '2026-10-17T16:29:21Z', 9999999999)")
+    old.commit()
+    old.close()
+    monkeypatch.setenv("USERS_DB_PATH", str(path))
+    auth._failures.clear()
+    with TestClient(app) as c:
+        bad = c.post("/api/auth/login", json={"email": "alex@gmail.com", "password": "wrong password"})
+        assert bad.status_code == 401
+        ok = c.post("/api/auth/login", json={"email": "alex@gmail.com", "password": "old password 1"})
+        assert ok.status_code == 200 and ok.json()["user"]["email"] == "alex@gmail.com" and ok.json()["user"]["name"] == "Alex"
+        new = c.post("/api/auth/signup", json=GOOD)  # the rebuilt table accepts new sign-ups
+        assert new.status_code == 201

@@ -39,6 +39,7 @@ def bare_nav(tmp_path_factory):
     root = tmp_path_factory.mktemp("bare")
     (root / "snapshots").symlink_to(REAL_DATA / "snapshots")
     shutil.copytree(REAL_DATA / "curated", root / "curated")
+    (root / "curated" / "school_research.json").unlink(missing_ok=True)  # demo research data must not leak into the bare database
     # the shipped magnet list is real data now; the bare database must stay free of it
     magnets_path = root / "curated" / "magnet_themes.json"
     magnets = json.loads(magnets_path.read_text())
@@ -57,6 +58,7 @@ def rich_data(tmp_path_factory, bare_nav):
     root = tmp_path_factory.mktemp("rich")
     (root / "snapshots").symlink_to(REAL_DATA / "snapshots")
     shutil.copytree(REAL_DATA / "curated", root / "curated")
+    (root / "curated" / "school_research.json").unlink(missing_ok=True)
     fl = root / "raw" / "fldoe"
     fl.mkdir(parents=True)
     c = bare_nav.conn

@@ -94,6 +94,10 @@ class ToolBox:
             d["zoned"] = f(s.zoned)
         if s.gains_ela.status != "not_available":
             d["gains_ela"], d["gains_math"] = f(s.gains_ela), f(s.gains_math)
+        if s.magnet_themes.status != "not_available" and s.magnet_themes.value:
+            d["magnet_themes"] = f(s.magnet_themes)
+        if s.proficiency_ela.status != "not_available":
+            d["proficiency_ela"], d["proficiency_math"] = f(s.proficiency_ela), f(s.proficiency_math)
         if s.match_score is not None:
             d["match_score"], d["reasons"] = s.match_score, s.reasons
         return d

@@ -216,13 +216,15 @@ def find_files(directory: Path) -> dict[str, Path]:
         if p.suffix.lower() not in {".xlsx", ".xls", ".csv"} or p.name.startswith(("~", ".")):
             continue
         n = p.name.lower()
-        if not any(k in n for k in ("private", "charter", "gain", "grade")) and _looks_like_html(p):
+        if not any(k in n for k in ("private", "charter", "gain", "grade", "memb", "enrollment")) and _looks_like_html(p):
             # an unnamed download: a table with a "School Code" and "Principal" column is the charter school contact list
             head = p.read_bytes()[:3000].decode("utf-8", errors="replace").lower()
             if "school code" in head:
                 found["fldoe_charter_directory"] = p
             continue
-        if "private" in n:
+        if "memb" in n or "enrollment" in n:
+            found["fldoe_enrollment"] = p
+        elif "private" in n:
             found["fldoe_private_directory"] = p
         elif "charter" in n:
             found["fldoe_charter_directory"] = p
@@ -317,6 +319,11 @@ def _apply_grades(conn, path: Path, idx: PlaceIndex) -> dict:
     gyear = gyear or _year(path.name)
     pts_c = pick(df, r"total points", r"percent of total possible points", r"^points")
     tested_c = pick(df, r"percent tested")
+    ela_ach_c = pick(df, r"^english language arts achievement$", r"^ela achievement$")
+    math_ach_c = pick(df, r"^mathematics achievement$", r"^math achievement$")
+    title_c = pick(df, r"^title i$")
+    econ_c = pick(df, r"economically disadvantaged")
+    history_cols = sorted(((c, y) for c, y in grade_cols if y), key=lambda cy: -cy[1])[:3]
 
     matched = by_name = 0
     needs_review: list[dict] = []
@@ -335,8 +342,16 @@ def _apply_grades(conn, path: Path, idx: PlaceIndex) -> dict:
         letter = str(row[grade_col]).strip().upper().rstrip("*")
         letter = letter if letter in VALID_GRADES else None
         extra = json.loads(place["extra"] or "{}")
+        history = [{"year": f"{y - 1}-{str(y)[2:]}", "grade": str(row[c]).strip().upper()} for c, y in history_cols
+                   if str(row[c]).strip().upper() in VALID_GRADES]
+        title = str(row[title_c]).strip().upper() if title_c else ""
         state = {k: v for k, v in {"total_points": _num(row[pts_c]) if pts_c else None,
                                    "percent_tested": _num(row[tested_c]) if tested_c else None,
+                                   "proficiency_ela": _num(row[ela_ach_c]) if ela_ach_c else None,
+                                   "proficiency_math": _num(row[math_ach_c]) if math_ach_c else None,
+                                   "econ_disadvantaged_pct": _num(row[econ_c]) if econ_c else None,
+                                   "title_i": (title in ("YES", "Y")) if title in ("YES", "Y", "NO", "N") else None,
+                                   "grade_history": history or None,
                                    "state_school_number": n}.items() if v is not None}
         if letter is None:
             state["grade_note"] = f"state grade value '{row[grade_col]}' is not A-F"
@@ -384,6 +399,37 @@ def _apply_gains(conn, path: Path, idx: PlaceIndex) -> dict:
     _dataset_row(conn, "fldoe_learning_gains", path, len(df), _year(path.name) and str(_year(path.name)),
                  f"ELA column '{ela}', math column '{math}' (percent of students making learning gains)")
     return {"rows": len(df), "updated": updated, "ela_column": ela, "math_column": math}
+
+
+def _apply_enrollment(conn, path: Path, idx: PlaceIndex) -> dict:
+    """'Schl Total Enrollment' sheet of the FLDOE Survey 2 workbook: District #, District, School #, School, # of Students."""
+    try:
+        raw = pd.read_excel(path, header=None, dtype=object, sheet_name="Schl Total Enrollment")
+    except Exception as exc:
+        return {"error": f"no 'Schl Total Enrollment' sheet ({type(exc).__name__}: {exc})"}
+    head = next((i for i in range(min(15, len(raw))) if str(raw.iloc[i, 0]).strip().lower().startswith("district")), None)
+    if head is None or raw.shape[1] < 5:
+        return {"error": "could not find the header row"}
+    df = raw.iloc[head + 1:, :5].copy()
+    df.columns = ["district", "district name", "school number", "school name", "students"]
+    df = df[df["district"].map(_num) == MIAMI_DADE_DISTRICT]
+    m = re.search(r"(\d{4})-(\d{2})", str(raw.iloc[0, 0]))
+    year = int(m.group(1)[:2] + m.group(2)) if m else _year(path.name)  # school year 2025-26 -> 2026, like the grades
+    updated = 0
+    for _, row in df.iterrows():
+        n = _as_int(row["students"])
+        if n is None:  # suppressed (<10 students) or blank
+            continue
+        place = _resolve(idx, row, "school number", "school name")[0]
+        if place is None:
+            continue
+        # re-read: the PlaceIndex rows are a snapshot from before the grades step wrote its own extra["state"] keys
+        extra = json.loads(conn.execute("SELECT extra FROM places WHERE id=?", (place["id"],)).fetchone()["extra"] or "{}")
+        extra["state"] = {**extra.get("state", {}), "enrollment_fldoe": n}
+        conn.execute("UPDATE places SET enrollment=?, extra=? WHERE id=?", (n, json.dumps(extra), place["id"]))
+        updated += 1
+    _dataset_row(conn, "fldoe_enrollment", path, len(df), str(year) if year else None, "Total students by school, fall Survey 2; joined on district 13 + school number")
+    return {"rows": len(df), "updated": updated}
 
 
 def _charter_numbers(path: Path) -> tuple[dict[str, int], dict]:
@@ -478,6 +524,7 @@ def apply(conn: sqlite3.Connection, directory: Path) -> dict:
     steps = [
         ("fldoe_school_grades", lambda p: _apply_grades(conn, p, state_idx)),
         ("fldoe_learning_gains", lambda p: _apply_gains(conn, p, state_idx)),
+        ("fldoe_enrollment", lambda p: _apply_enrollment(conn, p, state_idx)),
         ("fldoe_private_directory", lambda p: _apply_private(conn, p, PlaceIndex(rows_by_kind["private"]))),
     ]
     if "fldoe_charter_directory" in files:

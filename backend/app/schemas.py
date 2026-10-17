@@ -101,11 +101,16 @@ class SchoolSummary(BaseModel):
     tuition: Field
     aftercare: Field
     is_magnet: Field
+    magnet_themes: Field
     specialties: Field
     ese: Field
     scholarship: Field
     phone: Field
     website: Field
+    proficiency_ela: Field
+    proficiency_math: Field
+    school_hours: Field
+    application_method: Field
     license: Field | None = None
     flags: list[Literal["online_school", "grade_match_unverified"]] = PField(
         default_factory=list,

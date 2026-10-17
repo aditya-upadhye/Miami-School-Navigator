@@ -24,7 +24,7 @@ def _nearest(nav: Navigator, lat: float, lon: float, stage: str, kinds: list[str
     found = []
     for r in rows:
         p = row_to_place(r)
-        if stage in p["stages"]:
+        if stage in p["stages"] and not p["extra"].get("hidden"):
             d = haversine_mi(lat, lon, p["lat"], p["lon"])
             if d <= radius:
                 found.append((d, p))
