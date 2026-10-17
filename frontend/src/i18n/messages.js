@@ -1,4 +1,5 @@
 import { account } from './catalog/account';
+import { auth } from './catalog/auth';
 import { core } from './catalog/core';
 import { explore } from './catalog/explore';
 import { landing } from './catalog/landing';
@@ -10,7 +11,7 @@ import { saved } from './catalog/saved';
 import { school } from './catalog/school';
 import { shared } from './catalog/shared';
 
-export const CATALOGS = { core, landing, onboarding, explore, school, pathway, saved, account, menu, values, shared };
+export const CATALOGS = { core, landing, onboarding, explore, school, pathway, saved, account, auth, menu, values, shared };
 
 /** All catalogs merged per language. A test fails if two catalogs define the same key. */
 export const messages = Object.fromEntries(

@@ -26,7 +26,7 @@ export default function SchoolHero({ school: s, links, profile }) {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'stretch' }}>
       <section style={{ flex: '2 1 480px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <Link to="/explore" style={{ fontWeight: 700, textDecoration: 'none' }}>
+        <Link viewTransition to="/explore" style={{ fontWeight: 700, textDecoration: 'none' }}>
           ← {t('school.backToMap')}
         </Link>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -66,7 +66,7 @@ export default function SchoolHero({ school: s, links, profile }) {
           {!isMissing(s.phone) && (
             <span style={{ fontWeight: 600, color: 'var(--ink2)' }}>{s.phone.value}</span>
           )}
-          <Link to="/pathway" style={{ fontWeight: 700 }}>
+          <Link viewTransition to="/pathway" style={{ fontWeight: 700 }}>
             {t('school.hero.pathway')}
           </Link>
           <SaveButton id={s.id} name={s.name} />

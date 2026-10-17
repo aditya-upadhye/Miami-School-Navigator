@@ -213,31 +213,43 @@ export default function FamilyForm({
                     WebkitBackdropFilter: 'blur(16px) saturate(170%)',
                   }}
                 >
-                  <option value="0">{t('onboarding.form.under1')}</option> <option value="1">1</option>{' '}
-                  <option value="2">2</option> <option value="3">3</option> <option value="4">4</option>{' '}
-                  <option value="5">5</option> <option value="6">6</option> <option value="7">7</option>{' '}
-                  <option value="8">8</option> <option value="9">9</option> <option value="10">10</option>{' '}
-                  <option value="11">11</option> <option value="12">12</option> <option value="13">13</option>{' '}
-                  <option value="14">14</option> <option value="15">15</option> <option value="16">16</option>{' '}
-                  <option value="17">17</option>
+                  <option value="">{t('onboarding.form.selectAge')}</option>
+                  <option value="0">{t('onboarding.form.under1')}</option>
+                  {Array.from({ length: 17 }, (_, n) => (
+                    <option key={n + 1} value={n + 1}>
+                      {n + 1}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div style={{ flex: '1 1 150px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <span style={{ fontSize: 14, fontWeight: 600 }}>{t('onboarding.form.nextYear')}</span>
-                <span
+                <label htmlFor={kid.gradeId} style={{ fontSize: 14, fontWeight: 600 }}>
+                  {t('onboarding.form.nextYear')}
+                </label>
+                <select
+                  id={kid.gradeId}
+                  value={kid.grade}
+                  onChange={kid.onGrade}
+                  required
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
                     height: 46,
-                    padding: '0 14px',
+                    padding: '0 12px',
+                    border: '1.5px solid var(--line2)',
                     borderRadius: 12,
-                    background: 'var(--accent-tint)',
-                    color: 'var(--accent-ink)',
-                    fontWeight: 700,
+                    font: "16px 'Figtree', sans-serif",
+                    color: 'var(--ink)',
+                    background: 'var(--glass)',
+                    backdropFilter: 'blur(16px) saturate(170%)',
+                    WebkitBackdropFilter: 'blur(16px) saturate(170%)',
                   }}
                 >
-                  {kid.grade}
-                </span>
+                  <option value="">{t('onboarding.form.selectGrade')}</option>
+                  {kid.gradeOptions.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
               </div>
               <label
                 htmlFor={kid.supId}
@@ -507,7 +519,7 @@ export default function FamilyForm({
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </button>
-          <Link to="/explore" style={{ fontWeight: 600 }}>
+          <Link viewTransition to="/explore" style={{ fontWeight: 600 }}>
             {t('onboarding.skipExplore')}
           </Link>
         </div>

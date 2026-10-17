@@ -101,7 +101,7 @@ function Message({ m }) {
         <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
           {m.results.slice(0, 6).map((r) => (
             <li key={r.id}>
-              <Link
+              <Link viewTransition
                 to={`/school/${r.id}`}
                 style={{
                   display: 'inline-block',
@@ -120,6 +120,11 @@ function Message({ m }) {
           ))}
         </ul>
       )}
+      {m.mapApplied && (
+        <span style={{ alignSelf: 'flex-start', padding: '3px 10px', borderRadius: 999, background: 'var(--accent-grad)', boxShadow: 'var(--accent-shadow)', color: 'var(--on-accent)', fontSize: 12.5, fontWeight: 700 }}>
+          ✓ {t('shared.navi.mapApplied')}
+        </span>
+      )}
       <Sources citations={m.citations} />
       {m.degraded && (
         <span style={{ fontSize: 12.5, color: 'var(--ink3)' }}>{t('shared.navi.degraded')}</span>
@@ -134,8 +139,8 @@ function Message({ m }) {
 }
 
 /** Message list + input for Jarvis (POST /api/chat). Used by the floating panel on Explore and by the Onboarding chat. */
-export default function JarvisConversation({ height = 360, autoFocus = false, blankProfile = false }) {
-  const { messages, send, loading, error } = useChat({ blankProfile });
+export default function JarvisConversation({ height = 360, autoFocus = false, mapEnabled = false }) {
+  const { messages, send, loading, error, reset } = useChat({ mapEnabled });
   const { t } = useI18n();
   const [draft, setDraft] = useState('');
   const end = useRef(null);
@@ -184,6 +189,11 @@ export default function JarvisConversation({ height = 360, autoFocus = false, bl
               ))}
             </div>
           </div>
+        )}
+        {messages.length > 0 && (
+          <button type="button" onClick={reset} style={{ alignSelf: 'flex-end', padding: 0, border: 0, background: 'none', color: 'var(--ink3)', font: "600 12.5px 'Figtree', sans-serif", cursor: 'pointer', textDecoration: 'underline' }}>
+            {t('shared.navi.clear')}
+          </button>
         )}
         {messages.map((m, i) => (
           <Message key={i} m={m} />

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import ScoreChart from '../../components/ScoreChart';
 import { useI18n } from '../../i18n';
 
 export default function StageOptions({ panel }) {
@@ -44,6 +45,9 @@ export default function StageOptions({ panel }) {
         )}
       </div>
       {panel.empty && <p style={{ margin: 0, color: 'var(--ink2)' }}>{panel.empty}</p>}
+      {panel.chart.length > 0 && (
+        <ScoreChart title={t('shared.chart.title')} note={t('shared.chart.note')} series={panel.chart} />
+      )}
       <ol
         style={{
           listStyle: 'none',
@@ -93,7 +97,7 @@ export default function StageOptions({ panel }) {
               <span style={{ fontSize: 15, color: 'var(--ink2)' }}>{o.why}</span>
             </span>
             {o.href && (
-              <Link
+              <Link viewTransition
                 to={o.href}
                 style={{
                   display: 'inline-flex',
@@ -139,7 +143,7 @@ export default function StageOptions({ panel }) {
               <li key={d.label}>{d.line}</li>
             ))}
           </ul>
-          <Link to="/explore#dates" style={{ fontSize: 14, fontWeight: 600 }}>
+          <Link viewTransition to="/explore#dates" style={{ fontSize: 14, fontWeight: 600 }}>
             {t('pathway.datesLink')}
           </Link>
         </div>

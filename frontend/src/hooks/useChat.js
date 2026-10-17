@@ -1,6 +1,6 @@
-import { useCallback, useRef, useState } from 'react';
-import { api } from '../api/client';
+import { useCallback, useSyncExternalStore } from 'react';
 import { useProfile } from '../profile/ProfileProvider';
+import { getState, resetChat, sendMessage, subscribe } from './chatStore';
 
 /** What the assistant may know about the family: held by the server for one request only, never stored. */
 export function chatProfile(p) {
@@ -17,55 +17,15 @@ export function chatProfile(p) {
 
 /**
  * Conversation with Jarvis (POST /api/chat). messages: {role, content, citations?, results?, warnings?, degraded?}.
- * Only role + content are sent back as history.
+ * Only role + content are sent back as history. The conversation is shared by every screen and kept for the tab (see chatStore.js),
+ * so it is still there after moving to another page.
  */
-export function useChat({ blankProfile = false } = {}) {
+export function useChat({ mapEnabled = false } = {}) {
   const { profile } = useProfile(); // nothing is assumed about a new family: with no address the assistant asks for one
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const busy = useRef(false);
-
+  const { messages, loading, error } = useSyncExternalStore(subscribe, getState);
   const send = useCallback(
-    async (raw) => {
-      const content = raw.trim();
-      if (!content || busy.current) return;
-      busy.current = true;
-      const history = [...messages, { role: 'user', content }];
-      setMessages(history);
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await api.chat({
-          messages: history.map(({ role, content: c }) => ({ role, content: c })),
-          profile: chatProfile(profile),
-          lang: profile.lang ?? 'en',
-        });
-        setMessages((m) => [
-          ...m,
-          {
-            role: 'assistant',
-            content: res.answer,
-            citations: res.citations,
-            results: res.results,
-            warnings: res.warnings,
-            degraded: res.degraded,
-          },
-        ]);
-      } catch (e) {
-        setError(e);
-      } finally {
-        busy.current = false;
-        setLoading(false);
-      }
-    },
-    [messages, profile],
+    (raw) => sendMessage(raw, (history) => ({ messages: history, profile: chatProfile(profile), lang: profile.lang ?? 'en', map_available: mapEnabled })),
+    [profile, mapEnabled],
   );
-
-  const reset = useCallback(() => {
-    setMessages([]);
-    setError(null);
-  }, []);
-
-  return { messages, send, loading, error, reset };
+  return { messages, send, loading, error, reset: resetChat };
 }

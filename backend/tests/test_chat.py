@@ -56,8 +56,8 @@ def clear_llm_env(monkeypatch):
         monkeypatch.delenv(k, raising=False)
 
 
-def req(text="Find schools", **profile):
-    return ChatRequest(messages=[ChatMessage(role="user", content=text)], profile=ChatProfile(**profile))
+def req(text="Find schools", map_available=False, **profile):
+    return ChatRequest(messages=[ChatMessage(role="user", content=text)], profile=ChatProfile(**profile), map_available=map_available)
 
 
 PROFILE = dict(lat=LAT, lon=LON, free_only=True, priorities=["STEM"], children=[Child(age=3), Child(age=7)])
@@ -215,3 +215,46 @@ def test_check_note_is_passed_to_the_model():
     f = Field(value="A", status="official", source="FLDOE", as_of="2026", method="State grade. Check: the state lists this as 'X'. Confirm it is the same school")
     assert book.field(f)["check"].startswith("the state lists this as 'X'")
     assert "check" not in book.field(Field(value="B", status="official", source="FLDOE", as_of="2026", method="plain"))
+
+
+# ---- map filters: a command changes the map, a question never does
+def test_a_command_puts_the_filters_on_the_map(bare_nav):
+    llm = FakeLlm([uses(("update_map_filters", {"kinds": ["charter", "bogus"], "radius_mi": 99, "programs": ["STEM"], "only_programs": True, "grade_min": "B"})),
+                   say("Done: charter schools with STEM within 25 miles.")])
+    r = agent.run_chat(bare_nav, req("Show only charter schools with STEM and set the radius to 99 miles", map_available=True, **PROFILE), llm)
+    assert r.map_update == {"kinds": ["charter"], "radius_mi": 25.0, "programs": ["STEM"], "only_programs": True, "grade_min": "B"}  # cleaned and capped
+    assert "update_map_filters" in llm.calls[0]["tools"]
+    assert not any("citation" in w.lower() for w in r.warnings)  # a map change alone needs no sources
+
+
+def test_a_question_cannot_change_the_map(bare_nav):
+    llm = FakeLlm([say("There are charter schools nearby. Do you want me to apply this to the map?")])
+    r = agent.run_chat(bare_nav, req("Are there charter schools near me?", map_available=True, **PROFILE), llm)
+    assert r.map_update is None and "update_map_filters" not in llm.calls[0]["tools"]  # the tool is not even offered
+    assert "apply this to the map" in r.answer
+
+
+def test_yes_after_an_offer_and_commands_phrased_as_questions_can_apply(bare_nav):
+    for text in ("yes", "Yes please", "Can you show only charter schools?", "Could you update the map to 5 miles?", "¿Puedes aplicar STEM?"):
+        llm = FakeLlm([say("ok")])
+        agent.run_chat(bare_nav, req(text, map_available=True, **PROFILE), llm)
+        assert "update_map_filters" in llm.calls[0]["tools"], text
+    for text in ("Which school is best for STEM?", "What are the charter schools?", "¿Hay escuelas chárter cerca?"):
+        llm = FakeLlm([say("ok")])
+        agent.run_chat(bare_nav, req(text, map_available=True, **PROFILE), llm)
+        assert "update_map_filters" not in llm.calls[0]["tools"], text
+
+
+def test_an_empty_update_is_refused(bare_nav):
+    llm = FakeLlm([uses(("update_map_filters", {"kinds": ["bogus"]})), say("I could not apply that.")])
+    r = agent.run_chat(bare_nav, req("apply bogus", map_available=True, **PROFILE), llm)
+    assert r.map_update is None
+
+
+def test_without_a_map_the_tool_and_its_rules_are_not_offered(bare_nav):
+    llm = FakeLlm([say("ok")])
+    r = agent.run_chat(bare_nav, req("Show only charter schools", **PROFILE), llm)  # map_available is False: e.g. the onboarding chat
+    assert "update_map_filters" not in llm.calls[0]["tools"] and "MAP FILTERS" not in llm.calls[0]["system"] and r.map_update is None
+    llm = FakeLlm([say("ok")])
+    agent.run_chat(bare_nav, req("Show only charter schools", map_available=True, **PROFILE), llm)
+    assert "MAP FILTERS" in llm.calls[0]["system"]

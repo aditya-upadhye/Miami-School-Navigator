@@ -24,7 +24,7 @@ function Note({ row, signedIn, onSave, name }) {
   if (!signedIn) {
     return (
       <p style={{ margin: 0, fontSize: 14, color: 'var(--ink2)' }}>
-        <Link to="/login?next=%2Fsaved" style={{ fontWeight: 700 }}>
+        <Link viewTransition to="/login?next=%2Fsaved" style={{ fontWeight: 700 }}>
           {t('saved.note.signIn')}
         </Link>
       </p>
@@ -90,7 +90,7 @@ export default function SavedCard({ row, profile, signedIn, onRemove, onNote }) 
                   lineHeight: 1.2,
                 }}
               >
-                <Link to={`/school/${encodeURIComponent(s.id)}`} style={{ color: 'inherit' }}>
+                <Link viewTransition to={`/school/${encodeURIComponent(s.id)}`} style={{ color: 'inherit' }}>
                   {s.name}
                 </Link>
               </h2>
@@ -148,7 +148,7 @@ export default function SavedCard({ row, profile, signedIn, onRemove, onNote }) 
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 'auto' }}>
           {row.status === 'ok' && s && (
-            <Link
+            <Link viewTransition
               to={`/school/${encodeURIComponent(s.id)}`}
               style={{ ...secondaryButton, flex: '1 1 120px', fontSize: 14 }}
             >

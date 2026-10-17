@@ -31,7 +31,7 @@ export default function OnboardedNotice() {
     );
   } else {
     body = (
-      <Link to="/signup?next=%2Fexplore" style={{ fontWeight: 700 }}>
+      <Link viewTransition to="/signup?next=%2Fexplore" style={{ fontWeight: 700 }}>
         {t('auth.nudge')}
       </Link>
     );

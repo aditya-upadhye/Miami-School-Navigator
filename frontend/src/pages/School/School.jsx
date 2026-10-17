@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import AtAGlance from './AtAGlance';
 import HowToApply from './HowToApply';
 import NearbyPlaces from './NearbyPlaces';
+import Outcomes from './Outcomes';
 import NotInData from './NotInData';
 import QuestionsToAsk from './QuestionsToAsk';
 import SchoolHero from './SchoolHero';
@@ -30,7 +31,7 @@ export default function School() {
         {error && (
           <p role="alert" style={{ color: 'var(--ink)' }}>
             {error.message} {error.suggestedAction}{' '}
-            <Link to="/explore" style={{ fontWeight: 700 }}>
+            <Link viewTransition to="/explore" style={{ fontWeight: 700 }}>
               {t('school.backToMap')}
             </Link>
           </p>
@@ -39,6 +40,7 @@ export default function School() {
           <>
             <SchoolHero school={data.school} links={data.links} profile={profile} />
             <AtAGlance school={data.school} />
+            <Outcomes id={data.school.id} />
             <HowToApply steps={data.how_to_apply} notes={data.notes} />
             <QuestionsToAsk questions={data.questions_to_ask} />
             <NearbyPlaces parks={data.nearby_parks} libraries={data.nearby_libraries} />

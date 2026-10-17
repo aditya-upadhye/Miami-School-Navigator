@@ -28,6 +28,7 @@ export default function Explore() {
   }, []);
   const cmpProps = {
     clearCmp: x.clearCmp,
+    cmpChart: x.cmpChart,
     cmpCols: x.cmpCols,
     cmpCountLabel: x.cmpCountLabel,
     cmpFull: x.cmpFull,
@@ -41,6 +42,22 @@ export default function Explore() {
   return (
     <ThemeShell paddingBottom={96}>
       <AppHeader active="explore" showSearch compact onSearch={x.searchLocation} onAskJarvis={x.toggleChat} />
+      {x.searchNotice && (
+        <p role="status" style={{ margin: 0, padding: '10px clamp(16px, 3vw, 40px)', background: 'var(--accent-tint)', color: 'var(--ink)', display: 'flex', flexWrap: 'wrap', gap: '4px 12px', alignItems: 'center' }}>
+          <span>
+            {t(x.searchNotice.atSchool ? 'explore.found.atSchool' : 'explore.found.shown', { name: x.searchNotice.name })}
+          </span>
+          {x.searchNotice.total > 1 && <span>{t('explore.found.others')}</span>}
+          {x.searchNotice.others.map((o) => (
+            <button key={o.id} type="button" onClick={() => x.pickFound(o)} style={{ minHeight: 32, padding: '0 12px', borderRadius: 999, border: '1.5px solid var(--line2)', background: 'var(--glass)', color: 'var(--ink)', font: "600 14px 'Figtree', sans-serif", cursor: 'pointer' }}>
+              {o.name}
+            </button>
+          ))}
+          <button type="button" onClick={x.dismissNotice} aria-label={t('explore.found.dismiss')} style={{ marginLeft: 'auto', width: 32, height: 32, borderRadius: 16, border: 0, background: 'var(--glass3)', color: 'var(--ink)', cursor: 'pointer' }}>
+            ×
+          </button>
+        </p>
+      )}
       {x.locationError && (
         <p role="alert" style={{ margin: 0, padding: '10px clamp(16px, 3vw, 40px)', background: 'rgba(220,38,38,0.14)', color: 'var(--ink)' }}>
           {x.locationError}

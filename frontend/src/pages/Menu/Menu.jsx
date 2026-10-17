@@ -33,7 +33,7 @@ const GROUPS = [
 function Tile({ to, title, body }) {
   const { t } = useI18n();
   return (
-    <Link
+    <Link viewTransition
       to={to}
       style={{
         flex: '1 1 260px',

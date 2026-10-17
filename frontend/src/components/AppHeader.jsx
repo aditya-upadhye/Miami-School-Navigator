@@ -96,7 +96,7 @@ export default function AppHeader({ active, showSearch = false, compact = false,
             const style = navLinkStyle(isActive);
             const current = isActive ? 'page' : undefined;
             return item.to ? (
-              <Link key={item.key} to={item.to} aria-current={current} style={style}>
+              <Link viewTransition key={item.key} to={item.to} aria-current={current} style={style}>
                 {t(`nav.${item.key === 'planner' ? 'plan' : item.key}`)}
               </Link>
             ) : (
@@ -170,7 +170,7 @@ export default function AppHeader({ active, showSearch = false, compact = false,
             {t('nav.ask')}
           </button>
         ) : (
-          <Link to="/explore" style={askJarvisStyle}>
+          <Link viewTransition to="/explore" style={askJarvisStyle}>
             <JarvisMark />
             {t('nav.ask')}
           </Link>

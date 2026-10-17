@@ -84,11 +84,11 @@ export default function MenuDrawer({ onClose }) {
         <nav aria-label={t('nav.main')} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <h2 style={heading}>{t('menu.group.tools')}</h2>
           {LINKS.map((l) => (
-            <Link key={l.to} to={l.to} style={linkStyle}>
+            <Link viewTransition key={l.to} to={l.to} style={linkStyle}>
               {t(l.label)}
             </Link>
           ))}
-          <Link to="/account" style={linkStyle}>
+          <Link viewTransition to="/account" style={linkStyle}>
             {user ? t('menu.group.account') : t('account.signIn')}
           </Link>
         </nav>

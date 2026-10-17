@@ -9,6 +9,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from .alumni_routes import router as alumni_router
 from .auth import router as auth_router
 from .config import get_settings
 from .i18n import MESSAGES, LanguageMiddleware, current_lang, t
@@ -114,3 +115,4 @@ async def validation_error(_: Request, exc: RequestValidationError):
 
 app.include_router(router)
 app.include_router(auth_router)
+app.include_router(alumni_router)

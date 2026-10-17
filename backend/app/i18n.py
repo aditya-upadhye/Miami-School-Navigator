@@ -694,6 +694,40 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
         "Estimado a partir de la superposición de zonas de asistencia. El condado no publica patrones oficiales de escuelas de origen; la zonificación oficial depende de su dirección cuando su hijo o hija llegue a ese nivel.",
         "Estimasyon ki baze sou zòn lekòl ki chevoche. Konte a pa pibliye okenn modèl ofisyèl lekòl ki alimante lòt lekòl; zonaj ofisyèl la depann de adrès ou lè pitit ou rive nan nivo sa a.",
     ),
+    # ---- outcomes (what graduates go on to do)
+    "outcomes.src.fldoe": ("Florida Dept. of Education, graduate placement (FETPIP)", "Departamento de Educación de Florida, colocación de graduados (FETPIP)", "Depatman Edikasyon Florid, plasman gradye (FETPIP)"),
+    "outcomes.src.crdc": ("U.S. Dept. of Education, Civil Rights Data Collection", "Departamento de Educación de EE. UU., Recopilación de Datos de Derechos Civiles", "Depatman Edikasyon Etazini, Koleksyon Done Dwa Sivil"),
+    "outcomes.src.wikidata": ("Wikidata (people with a public page)", "Wikidata (personas con página pública)", "Wikidata (moun ki gen yon paj piblik)"),
+    "outcomes.empty.private": (
+        "No public data. Private schools do not report where their graduates go to the state or federal government. Ask the school for its college-placement list.",
+        "No hay datos públicos. Las escuelas privadas no informan al gobierno estatal ni federal a dónde van sus graduados. Pida a la escuela su lista de colocación universitaria.",
+        "Pa gen done piblik. Lekòl prive yo pa rapòte kote gradye yo ale bay gouvènman eta oswa federal la. Mande lekòl la lis plasman kolèj li.",
+    ),
+    "outcomes.empty.public": (
+        "No outcome data is published for this school. The state hides results for small graduating classes, and some schools are too new to appear in the reports.",
+        "No hay datos de resultados publicados para esta escuela. El estado oculta los resultados de las promociones pequeñas, y algunas escuelas son demasiado nuevas para aparecer en los informes.",
+        "Pa gen done rezilta pibliye pou lekòl sa a. Eta a kache rezilta pou ti pwomosyon, e gen lekòl ki twò nouvo pou parèt nan rapò yo.",
+    ),
+    "outcomes.empty.lower": (
+        "This school has no graduating class, and no public data follows its students afterwards. Outcomes are published for high schools: see the high school this school's students would be zoned for.",
+        "Esta escuela no tiene promoción de graduados y ningún dato público sigue a sus estudiantes después. Los resultados se publican para las escuelas secundarias: vea la secundaria a la que corresponderían sus estudiantes.",
+        "Lekòl sa a pa gen pwomosyon gradye, e pa gen done piblik ki swiv elèv li yo apre. Rezilta yo pibliye pou lekòl segondè: gade lekòl segondè kote elèv lekòl sa a ta dwe ale selon zòn.",
+    ),
+    "outcomes.note.college": (
+        "Share of each graduating class the state found enrolled in college or employed in Florida. It counts only graduates found in Florida records; out-of-state colleges and the military are mostly missing, and small groups are hidden.",
+        "Proporción de cada promoción que el estado encontró inscrita en la universidad o empleada en Florida. Solo cuenta a quienes aparecen en registros de Florida; las universidades de otros estados y el ejército casi no se incluyen, y los grupos pequeños se ocultan.",
+        "Pòsyon chak pwomosyon eta a jwenn ki enskri nan kolèj oswa ki gen travay nan Florid. Li konte sèlman gradye ki nan dosye Florid; kolèj nan lòt eta ak lame prèske pa konte, e ti gwoup yo kache.",
+    ),
+    "outcomes.note.readiness": (
+        "Share of all students at the school taking each kind of course. These show how many students are on a college or STEM track (for middle schools, Algebra I before 9th grade); they do not say what graduates did next.",
+        "Proporción de todos los estudiantes de la escuela que toman cada tipo de curso. Muestran cuántos estudiantes siguen una ruta universitaria o STEM; no indican qué hicieron los graduados después.",
+        "Pòsyon tout elèv lekòl la ki pran chak kalite kou. Yo montre konbyen elèv ki sou wout kolèj oswa STEM; yo pa di kisa gradye yo te fè apre.",
+    ),
+    "outcomes.note.alumni": (
+        "Only people who already have a public Wikidata page. Athletes and artists are far more likely to have one, so this is not a measure of what typical graduates do.",
+        "Solo personas que ya tienen una página pública en Wikidata. Es mucho más probable que la tengan atletas y artistas, así que no mide lo que hacen los graduados típicos.",
+        "Se sèlman moun ki deja gen yon paj piblik sou Wikidata. Atlèt ak atis gen plis chans genyen youn, kidonk sa pa mezire sa gradye òdinè yo fè.",
+    ),
     "path.note.free_only": (
         "Free-only hides private schools and child care because no dataset lists their prices.",
         "El filtro de solo gratis oculta las escuelas privadas y el cuidado infantil porque ningún conjunto de datos indica sus precios.",
@@ -774,6 +808,12 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
         "sort debe ser match, distance, grade o name.",
         "sort dwe se match, distance, grade oswa name.",
     ),
+    "err.bad_query.message": ("Type part of a school's name to search.", "Escriba parte del nombre de una escuela para buscar.", "Tape yon pati nan non yon lekòl pou chèche."),
+    "err.bad_query.action": ("Try a word from the school's name, like 'Coral Reef'.", "Pruebe con una palabra del nombre de la escuela, como 'Coral Reef'.", "Eseye yon mo nan non lekòl la, tankou 'Coral Reef'."),
+    "err.survey_not_k12.message": ("The alumni survey is only for schools with elementary, middle or high school grades.", "La encuesta de exalumnos es solo para escuelas con grados de primaria, intermedia o secundaria.", "Sondaj ansyen elèv la se sèlman pou lekòl ki gen klas primè, entèmedyè oswa segondè."),
+    "err.survey_not_k12.action": ("Pick a K-12 school.", "Elija una escuela de K-12.", "Chwazi yon lekòl K-12."),
+    "err.survey_limit.message": ("You have answered for the most schools allowed ({max}).", "Ya respondió por el máximo de escuelas permitido ({max}).", "Ou deja reponn pou pi gwo kantite lekòl yo pèmèt ({max})."),
+    "err.survey_limit.action": ("Remove an answer for another school first.", "Primero elimine una respuesta de otra escuela.", "Retire yon repons pou yon lòt lekòl anvan."),
     "err.bad_sort.action": ("Try 'match'.", "Pruebe con 'match'.", "Eseye 'match'."),
     "err.bad_ids.message": ("Compare 1 to 3 schools.", "Compare de 1 a 3 escuelas.", "Konpare 1 a 3 lekòl."),
     "err.bad_ids.action": (
@@ -1108,6 +1148,11 @@ MESSAGES: dict[str, tuple[str, str, str]] = {
         "Official {level} attendance zone for your address",
         "Zona de asistencia oficial de {level} para su dirección",
         "Zòn lekòl ofisyèl {level} pou adrès ou a",
+    ),
+    "m.path.ranked": (
+        "Ranked by match score among schools within your travel distance (zoning, distance, state grade, your priorities, seat demand). Distance is straight-line miles from your address.",
+        "Ordenadas por puntaje de compatibilidad entre las escuelas dentro de su distancia de viaje (zona, distancia, calificación estatal, sus prioridades, demanda de cupos). La distancia es en línea recta desde su dirección.",
+        "Klase selon nòt matche pami lekòl ki nan distans ou ka vwayaje a (zòn, distans, nòt leta, priyorite ou, demann plas). Distans lan se mil an liy dwat depi adrès ou.",
     ),
     "m.path.estimated": (
         "Estimated: share of the area overlapping the earlier level's attendance zone. Not an official feeder pattern.",

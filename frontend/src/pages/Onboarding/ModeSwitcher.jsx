@@ -12,7 +12,7 @@ export default function ModeSwitcher({ chatOn, formOn }) {
   return (
     <nav aria-label={t('menu.startAria')} style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
       {items.map((i) => (
-        <Link
+        <Link viewTransition
           key={i.key}
           to={i.to}
           replace={i.key !== 'skip'}

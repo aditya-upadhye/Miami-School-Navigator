@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from ..i18n import t
-from ..schemas import CompareResponse, CompareRow, Field
+from ..domain import haversine_mi
+from ..schemas import CompareResponse, CompareRow, CompareScore, Field
 from .context import Navigator
 from .errors import ApiError
 from .schemas_helpers import numeric
-from .schools import get_place, summarize
+from .schools import get_place, score, summarize
 from .zones import zoned_for, zoned_place_ids
 
 # (key, attribute on SchoolSummary, best rule). Row labels are catalog keys `cmp.row.<key>`. `best` is only ever set on numeric OFFICIAL fields.
@@ -34,13 +35,21 @@ ROWS = [
 ]
 
 
-def compare(nav: Navigator, ids: list[str], lat: float | None = None, lon: float | None = None) -> CompareResponse:
+def compare(nav: Navigator, ids: list[str], lat: float | None = None, lon: float | None = None, radius_mi: float = 3.0,
+            priorities: list[str] | None = None, values: list[str] | None = None) -> CompareResponse:
     ids = list(dict.fromkeys(ids))
     if not 1 <= len(ids) <= 3:
         raise ApiError(422, "bad_ids")
     origin = (lat, lon) if lat is not None and lon is not None else None
     zmap = zoned_place_ids(zoned_for(nav, lat, lon)) if origin else None
-    sums = [summarize(nav, get_place(nav, i), origin=origin, zoned_map=zmap) for i in ids]
+    places = [get_place(nav, i) for i in ids]
+    sums = [summarize(nav, p, origin=origin, zoned_map=zmap) for p in places]
+    scores = []
+    if origin:  # the same match score the search uses, so the charts agree with the ranking
+        for p in places:
+            pts, factors, _ = score(p, haversine_mi(lat, lon, p["lat"], p["lon"]), radius_mi, zmap.get(p["id"]), True,
+                                    [x for x in (priorities or []) if x.strip()], False, values)
+            scores.append(CompareScore(id=p["id"], match_score=pts, breakdown=factors))
 
     rows: list[CompareRow] = []
     for key, attr, best in ROWS:
@@ -63,4 +72,4 @@ def compare(nav: Navigator, ids: list[str], lat: float | None = None, lon: float
     notes = [t("cmp.note.best")]
     if not origin:
         notes.append(t("cmp.note.location"))
-    return CompareResponse(schools=[{"id": s.id, "name": s.name, "kind": s.kind} for s in sums], rows=rows, notes=notes)
+    return CompareResponse(schools=[{"id": s.id, "name": s.name, "kind": s.kind} for s in sums], rows=rows, scores=scores, notes=notes)

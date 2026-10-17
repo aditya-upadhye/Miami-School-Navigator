@@ -61,10 +61,10 @@ export default function LandingHeader() {
           <AccountMenu />
         ) : (
           <>
-            <Link to="/account" style={{ ...quietLink, color: 'var(--ink)' }}>
+            <Link viewTransition to="/account" style={{ ...quietLink, color: 'var(--ink)' }}>
               {t('account.signIn')}
             </Link>
-            <Link to="/account?tab=signup" style={{ ...quietLink, padding: '0 22px', background: 'var(--cta)', color: 'var(--cta-ink)' }}>
+            <Link viewTransition to="/account?tab=signup" style={{ ...quietLink, padding: '0 22px', background: 'var(--cta)', color: 'var(--cta-ink)' }}>
               {t('account.createLink')}
             </Link>
           </>

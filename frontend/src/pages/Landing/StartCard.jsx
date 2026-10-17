@@ -36,7 +36,7 @@ export default function StartCard() {
       </div>
       <div style={{ width: '100%', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 18 }}>
         {OPTIONS.map((o) => (
-          <Link
+          <Link viewTransition
             key={o.key}
             to={o.to}
             className="land-card"

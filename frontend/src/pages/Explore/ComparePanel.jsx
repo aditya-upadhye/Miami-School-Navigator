@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
+import ScoreChart, { SERIES_COLORS } from '../../components/ScoreChart';
 import { useI18n } from '../../i18n';
 
 // One accent per school card (purple, green, amber) and an icon for the kind of school.
-export const CARD_COLORS = ['#8b7cf0', '#4fb59a', '#e9a93b'];
+export const CARD_COLORS = SERIES_COLORS;
 const KIND_ICON = {
   public: (
     <>
@@ -22,6 +23,7 @@ const KIND_ICON = {
 
 export default function ComparePanel({
   clearCmp,
+  cmpChart = [],
   cmpCols,
   cmpMessage,
   cmpCountLabel,
@@ -181,8 +183,8 @@ export default function ComparePanel({
                     </div>
                     <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: 22, fontWeight: 700, lineHeight: 1.2 }}>{h.name}</span>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, fontSize: 14, fontWeight: 700 }}>
-                      <Link to={`/school/${h.id}`} style={{ color: 'var(--accent-ink)' }}>{t('explore.card.details')}</Link>
-                      <Link to="/pathway" style={{ color: 'var(--accent-ink)' }}>{t('explore.compare.pathway')}</Link>
+                      <Link viewTransition to={`/school/${h.id}`} style={{ color: 'var(--accent-ink)' }}>{t('explore.card.details')}</Link>
+                      <Link viewTransition to="/pathway" style={{ color: 'var(--accent-ink)' }}>{t('explore.compare.pathway')}</Link>
                     </div>
                   </div>
                 );
@@ -233,6 +235,11 @@ export default function ComparePanel({
               );
             })}
           </div>
+        </div>
+      )}
+      {hasCmp && cmpChart.length > 0 && (
+        <div style={{ padding: 22, borderRadius: 22, border: '1px solid var(--surface-line)', background: 'var(--surface)' }}>
+          <ScoreChart title={t('shared.chart.title')} note={t('shared.chart.note')} series={cmpChart} />
         </div>
       )}
     </section>

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { api } from '../../api/client';
 import {
   isMissing,
@@ -19,6 +19,7 @@ import { VALUE_LABEL_KEYS, VALUE_OPTIONS } from '../../data/family';
 import { chip, toggleInList } from '../../utils/chip';
 import { ZONE_LEVELS, ZONE_STYLE } from '../../utils/mapStyle';
 import { childName, stageForAge } from '../../utils/stages';
+import { onMapUpdate } from '../../hooks/chatStore';
 import { cellText, joinNames, levelText, shortDate, specLabel } from './exploreText';
 
 const KINDS = ['public', 'charter', 'private', 'early_learning'];
@@ -53,6 +54,8 @@ export function useExplore() {
   const [s, setState] = useSetState(() => ({
     ...initialFilters(profile),
     selected: null,
+    found: null, // a school jumped to by name: kept on the map even if it is outside the radius or the filters
+    searchNotice: null,
     compare: [],
     cmpFull: false,
     chatOpen: false,
@@ -95,8 +98,12 @@ export function useExplore() {
   const cmpIds = s.compare;
   const cmpKey = cmpIds.join(',');
   const cmpApi = useApi(
-    (signal) => api.compare({ ids: cmpIds, lat: home?.lat, lon: home?.lon }, { signal }),
-    [cmpKey, home?.lat, home?.lon],
+    (signal) =>
+      api.compare(
+        { ids: cmpIds, lat: home?.lat, lon: home?.lon, radius_mi: s.radius, priorities: params.priorities, values: params.values },
+        { signal },
+      ),
+    [cmpKey, home?.lat, home?.lon, s.radius, JSON.stringify(params.priorities), JSON.stringify(params.values)],
     {
       enabled: cmpIds.length > 0,
     },
@@ -109,6 +116,12 @@ export function useExplore() {
       if (st.compare.length >= 3) return { cmpFull: true };
       return { compare: [...st.compare, id], cmpFull: false };
     });
+  // Put one school on the map and open its card. With no address yet, the school's own address becomes the starting point.
+  const goToSchool = async (hit, others, total) => {
+    if (!home && hit.address) await setLocation([hit.address, hit.city].filter(Boolean).join(', '));
+    const d = await api.school(hit.id, home?.lat ?? hit.lat, home?.lon ?? hit.lon);
+    setState({ found: d.school, selected: hit.id, searchNotice: { name: hit.name, others, total, atSchool: !home } });
+  };
   const toggleIn = (key, v) => setState((st) => ({ [key]: toggleInList(st[key], v) }));
 
   const pinColors = (id) => {
@@ -129,6 +142,30 @@ export function useExplore() {
     cmpBorder: inCmp ? '#F6C343' : 'var(--line2)',
   });
 
+  // Filters Jarvis was asked to apply (only a direct request reaches here; a question just gets an offer) go straight onto the map.
+  useEffect(
+    () =>
+      onMapUpdate((u) =>
+        setState((st) => {
+          const patch = u.reset ? initialFilters(profile) : {};
+          if (u.radius_mi != null) patch.radius = Math.min(25, Math.max(1, Math.round(u.radius_mi)));
+          if (u.kinds?.length) patch.kinds = KINDS.filter((k) => u.kinds.includes(k));
+          if (u.free_only != null) patch.freeOnly = u.free_only;
+          if (u.grade_min) patch.gradeB = ['A', 'B'].includes(u.grade_min);
+          if (u.ese != null) patch.ese = u.ese;
+          if (u.values) patch.values = VALUE_OPTIONS.filter((v) => u.values.includes(v));
+          if (u.view) patch.view = u.view;
+          if (u.programs) {
+            patch.spec = SPECIALTIES.filter((p) => u.programs.includes(p));
+            if (u.programs.includes('Montessori')) patch.priorities = [...new Set([...(u.reset ? [] : st.priorities), 'Montessori'])];
+          }
+          if (u.only_programs != null) patch.onlySpec = u.only_programs && (patch.spec ?? st.spec).length > 0;
+          return { ...patch, selected: null };
+        }),
+      ),
+    [profile, setState],
+  );
+
   // Which of the family's children a school could serve (from its parsed grade range).
   const fitsFor = (sc) => {
     if (!children.length) return '';
@@ -145,11 +182,12 @@ export function useExplore() {
 
   // ---- map (real map: Leaflet + OpenStreetMap; zone polygons from /api/zones/geojson) ----
   const zonesApi = useApi((signal) => api.zoneShapes(home.lat, home.lon, { signal }), [home?.lat, home?.lon], { enabled: !!home });
-  const pins = visible.map((sc, i) => {
+  const shown = s.found && !visible.some((x) => x.id === s.found.id) ? [...visible, s.found] : visible;
+  const pins = shown.map((sc, i) => {
     const c = pinColors(sc.id);
     return {
       id: sc.id,
-      rank: i + 1,
+      rank: sc.id === s.found?.id ? '★' : i + 1,
       lat: sc.lat,
       lon: sc.lon,
       bg: c.bg,
@@ -165,7 +203,7 @@ export function useExplore() {
   // `lang` is part of the key so the pins' accessible labels are rebuilt when the language changes
   const pinsKey = JSON.stringify([lang, ...pins.map((p) => [p.id, p.rank, p.active, p.inCmp])]);
 
-  const sel = visible.find((x) => x.id === s.selected) ?? null;
+  const sel = shown.find((x) => x.id === s.selected) ?? null;
   let pop = {};
   if (sel) {
     pop = {
@@ -373,7 +411,7 @@ export function useExplore() {
     home,
     radiusMi: s.radius,
     pinsKey,
-    fitKey: JSON.stringify([home?.lat, home?.lon, s.radius, pins.map((p) => p.id)]),
+    fitKey: JSON.stringify([home?.lat, home?.lon, s.radius, pins.map((p) => p.id), s.found?.id]),
     onPick: (id) => setState({ selected: id }),
     caption: t('explore.caption'),
     zones: zonesApi.data,
@@ -418,11 +456,28 @@ export function useExplore() {
 
     // location search (header)
     locationError: s.locationError,
+    searchNotice: s.searchNotice,
+    dismissNotice: () => setState({ searchNotice: null }),
+    // Words that are not an address are tried as a school name first; "Coral Reef" jumps to the school, "1234 SW 8 St" is geocoded.
     searchLocation: async (q) => {
-      setState({ locationError: null });
+      setState({ locationError: null, searchNotice: null });
       try {
+        if (!/^\s*\d/.test(q)) {
+          const r = await api.lookup(q, home?.lat, home?.lon);
+          if (r.total > 0) {
+            await goToSchool(r.results[0], r.results.slice(1, 5), r.total);
+            return;
+          }
+        }
         await setLocation(q);
-        setState({ selected: null });
+        setState({ selected: null, found: null });
+      } catch (e) {
+        setState({ locationError: `${e.message} ${e.suggestedAction ?? ''}`.trim() });
+      }
+    },
+    pickFound: async (hit) => {
+      try {
+        await goToSchool(hit, [], 1);
       } catch (e) {
         setState({ locationError: `${e.message} ${e.suggestedAction ?? ''}`.trim() });
       }
@@ -503,7 +558,7 @@ export function useExplore() {
       knob: s[w.key] ? '21px' : '3px',
       toggle: () => setState((st) => ({ [w.key]: !st[w.key] })),
     })),
-    reset: () => setState({ ...initialFilters(profile), selected: null }),
+    reset: () => setState({ ...initialFilters(profile), selected: null, found: null, searchNotice: null }),
 
     // cards
     resultsTitle:
@@ -530,6 +585,11 @@ export function useExplore() {
       remove: () => toggleCmp(x.id),
     })),
     cmpRows,
+    cmpChart: (cmpData?.scores ?? []).map((sc) => ({
+      name: cmpData.schools.find((x) => x.id === sc.id)?.name ?? sc.id,
+      match_score: sc.match_score,
+      breakdown: sc.breakdown,
+    })),
 
     // dates (from the curated rules file, each with its verification level)
     dates: (dates.data?.dates ?? []).map((d) => {

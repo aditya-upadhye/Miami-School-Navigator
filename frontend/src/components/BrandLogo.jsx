@@ -9,7 +9,7 @@ const SIZES = {
 export default function BrandLogo({ size = 'md' }) {
   const s = SIZES[size];
   return (
-    <Link
+    <Link viewTransition
       to="/"
       style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', color: 'var(--ink)' }}
     >
