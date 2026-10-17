@@ -11,7 +11,8 @@ Only Miami-Dade County Public Schools rows (NCES LEAID 1200390, which also holds
 district's charter schools) are kept. Output:
   data/outcomes/federal/crdc_<year>/<table>.csv   filtered raw rows (reproducible cache)
   data/outcomes/federal/ccd_directory_miami_dade.csv
-  data/outcomes/federal/crosswalk_db.json         NCESSCH -> places.id (when navigator.db exists)
+  data/outcomes/federal/crosswalk_db.json         NCESSCH -> places.id (when navigator.db exists; diagnostics only)
+  data/outcomes/federal_crosswalk.json            NCESSCH -> state school number (committed; what the app joins on)
   data/outcomes/federal_readiness.json.gz         records {school_name, ncessch, year, metric,
                                                   value, denominator, source_url}
 
@@ -238,9 +239,20 @@ def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
 
 
+def write_committed_crosswalk(ccd: list[dict]) -> None:
+    """NCESSCH -> state school number, committed so the app can join CRDC rows to places.source_id without the raw CCD file."""
+    m = {r["NCESSCH"]: r["ST_SCHID"][-4:] for r in ccd if r.get("ST_SCHID", "").startswith("FL-13-")}
+    out = {"source": f"NCES Common Core of Data school directory 2024-25 ({CCD_URL})",
+           "note": "NCESSCH -> Florida state school number (ST_SCHID FL-13-NNNN, last 4 digits) = places.source_id. Written by scripts/fetch_federal_readiness.py.",
+           "map": dict(sorted(m.items()))}
+    (OUT_DIR / "federal_crosswalk.json").write_text(json.dumps(out, indent=0) + "\n")
+
+
 def build_crosswalk() -> dict | None:
     """NCESSCH -> places.id via CCD ST_SCHID (FL-13-NNNN) == places.source_id; fall back to exact name."""
     ccd = _read(RAW_DIR / "ccd_directory_miami_dade.csv")
+    if ccd:
+        write_committed_crosswalk(ccd)
     if not ccd or not DB_PATH.exists():
         return None
     db = sqlite3.connect(DB_PATH)

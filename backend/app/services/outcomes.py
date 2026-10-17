@@ -52,13 +52,14 @@ def _data():
     for r in _read(d / "fldoe_outcomes.json.gz"):
         if r.get("district_school_id"):
             fl[r["district_school_id"]][int(r["year"])][r["metric"]] = r
-    xw = d / "federal" / "crosswalk_db.json"
-    ncess = {k: v["place_id"] for k, v in json.load(open(xw)).get("map", {}).items()} if xw.exists() else {}
+    # CRDC rows carry the NCES school id; the committed crosswalk turns it into the state school number (= places.source_id)
+    xw = d / "federal_crosswalk.json"
+    ncess = json.loads(xw.read_text()).get("map", {}) if xw.exists() else {}
     fed: dict[str, dict[str, dict]] = defaultdict(lambda: defaultdict(dict))
     for r in _read(d / "federal_readiness.json.gz"):
-        pid = ncess.get(r.get("ncessch"))
-        if pid:
-            fed[pid][r["year"]][r["metric"]] = r
+        num = ncess.get(r.get("ncessch"))
+        if num:
+            fed[num][r["year"]][r["metric"]] = r
     alumni: dict[str, list[dict]] = defaultdict(list)
     for r in _read(d / "notable_alumni.json.gz"):
         if r.get("place_id"):
@@ -123,7 +124,9 @@ def outcomes(nav: Navigator, place_id: str) -> OutcomesResponse:
     official = OfficialOutcomes(**rec["official"]) if rec.get("official") else None
     li = rec.get("linkedin")  # shown only when the school's LinkedIn page was matched with confidence
     linkedin = LinkedinAlumni(**li, confidence=rec["confidence"]) if li and rec.get("confidence") in ("match", "likely") else None
-    college, readiness = _college(fl.get(p["id"], {})), _readiness(fed.get(p["id"], {}), high="high" in levels)
+    # only the main site (pub-0211, not its extra campus pub-0211-151) gets the school's federal rows
+    main_site = p["kind"] in ("public", "charter") and p["id"].split("-", 1)[-1] == p.get("source_id")
+    college, readiness = _college(fl.get(p["id"], {})), _readiness(fed.get(p["source_id"], {}) if main_site else {}, high="high" in levels)
     people = sorted(alumni.get(p["id"], []), key=lambda r: (r["occupation_group"] == "other", r.get("birth_decade") or 9999, r["person_name"]))
     groups = Counter(r["occupation_group"] for r in people)
     sources = []

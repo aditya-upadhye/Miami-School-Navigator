@@ -9,3 +9,6 @@ data/users.db*
 
 # raw downloads (may contain contact details)
 data/raw/
+
+# stray npm / vitest caches (the backend is Python)
+node_modules/
