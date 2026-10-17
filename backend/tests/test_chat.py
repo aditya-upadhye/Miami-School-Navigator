@@ -448,3 +448,43 @@ def test_a_zoning_lookup_returns_the_zoned_schools_as_results(bare_nav):
     first = [r.id for r in tb2.results]
     tb2.run("get_zones", {})
     assert [r.id for r in tb2.results] == first  # a search's list is kept
+
+
+# ---- "top 3" means exactly three
+def test_the_number_of_options_asked_for_is_detected_in_every_language():
+    from app.chat.tools import requested_count
+
+    for text, n in [("What are the top 3 schools near me?", 3), ("top ten schools", 10), ("give me 3", 3), ("3 best STEM schools", 3),
+                    ("List 12 options", 12), ("¿Cuáles son las 3 mejores escuelas?", 3), ("dame cinco opciones", 5), ("Ki twa pi bon lekòl?", 3)]:
+        assert requested_count(text) == n, text
+    for text in ["My 3 year old needs a preschool", "schools within 5 miles", "I have 2 kids, ages 3 and 7", "grade 3 schools", "K-5 schools",
+                 "show me 3 more", "top 3 schools for each child", "top 3 public and top 5 private", "montre m kat la", "Find schools near 33127"]:
+        assert requested_count(text) is None, text
+
+
+def test_top_three_returns_exactly_three_even_if_the_map_shows_five_and_the_model_lists_more(bare_nav):
+    mf = {"radius_mi": 25, "limit": 5, "sort": "match"}
+    bullets = lambda m: "\n".join(f"- {s['name']} [{s['grades']['cite']}]" for s in tool_results(m)[0]["schools"])
+    llm = FakeLlm([uses(("search_schools", {})),
+                   lambda m: say(f"**Suggested schools**\n{bullets(m)}\n- Extra School [c99]\n- Another Extra\n\n**Next steps**\n- Tour them\n- Call\n- Apply")])
+    r = agent.run_chat(bare_nav, ChatRequest(messages=[ChatMessage(role="user", content="What are the top 3 schools for us?")],
+                                             profile=ChatProfile(lat=LAT, lon=LON), map_available=True, map_filters=mf), llm)
+    assert "exactly 3" in llm.calls[0]["system"]
+    assert len(r.results) == 3 and r.filters_applied["limit"] == 3  # the map's 5 did not win
+    head, steps = r.answer.split("**Next steps**")
+    assert head.count("\n- ") == 3 and "Extra" not in r.answer and steps.count("- ") == 3  # the next steps are not cut
+    assert len(r.citations) == len({c.id for c in r.citations}) <= 3
+
+
+def test_top_ten_is_not_capped_at_five(bare_nav):
+    tb = ToolBox(bare_nav, CitationBook(), ChatProfile(lat=LAT, lon=LON), map_filters={"radius_mi": 25, "limit": 5}, user_text="top 10 schools please")
+    out = tb.run("search_schools", {"limit": 5})  # the family's number wins over the model's and the map's
+    assert out["filters_applied"]["limit"] == 10 and len(out["schools"]) == min(10, out["total_matching"])
+    plain = ToolBox(bare_nav, CitationBook(), ChatProfile(lat=LAT, lon=LON), map_filters={"radius_mi": 25, "limit": 5}, user_text="find schools")
+    assert plain.run("search_schools", {})["filters_applied"]["limit"] == 5  # no number: the list still matches the map
+
+
+def test_an_answer_with_too_many_items_is_trimmed_to_the_number_asked_for():
+    text = "Near you:\n\n**Suggested schools**\n1. A [c1]\n   - sub of A\n2. B [c2]\n\n3. C [c3]\n4. D [c4]\n\n**Next steps**\n- one\n- two\n- three"
+    assert agent.trim_list(text, 2) == "Near you:\n\n**Suggested schools**\n1. A [c1]\n   - sub of A\n2. B [c2]\n\n**Next steps**\n- one\n- two\n- three"
+    assert agent.trim_list(text, 4) == text and agent.trim_list("No list here.", 1) == "No list here."

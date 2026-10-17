@@ -42,7 +42,7 @@ TOOLS: list[dict] = [
          "free_only": {"type": "boolean"}, "grade_min": {"type": "string", "enum": ["A", "B", "C", "D", "F"], "description": "Public/charter state grade floor"},
          "specialties": {"type": "array", "items": {"type": "string"}}, "priorities": {"type": "array", "items": {"type": "string"}},
          "ese": {"type": "boolean"}, "scholarship": {"type": "boolean"},
-         "sort": {"type": "string", "enum": ["match", "distance", "grade", "name"]}, "limit": {"type": "integer", "description": "Default 5, max 10. Leave it out so the list matches the family's map"}},
+         "sort": {"type": "string", "enum": ["match", "distance", "grade", "name"]}, "limit": {"type": "integer", "description": "How many schools to return, max 20. Set it to the number the family asked for ('top 3' = 3); otherwise leave it out so the list matches the family's map"}},
          "required": []}},
     {"name": "get_school",
      "description": "Full detail for one school id: fields, how to apply (with sources), nearby parks/libraries, and questions to ask the school.",
@@ -118,6 +118,72 @@ def asked_for(text: str) -> dict:
     return out
 
 
+# How many items the family asked for ("top 3", "give me 10 schools", "las 3 mejores", "twa pi bon lekòl"). The search and the answer are held to it.
+MAX_LIST = 20  # the most schools one answer lists
+_NUM_WORDS = {
+    "en": {"two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12, "fifteen": 15, "twenty": 20},
+    "es": {"dos": 2, "tres": 3, "cuatro": 4, "cinco": 5, "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10, "once": 11, "doce": 12, "quince": 15, "veinte": 20},
+    "ht": {"de": 2, "twa": 3, "kat": 4, "senk": 5, "sis": 6, "sèt": 7, "set": 7, "uit": 8, "nèf": 9, "nef": 9, "dis": 10, "douz": 12, "kenz": 15, "ven": 20},
+}
+_COUNT_NOUNS = {
+    "en": r"schools?|options?|choices?|recommendations?|suggestions?|picks?|results?|places?|programs?|preschools?|daycares?|centers?|centres?|academies|"
+          r"ones|alternatives?|ideas?|tips?|questions?|steps?|reasons?|things?|examples?|matches|magnets?|charters?",
+    "es": r"escuelas?|opciones?|colegios?|recomendaciones?|sugerencias?|alternativas?|resultados?|programas?|guarder[ií]as?|preescolares?|centros?|"
+          r"ideas?|consejos?|preguntas?|pasos?|razones?|lugares?",
+    "ht": r"lek[oò]l|opsyon|chwa|rek[oò]mandasyon|sijesyon|rezilta|pwogram|gadri|sant|ide|kons[eè]y|kesyon|etap|rezon|kote",
+}
+_TOP_WORDS = {"en": r"top|best", "es": r"top|mejore?s?|principales", "ht": r"pi bon|mey[eè]"}
+_AMBIGUOUS = {"de", "kat", "set"}  # also "of" (Spanish), "map" (Kreyòl) and "set" (English): a count only right before a noun ("kat lekòl")
+_COUNT_VERBS = {
+    "en": r"give(?: me)?|show(?: me)?|list|name|suggest|recommend|find(?: me)?|pick|choose|get(?: me)?",
+    "es": r"dame|dime|mu[eé]strame|muestra|lista|enumera|recomi[eé]ndame|recomienda|sugi[eé]reme|sugiere|busca|encuentra|elige|nombra",
+    "ht": r"ban m(?:wen)?|montre m(?:wen)?|bay|lis|rek[oò]mande|sijere|chwazi|jwenn",
+}
+# A number before these is an age, a distance, a grade or a count of children, not how many options they want.
+_NOT_A_COUNT = (r"years?|yrs?|y/o|yo|year-olds?|months?|miles?|mi|km|kilometers?|minutes?|mins?|min|hours?|hrs?|blocks?|grades?|graders?|kids?|children|child|"
+                r"sons?|daughters?|boys?|girls?|siblings?|students?|am|pm|percent|dollars?|años?|meses?|millas?|minutos?|horas?|cuadras?|grados?|niñ[oa]s?|"
+                r"hij[oa]s?|ane|mwa|mil|minit|[eè]dtan|timoun|pitit|and|or|y|o|ou|ak|la|a")
+_RELATIVE = r"more|other|others|additional|else|extra|m[aá]s|otr[oa]s?|adicionales|l[oò]t|ank[oò]"  # "3 more": on top of the ones already shown
+_PER_GROUP = re.compile(r"\b(each|per|every|cada|chak)\b", re.I)  # "3 for each child": the total is not that number
+
+
+def _count_patterns() -> list[re.Pattern]:
+    whole = r"(?![\w'’-])"  # a whole word: "a" blocks "3 a day" but not "3 A-rated schools"
+    unit = rf"(?:{_NOT_A_COUNT}){whole}"
+    gap = rf"(?:(?!(?:{_NOT_A_COUNT}|{_RELATIVE}){whole})[\w'’-]+\s+){{0,3}}?"
+    end = r"(?![-–/.:,]?\d)\b"
+    out = []
+    for lang, words in _NUM_WORDS.items():
+        num = r"[1-9]\d?|" + "|".join(sorted(words, key=len, reverse=True))
+        safe = r"[1-9]\d?|" + "|".join(sorted(set(words) - _AMBIGUOUS, key=len, reverse=True))
+        out += [re.compile(rf"\b(?:{_TOP_WORDS[lang]})\s+(?:the\s+|los\s+|las\s+)?({safe}){end}(?!\s+{unit})", re.I),
+                re.compile(rf"(?<![-#$:./])\b({safe}){end}\s+(?:{_TOP_WORDS[lang]})\b", re.I),
+                re.compile(rf"(?<![-#$:./])\b({num}){end}\s+{gap}(?:{_COUNT_NOUNS[lang]})\b", re.I),
+                re.compile(rf"\b(?:{_COUNT_VERBS[lang]})\s+(?:me\s+|the\s+|los\s+|las\s+)?({safe}){end}(?!\s+{unit})", re.I)]
+    return out
+
+
+_COUNT_RES = _count_patterns()
+_RELATIVE_RE = re.compile(rf"\b(?:[1-9]\d?|{'|'.join(w for d in _NUM_WORDS.values() for w in d)})\s+(?:{_RELATIVE})\b", re.I)
+_AFTER_GRADE = re.compile(r"\b(?:grades?|grado|ages?|edad|zip|pre-?k)\s*$", re.I)
+
+
+def requested_count(text: str) -> int | None:
+    """The number of options the family asked for in their latest message, or None when they gave no number, gave more than one, asked for
+    "N more", or asked "N for each child" (then the prompt still asks the model to give exactly what they asked for)."""
+    if not text or _RELATIVE_RE.search(text) or _PER_GROUP.search(text):
+        return None
+    found = set()
+    for rx in _COUNT_RES:
+        for m in rx.finditer(text):
+            if _AFTER_GRADE.search(text[:m.start(1)]):
+                continue
+            raw = m.group(1).casefold()
+            n = int(raw) if raw.isdigit() else next(d[raw] for d in _NUM_WORDS.values() if raw in d)
+            found.add(n)
+    return found.pop() if len(found) == 1 else None
+
+
 _PROPS = {t["name"]: set(t["input_schema"].get("properties", {})) for t in TOOLS}
 
 
@@ -175,6 +241,7 @@ class ToolBox:
     def __init__(self, nav, book: CitationBook, profile, lang: str | None = None, map_filters: dict | None = None, user_text: str = "") -> None:
         self.nav, self.book, self.profile = nav, book, profile
         self.asked = asked_for(user_text)
+        self.count = requested_count(user_text)  # "top 3": every search this turn returns exactly that many
         self.mf = clean_map_filters(map_filters)
         self.lang = lang or current_lang()
         self.results: list[SchoolSummary] = []
@@ -307,7 +374,7 @@ class ToolBox:
         resp = schools_svc.search(self.nav, lat=lat, lon=lon, radius_mi=float(radius_mi or mf.get("radius_mi") or (25 if q else 3)), q=q, kinds=kinds or mf.get("kinds") or None,
                                   stages=st or None, free_only=bool(free), grade_min=grade_min or mf.get("grade_min"), specialties=specialties or mf.get("specialties") or None,
                                   ese=bool(mf.get("ese") if ese is None else ese), scholarship=bool(scholarship), sort=sort or mf.get("sort", "match"),
-                                  limit=min(int(limit or mf.get("limit") or 5), 10), priorities=pri or None,
+                                  limit=min(int((None if q else self.count) or limit or mf.get("limit") or 5), MAX_LIST), priorities=pri or None,
                                   values=[v for v in vals if v in schools_svc.VALUES] or None)  # the family's own stated values; the model cannot change them
         self.results, self.filters_applied = resp.results, resp.meta.filters_applied
         return {"schools": [self._school(s) for s in resp.results], "total_matching": resp.meta.total_matching,

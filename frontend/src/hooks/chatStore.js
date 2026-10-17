@@ -73,7 +73,7 @@ const remembered = () => {
 /** What is sent back as history: the text, plus the schools shown (name and id) so "the second one" or "that school" can be understood. */
 const forModel = ({ role, content, results }) => ({
   role,
-  content: results?.length ? `${content}\n[Schools shown: ${results.slice(0, 6).map((r, i) => `${i + 1}. ${r.name} (id ${r.id})`).join('; ')}]` : content,
+  content: results?.length ? `${content}\n[Schools shown: ${results.slice(0, 20).map((r, i) => `${i + 1}. ${r.name} (id ${r.id})`).join('; ')}]` : content,
 });
 
 function load() {

@@ -123,7 +123,7 @@ function Message({ m, mapNext }) {
       <Time at={m.at} align="flex-start" />
       {m.results?.length > 0 && (
         <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {m.results.slice(0, 6).map((r) => (
+          {m.results.map((r) => (
             <li key={r.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
               <Link viewTransition
                 to={`/school/${r.id}`}
