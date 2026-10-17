@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const store = new Map();
 globalThis.window = { sessionStorage: { getItem: (k) => store.get(k) ?? null, setItem: (k, v) => store.set(k, v), removeItem: (k) => store.delete(k) } };
-vi.mock('../api/client', () => ({ api: { chat: vi.fn(async ({ messages }) => ({ answer: `echo: ${messages.at(-1).content}`, citations: [], results: [{ id: 'x' }] })) } }));
+vi.mock('../api/client', () => ({ api: { chat: vi.fn(async ({ messages }) => ({ answer: `echo: ${messages.at(-1).content}`, citations: [], results: [{ id: 'x', name: 'Dunbar' }] })) } }));
 
 const fresh = async () => {
   vi.resetModules(); // a new module instance is what a page reload or a new page view gets
@@ -29,7 +29,22 @@ describe('chat store', () => {
     await a.sendMessage('one', body);
     await a.sendMessage('two', body);
     const last = api.chat.mock.calls.at(-1)[0].messages;
-    expect(last.map((m) => m.content)).toEqual(['one', 'echo: one', 'two']);
+    expect(last.map((m) => m.content)).toEqual(['one', 'echo: one\n[Schools shown: 1. Dunbar (id x)]', 'two']); // the schools shown are sent too, so "that school" is understood
+  });
+
+  it('answers a repeated question from the cache, even after a reload, and stamps each message with a time', async () => {
+    const { api } = await import('../api/client');
+    api.chat.mockClear();
+    const q = 'Which charter schools near me have a bilingual program?';
+    const a = await fresh();
+    await a.sendMessage(q, body);
+    expect(api.chat).toHaveBeenCalledTimes(1);
+    expect(a.getState().messages.every((m) => typeof m.at === 'number')).toBe(true);
+    const b = await fresh(); // a hard reload: a new module, same tab storage
+    b.resetChat();
+    await b.sendMessage(`  ${q.toUpperCase()} `, body); // same question, different case and spacing, in a new conversation
+    expect(api.chat).toHaveBeenCalledTimes(1);
+    expect(b.getState().messages.at(-1).content).toBe(`echo: ${q}`);
   });
 
   it('can be cleared, and caps the history', async () => {

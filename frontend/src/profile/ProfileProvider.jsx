@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { api } from '../api/client';
-import { resetChat } from '../hooks/chatStore';
+import { onProfileUpdate, resetChat } from '../hooks/chatStore';
 import { setCurrentLang } from '../i18n/current';
 
 // What we know about a family before they tell us anything: nothing. There is no sample family, address or children; every screen shows
@@ -15,6 +15,7 @@ export const EMPTY_PROFILE = {
   freeOnly: false,
   priorities: [],
   values: [],
+  memory: [], // short notes Jarvis kept from chats (preferences, worries, schools liked)
   radius: 3,
   lang: 'en',
 };
@@ -78,6 +79,25 @@ export function ProfileProvider({ children }) {
       /* ignore */
     }
   }, [profile, remember]);
+
+  // Children the family mentioned in the chat (name and age) join the profile, keeping any details already entered for them.
+  useEffect(
+    () =>
+      onProfileUpdate((u) => {
+        if (Array.isArray(u.memory)) setProfile((p) => ({ ...p, memory: u.memory.filter((n) => typeof n === 'string').slice(-30) }));
+        if (!Array.isArray(u.children)) return;
+        setProfile((p) => {
+          const old = p.children ?? [];
+          const children = u.children.map((c) => {
+            const name = (c.name ?? '').trim().toLowerCase();
+            const match = old.find((o) => (name ? (o.name ?? '').trim().toLowerCase() === name : !o.name && o.age === c.age));
+            return { ...match, age: c.age, ...(c.name ? { name: c.name } : {}) };
+          });
+          return { ...p, children };
+        });
+      }),
+    [],
+  );
 
   // Tell the browser and screen readers which language the page is in.
   useEffect(() => {

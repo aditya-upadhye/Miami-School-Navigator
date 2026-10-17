@@ -171,6 +171,10 @@ export const explore = {
     'explore.needAddress.or': 'or',
     'explore.count.noAddress': 'Enter your address to see schools',
     'explore.navi.close': 'Close Jarvis',
+    'explore.pinned.title': 'Showing {n} schools from Jarvis on the map',
+    'explore.pinned.back': 'Back to my filters',
+    'explore.pinned.count': '{n} schools from Jarvis',
+    'explore.chat.nothing': 'Those filters from your chat matched no schools nearby, so your map is unchanged. Ask Jarvis to widen the search.',
   },
   es: {
     'explore.navi.move': 'Mover la ventana de Jarvis (arrastre la barra de título o use las flechas)',
@@ -348,6 +352,10 @@ export const explore = {
     'explore.needAddress.or': 'o',
     'explore.count.noAddress': 'Escriba su dirección para ver escuelas',
     'explore.navi.close': 'Cerrar Jarvis',
+    'explore.pinned.title': 'Mostrando en el mapa {n} escuelas de Jarvis',
+    'explore.pinned.back': 'Volver a mis filtros',
+    'explore.pinned.count': '{n} escuelas de Jarvis',
+    'explore.chat.nothing': 'Esos filtros de su chat no encontraron escuelas cercanas, así que su mapa no cambió. Pida a Jarvis que amplíe la búsqueda.',
   },
   ht: {
     'explore.navi.move': 'Deplase fenèt Jarvis la (rale ba tit la, oswa sèvi ak flèch yo)',
@@ -523,5 +531,9 @@ export const explore = {
     'explore.needAddress.or': 'oswa',
     'explore.count.noAddress': 'Antre adrès ou pou wè lekòl yo',
     'explore.navi.close': 'Fèmen Jarvis',
+    'explore.pinned.title': 'Y ap montre {n} lekòl Jarvis sou kat la',
+    'explore.pinned.back': 'Retounen nan filtè mwen yo',
+    'explore.pinned.count': '{n} lekòl Jarvis',
+    'explore.chat.nothing': 'Filtè sa yo ki soti nan chat la pa jwenn okenn lekòl tou pre, kidonk kat ou a pa chanje. Mande Jarvis elaji rechèch la.',
   },
 };

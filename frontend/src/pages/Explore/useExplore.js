@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { api } from '../../api/client';
 import {
   isMissing,
@@ -19,11 +19,16 @@ import { VALUE_LABEL_KEYS, VALUE_OPTIONS } from '../../data/family';
 import { chip, toggleInList } from '../../utils/chip';
 import { ZONE_LEVELS, ZONE_STYLE } from '../../utils/mapStyle';
 import { childName, stageForAge } from '../../utils/stages';
-import { onMapUpdate } from '../../hooks/chatStore';
+import { onMapUpdate, onShowSchools, setMapContext, takePendingMap, takePendingShow } from '../../hooks/chatStore';
 import { cellText, joinNames, levelText, shortDate, specLabel } from './exploreText';
 
 const KINDS = ['public', 'charter', 'private', 'early_learning'];
 const SPECIALTIES = ['STEM', 'Arts', 'Bilingual', 'IB'];
+
+// The filter fields a chat answer may change, remembered so a change that empties the map can be undone (see the guard in useExplore).
+const FILTER_KEYS = ['view', 'kid', 'radius', 'freeOnly', 'kinds', 'spec', 'onlySpec', 'priorities', 'values', 'ese', 'gradeB'];
+const pickFilters = (st) => Object.fromEntries(FILTER_KEYS.map((k) => [k, st[k]]));
+const pickLocation = (p) => ({ lat: p.lat, lon: p.lon, address: p.address, matchedAddress: p.matchedAddress, precision: p.precision });
 
 const initialFilters = (profile) => ({
   view: 'top', // top = best matches (5), all = everything nearby sorted by distance
@@ -48,7 +53,7 @@ const verificationLevel = (method = '') => VERIFICATION_LEVELS.find((k) => metho
 
 /** State, live data and derived view values for the Explore screen. Search, compare and dates come from the backend. */
 export function useExplore() {
-  const { profile, setLocation } = useProfile();
+  const { profile, setLocation, updateProfile } = useProfile();
   const { t, tp, nf, date, days, lang } = useI18n();
   const names = (list) => joinNames(list, t);
   const [s, setState] = useSetState(() => ({
@@ -56,6 +61,9 @@ export function useExplore() {
     selected: null,
     found: null, // a school jumped to by name: kept on the map even if it is outside the radius or the filters
     searchNotice: null,
+    pinned: null,
+    guard: null, // {prev}: filters a chat answer just changed; undone if they leave no schools
+    chatNote: null,
     compare: [],
     cmpFull: false,
     chatOpen: false,
@@ -87,11 +95,20 @@ export function useExplore() {
     sort: s.view === 'top' ? 'match' : 'distance',
     limit: s.view === 'top' ? 5 : 30,
   };
+  const mapSearchKey = JSON.stringify(params);
+  // Jarvis starts its school searches from exactly what the map is showing, so both lists are the same schools.
+  useEffect(() => {
+    const { lat, lon, stage, ...rest } = JSON.parse(mapSearchKey);
+    setMapContext({ ...rest, stage });
+    return () => setMapContext(null);
+  }, [mapSearchKey]);
   const search = useApi((signal) => api.schools(params, { signal }), [JSON.stringify(params)], {
     enabled: s.kinds.length > 0 && !!home,
     delay: 250,
   });
-  const visible = s.kinds.length > 0 ? (search.data?.results ?? []) : [];
+  // Schools picked from a chat answer replace the filtered list until a filter changes or the family goes back to their filters.
+  const pinned = s.pinned && s.pinned.key === mapSearchKey ? s.pinned : null;
+  const visible = pinned ? pinned.schools : s.kinds.length > 0 ? (search.data?.results ?? []) : [];
   const meta = search.data?.meta;
 
   // ---- compare (server-side, aligned rows) ----
@@ -142,10 +159,77 @@ export function useExplore() {
     cmpBorder: inCmp ? '#F6C343' : 'var(--line2)',
   });
 
+  // A chat answer's schools go onto the map (and one card opens if a single pin was chosen). Answers picked on another page wait here.
+  useEffect(() => {
+    const show = ({ schools, selectedId, filters: f, origin, compare }) => {
+      // The family asked about another place ("1 mile from Wynwood"): the map is centred there, so its matches are Jarvis's schools.
+      if (origin) {
+        updateProfile({ lat: origin.lat, lon: origin.lon, address: origin.label ?? profile.address, matchedAddress: origin.label ?? profile.matchedAddress, precision: origin.precision ?? profile.precision });
+      }
+      if (!f) {
+        // no filters to copy (a name lookup, a school's details, a comparison): show exactly those schools until a filter changes
+        setState({
+          pinned: { schools, key: mapSearchKey },
+          selected: selectedId ?? null,
+          found: null,
+          searchNotice: null,
+          ...(compare ? { compare: schools.slice(0, 3).map((x) => x.id), cmpFull: false } : {}),
+        });
+        return;
+      }
+      // The map takes the filters Jarvis searched with, so the Filters tab and the Matches list say the same thing as the chat.
+      setState((st) => {
+        const kids = children.map((c) => stageForAge(c.age));
+        const want = f.stages ?? [];
+        const kid = !want.length
+          ? 'any'
+          : kids.length > 1 && kids.every((k) => want.includes(k))
+            ? 'all'
+            : kids.findIndex((k) => want.includes(k)) >= 0 && new Set(kids.filter((k) => want.includes(k))).size === want.length
+              ? kids.findIndex((k) => want.includes(k))
+              : 'any';
+        const rank = (f.priorities ?? []).filter((p) => SPECIALTIES.includes(p));
+        const spec = SPECIALTIES.filter((p) => [...(f.specialties ?? []), ...rank].includes(p));
+        return {
+          view: 'top',
+          kid,
+          radius: Math.min(25, Math.max(1, Math.round(f.radius_mi ?? st.radius))),
+          kinds: f.kinds?.length ? KINDS.filter((k) => f.kinds.includes(k)) : [...KINDS],
+          freeOnly: !!f.free_only,
+          gradeB: ['A', 'B'].includes(f.grade_min),
+          ese: !!f.ese,
+          values: VALUE_OPTIONS.filter((v) => (f.values ?? []).includes(v)),
+          spec,
+          onlySpec: (f.specialties ?? []).length > 0,
+          priorities: (f.priorities ?? []).filter((p) => !SPECIALTIES.includes(p)),
+          pinned: null,
+          selected: selectedId ?? null,
+          found: null,
+          searchNotice: null,
+          chatNote: null,
+          guard: st.guard ?? { prev: pickFilters(st), loc: origin ? pickLocation(profile) : null },
+        };
+      });
+    };
+    const waiting = takePendingShow();
+    if (waiting) show(waiting);
+    return onShowSchools(show);
+  }, [mapSearchKey, setState, children, profile, updateProfile]);
+
+  // Children added or removed (for example told to Jarvis) change who the map is for: all of them, or the only one.
+  const kidCount = children.length;
+  const firstKidRun = useRef(true);
+  useEffect(() => {
+    if (firstKidRun.current) {
+      firstKidRun.current = false;
+      return;
+    }
+    setState((st) => ({ ...st, kid: kidCount > 1 ? 'all' : kidCount === 1 ? 0 : 'any', selected: null }));
+  }, [kidCount, setState]);
+
   // Filters Jarvis was asked to apply (only a direct request reaches here; a question just gets an offer) go straight onto the map.
-  useEffect(
-    () =>
-      onMapUpdate((u) =>
+  useEffect(() => {
+    const apply = (u) =>
         setState((st) => {
           const patch = u.reset ? initialFilters(profile) : {};
           if (u.radius_mi != null) patch.radius = Math.min(25, Math.max(1, Math.round(u.radius_mi)));
@@ -155,16 +239,32 @@ export function useExplore() {
           if (u.ese != null) patch.ese = u.ese;
           if (u.values) patch.values = VALUE_OPTIONS.filter((v) => u.values.includes(v));
           if (u.view) patch.view = u.view;
+          if (u.kid != null) patch.kid = u.kid;
           if (u.programs) {
             patch.spec = SPECIALTIES.filter((p) => u.programs.includes(p));
             if (u.programs.includes('Montessori')) patch.priorities = [...new Set([...(u.reset ? [] : st.priorities), 'Montessori'])];
           }
           if (u.only_programs != null) patch.onlySpec = u.only_programs && (patch.spec ?? st.spec).length > 0;
-          return { ...patch, selected: null };
-        }),
-      ),
-    [profile, setState],
-  );
+          return { ...patch, selected: null, chatNote: null, guard: st.guard ?? { prev: pickFilters(st) } };
+        });
+    const waiting = takePendingMap(); // filters asked for in the onboarding chat, which sent the family here
+    if (waiting) apply(waiting);
+    return onMapUpdate(apply);
+  }, [profile, setState]);
+
+  // The guard: filters a chat answer applied are kept only if they leave schools to show. Once the search for them has answered with
+  // nothing, the earlier filters come back and a note says so, so a question to Jarvis can never leave the map empty.
+  useEffect(() => {
+    if (!s.guard || pinned || search.loading || !search.data) return;
+    const fa = search.data.meta?.filters_applied ?? {};
+    const o = search.data.meta?.origin;
+    if (home && o && (Math.abs(o.lat - home.lat) > 1e-6 || Math.abs(o.lon - home.lon) > 1e-6)) return; // still the old location
+    if (fa.ese !== s.ese || fa.radius_mi !== s.radius || fa.free_only !== s.freeOnly || (fa.grade_min ?? null) !== (s.gradeB ? 'B' : null)) return; // not the answer to these filters yet
+    if (visible.length === 0 && s.kinds.length > 0) {
+      if (s.guard.loc) updateProfile(s.guard.loc);
+      setState({ ...s.guard.prev, guard: null, selected: null, chatNote: t('explore.chat.nothing') });
+    } else setState({ guard: null });
+  }, [s.guard, s.ese, s.radius, s.freeOnly, s.gradeB, s.kinds.length, pinned, search.loading, search.data, visible.length, setState, t, updateProfile, home?.lat, home?.lon]);
 
   // Which of the family's children a school could serve (from its parsed grade range).
   const fitsFor = (sc) => {
@@ -488,7 +588,13 @@ export function useExplore() {
     hasPop: !!sel,
     pop,
     closePop: () => setState({ selected: null }),
-    countLabel: !home
+    chatNote: s.chatNote,
+    dismissChatNote: () => setState({ chatNote: null }),
+    pinnedNotice: pinned ? { text: t('explore.pinned.title', { n: pinned.schools.length }), back: t('explore.pinned.back') } : null,
+    clearPinned: () => setState({ pinned: null, selected: null }),
+    countLabel: pinned
+      ? t('explore.pinned.count', { n: pinned.schools.length })
+      : !home
       ? t('explore.count.noAddress')
       : s.kinds.length === 0
         ? plural(0)
@@ -508,7 +614,7 @@ export function useExplore() {
         : hidden > 0
           ? t('explore.hidden.n', { n: nf(hidden) })
           : t('explore.hidden.none'),
-    noResults: !!home && !search.loading && !search.error && visible.length === 0,
+    noResults: !pinned && !!home && !search.loading && !search.error && visible.length === 0,
 
     // filters
     radius: s.radius,
