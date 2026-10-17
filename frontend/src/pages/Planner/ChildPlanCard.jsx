@@ -192,7 +192,7 @@ export default function ChildPlanCard({ plan, schoolYear, cutoffDate, child, onB
                   <Confidence field={it.field} />
                   {it.link && (
                     <span style={{ fontSize: 14, fontWeight: 700 }}>
-                      {it.link === 'explore' && <Link to="/explore">{t('link.explore')}</Link>}
+                      {it.link === 'explore' && <Link viewTransition to="/explore">{t('link.explore')}</Link>}
                       {it.link === 'scholarships' && <a href="#scholarships">{t('link.scholarships')}</a>}
                     </span>
                   )}

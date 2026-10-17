@@ -16,15 +16,15 @@ export default function Cta() {
         </h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
           {user ? (
-            <Link to="/explore" style={{ ...pillLink, background: 'var(--cta)', color: 'var(--cta-ink)' }}>
+            <Link viewTransition to="/explore" style={{ ...pillLink, background: 'var(--cta)', color: 'var(--cta-ink)' }}>
               {t('landing.explore.title')}
             </Link>
           ) : (
             <>
-              <Link to="/account?tab=signup" style={{ ...pillLink, background: 'var(--cta)', color: 'var(--cta-ink)' }}>
+              <Link viewTransition to="/account?tab=signup" style={{ ...pillLink, background: 'var(--cta)', color: 'var(--cta-ink)' }}>
                 {t('account.createLink')}
               </Link>
-              <Link to="/account" style={{ ...pillLink, border: '1.5px solid var(--ink)', color: 'var(--ink)' }}>
+              <Link viewTransition to="/account" style={{ ...pillLink, border: '1.5px solid var(--ink)', color: 'var(--ink)' }}>
                 {t('account.signIn')}
               </Link>
             </>

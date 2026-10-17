@@ -5,7 +5,7 @@ import { useI18n } from '../i18n';
 export default function BackButton({ fallback = '/' }) {
   const { t } = useI18n();
   const navigate = useNavigate();
-  const goBack = () => (window.history.state?.idx > 0 ? navigate(-1) : navigate(fallback));
+  const goBack = () => (window.history.state?.idx > 0 ? navigate(-1) : navigate(fallback, { viewTransition: true }));
   return (
     <button
       type="button"

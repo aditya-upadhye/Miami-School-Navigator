@@ -55,7 +55,7 @@ export default function Account() {
       } else {
         await signIn({ email: String(f.get('email')).trim(), password: String(f.get('password')) });
       }
-      navigate(to, { replace: true }); // replace: Back from the next page should not return to the sign-in form
+      navigate(to, { replace: true, viewTransition: true }); // replace: Back from the next page should not return to the sign-in form
     } catch (err) {
       setError(`${err.message} ${err.suggestedAction ?? ''}`.trim());
     } finally {
@@ -86,7 +86,7 @@ export default function Account() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <LanguageSwitcher />
           <MenuButton />
-          <Link to="/explore" style={{ fontWeight: 700 }}>
+          <Link viewTransition to="/explore" style={{ fontWeight: 700 }}>
             {t('account.continueGuest')}
           </Link>
         </div>
@@ -111,7 +111,7 @@ export default function Account() {
               <h1 id="account-title" style={{ margin: 0, fontFamily: "'Outfit', sans-serif", fontSize: 28 }}>
                 {t('account.already', { name: user.name })}
               </h1>
-              <Link
+              <Link viewTransition
                 to={to}
                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 52, borderRadius: 14, background: 'var(--accent-grad)', color: 'var(--on-accent)', fontWeight: 700, textDecoration: 'none' }}
               >

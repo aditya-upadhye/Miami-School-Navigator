@@ -71,7 +71,7 @@ export default function ResultsList({ results, resultsTitle, sortLabel, loading,
               </span>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              <Link to={`/school/${r.id}`} style={{ ...small, background: 'var(--accent-grad)', color: 'var(--on-accent)' }}>
+              <Link viewTransition to={`/school/${r.id}`} style={{ ...small, background: 'var(--accent-grad)', color: 'var(--on-accent)' }}>
                 {t('explore.card.details')}
               </Link>
               <button

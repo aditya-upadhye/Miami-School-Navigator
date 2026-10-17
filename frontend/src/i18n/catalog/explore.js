@@ -1,6 +1,11 @@
 // explore catalog: keys are prefixed 'explore.' (or 'shared.' for the shared file). English is authoritative; es/ht are AI-written and unreviewed.
 export const explore = {
   en: {
+    'explore.navi.move': 'Move the Jarvis window (drag the title bar, or use the arrow keys)',
+    'explore.found.shown': 'Showing {name} on the map.',
+    'explore.found.atSchool': 'No address is set yet, so the map starts at {name}.',
+    'explore.found.others': 'Other matches:',
+    'explore.found.dismiss': 'Close',
     'explore.and': ' & ',
     'explore.title.top': 'Your top matches',
     'explore.title.all': 'Schools near you',
@@ -168,6 +173,11 @@ export const explore = {
     'explore.navi.close': 'Close Jarvis',
   },
   es: {
+    'explore.navi.move': 'Mover la ventana de Jarvis (arrastre la barra de título o use las flechas)',
+    'explore.found.shown': 'Mostrando {name} en el mapa.',
+    'explore.found.atSchool': 'Aún no hay dirección, así que el mapa comienza en {name}.',
+    'explore.found.others': 'Otras coincidencias:',
+    'explore.found.dismiss': 'Cerrar',
     'explore.and': ' y ',
     'explore.title.top': 'Sus mejores coincidencias',
     'explore.title.all': 'Escuelas cerca de usted',
@@ -340,6 +350,11 @@ export const explore = {
     'explore.navi.close': 'Cerrar Jarvis',
   },
   ht: {
+    'explore.navi.move': 'Deplase fenèt Jarvis la (rale ba tit la, oswa sèvi ak flèch yo)',
+    'explore.found.shown': 'Nap montre {name} sou kat la.',
+    'explore.found.atSchool': 'Poko gen adrès, kidonk kat la kòmanse nan {name}.',
+    'explore.found.others': 'Lòt rezilta:',
+    'explore.found.dismiss': 'Fèmen',
     'explore.and': ' ak ',
     'explore.title.top': 'Pi bon matche ou yo',
     'explore.title.all': 'Lekòl ki tou pre ou',

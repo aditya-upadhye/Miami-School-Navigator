@@ -426,6 +426,97 @@
         }
       }
     },
+    "/api/schools/lookup": {
+      "get": {
+        "tags": [
+          "schools"
+        ],
+        "summary": "School Lookup",
+        "description": "Find schools by name across the whole county, best match first. Used by the map's search box to jump to a school.",
+        "operationId": "school_lookup_api_schools_lookup_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "description": "Words from the school's name.",
+              "title": "Q"
+            },
+            "description": "Words from the school's name."
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat"
+            }
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 20,
+              "minimum": 1,
+              "default": 8,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookupResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/schools/{school_id}": {
       "get": {
         "tags": [
@@ -487,6 +578,49 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SchoolDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schools/{school_id}/outcomes": {
+      "get": {
+        "tags": [
+          "schools"
+        ],
+        "summary": "School Outcomes",
+        "description": "What graduates of this school go on to do: college and employment trend, course participation, notable alumni. Empty lists where a source has nothing.",
+        "operationId": "school_outcomes_api_schools__school_id__outcomes_get",
+        "parameters": [
+          {
+            "name": "school_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "School Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutcomesResponse"
                 }
               }
             }
@@ -880,10 +1014,251 @@
           }
         }
       }
+    },
+    "/api/schools/{school_id}/alumni-survey": {
+      "get": {
+        "tags": [
+          "alumni survey"
+        ],
+        "summary": "Get Survey",
+        "description": "The split of alumni answers for a school (once enough people answered), and the caller's own answer if signed in.",
+        "operationId": "get_survey_api_schools__school_id__alumni_survey_get",
+        "parameters": [
+          {
+            "name": "school_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "School Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "alumni survey"
+        ],
+        "summary": "Put Survey",
+        "description": "Add or change your own answer for a school. Signed-in only; one answer per person per school.",
+        "operationId": "put_survey_api_schools__school_id__alumni_survey_put",
+        "parameters": [
+          {
+            "name": "school_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "School Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SurveyAnswer"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "alumni survey"
+        ],
+        "summary": "Delete Survey",
+        "description": "Remove your own answer.",
+        "operationId": "delete_survey_api_schools__school_id__alumni_survey_delete",
+        "parameters": [
+          {
+            "name": "school_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "School Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AlumniGroup": {
+        "properties": {
+          "group": {
+            "type": "string",
+            "title": "Group"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "group",
+          "count"
+        ],
+        "title": "AlumniGroup"
+      },
+      "AlumniPerson": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "group": {
+            "type": "string",
+            "title": "Group"
+          },
+          "birth_decade": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Birth Decade"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "group"
+        ],
+        "title": "AlumniPerson"
+      },
       "ApplyStep": {
         "properties": {
           "text": {
@@ -1034,6 +1409,12 @@
           "profile": {
             "$ref": "#/components/schemas/ChatProfile"
           },
+          "map_available": {
+            "type": "boolean",
+            "title": "Map Available",
+            "description": "True when the chat is shown next to the map, so Jarvis may change the map filters (reply `map_update`).",
+            "default": false
+          },
           "lang": {
             "anyOf": [
               {
@@ -1113,6 +1494,19 @@
             "type": "array",
             "title": "Warnings",
             "default": []
+          },
+          "map_update": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Map Update",
+            "description": "Filters the family asked Jarvis to put on the map (radius_mi, kinds, free_only, grade_min, programs, only_programs, ese, values, view, reset). Set only when they asked for a change."
           }
         },
         "type": "object",
@@ -1362,6 +1756,100 @@
         ],
         "title": "Citation"
       },
+      "CollegeYear": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "title": "Year",
+            "description": "Graduating class (the year it graduated)."
+          },
+          "graduates": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Graduates"
+          },
+          "with_outcome_data": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "With Outcome Data",
+            "description": "Graduates the state could find an outcome for; the percentages below are shares of this."
+          },
+          "enrolled_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enrolled Pct",
+            "description": "Enrolled in any college or postsecondary program."
+          },
+          "florida_college_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Florida College Pct"
+          },
+          "state_university_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State University Pct"
+          },
+          "private_college_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Private College Pct"
+          },
+          "employed_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employed Pct",
+            "description": "Employed in Florida (can overlap with enrolled)."
+          }
+        },
+        "type": "object",
+        "required": [
+          "year"
+        ],
+        "title": "CollegeYear"
+      },
       "CompareRequest": {
         "properties": {
           "ids": {
@@ -1394,6 +1882,28 @@
               }
             ],
             "title": "Lon"
+          },
+          "radius_mi": {
+            "type": "number",
+            "maximum": 25.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Radius Mi",
+            "description": "Travel distance used for the distance part of the match score.",
+            "default": 3.0
+          },
+          "priorities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Priorities"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Values"
           }
         },
         "type": "object",
@@ -1418,6 +1928,14 @@
             },
             "type": "array",
             "title": "Rows"
+          },
+          "scores": {
+            "items": {
+              "$ref": "#/components/schemas/CompareScore"
+            },
+            "type": "array",
+            "title": "Scores",
+            "description": "Match score and per-factor points for each school, same order as `schools`. Empty without a location."
           },
           "notes": {
             "items": {
@@ -1483,6 +2001,32 @@
           "cells"
         ],
         "title": "CompareRow"
+      },
+      "CompareScore": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "match_score": {
+            "type": "integer",
+            "title": "Match Score"
+          },
+          "breakdown": {
+            "items": {
+              "$ref": "#/components/schemas/ScoreFactor"
+            },
+            "type": "array",
+            "title": "Breakdown"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "match_score",
+          "breakdown"
+        ],
+        "title": "CompareScore"
       },
       "DatesResponse": {
         "properties": {
@@ -1863,6 +2407,101 @@
         ],
         "title": "LoginRequest"
       },
+      "LookupHit": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "public",
+              "charter",
+              "private",
+              "early_learning"
+            ],
+            "title": "Kind"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "lat": {
+            "type": "number",
+            "title": "Lat"
+          },
+          "lon": {
+            "type": "number",
+            "title": "Lon"
+          },
+          "distance_mi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Mi",
+            "description": "Straight-line miles from the lat/lon given, when one was."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "lat",
+          "lon"
+        ],
+        "title": "LookupHit"
+      },
+      "LookupResponse": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/LookupHit"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total",
+            "description": "How many schools match; `results` holds the best few."
+          }
+        },
+        "type": "object",
+        "required": [
+          "results",
+          "total"
+        ],
+        "title": "LookupResponse"
+      },
       "Nearby": {
         "properties": {
           "kind": {
@@ -1901,6 +2540,126 @@
         ],
         "title": "Nearby"
       },
+      "OutcomeSource": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "enum": [
+              "fldoe",
+              "crdc",
+              "wikidata"
+            ],
+            "title": "Key"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "years": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Years"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "name",
+          "url",
+          "note"
+        ],
+        "title": "OutcomeSource"
+      },
+      "OutcomesResponse": {
+        "properties": {
+          "place_id": {
+            "type": "string",
+            "title": "Place Id"
+          },
+          "applies": {
+            "type": "boolean",
+            "title": "Applies",
+            "description": "False for child care and other places with no K-12 grades, where this section does not make sense.",
+            "default": true
+          },
+          "empty_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Empty Reason",
+            "description": "Why a K-12 school has no outcome data, in the request language. Set only when every list is empty."
+          },
+          "college": {
+            "items": {
+              "$ref": "#/components/schemas/CollegeYear"
+            },
+            "type": "array",
+            "title": "College",
+            "default": []
+          },
+          "readiness": {
+            "items": {
+              "$ref": "#/components/schemas/ReadinessYear"
+            },
+            "type": "array",
+            "title": "Readiness",
+            "default": []
+          },
+          "alumni_total": {
+            "type": "integer",
+            "title": "Alumni Total",
+            "default": 0
+          },
+          "alumni_groups": {
+            "items": {
+              "$ref": "#/components/schemas/AlumniGroup"
+            },
+            "type": "array",
+            "title": "Alumni Groups",
+            "default": []
+          },
+          "alumni": {
+            "items": {
+              "$ref": "#/components/schemas/AlumniPerson"
+            },
+            "type": "array",
+            "title": "Alumni",
+            "description": "Up to 12 notable alumni. Notable people only: not a representative sample."
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/OutcomeSource"
+            },
+            "type": "array",
+            "title": "Sources",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "place_id"
+        ],
+        "title": "OutcomesResponse"
+      },
       "PathwayOption": {
         "properties": {
           "place_id": {
@@ -1931,6 +2690,34 @@
           },
           "label": {
             "$ref": "#/components/schemas/Field"
+          },
+          "match_score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Match Score",
+            "description": "0-100 match score, the same one /schools uses. Options are ordered by it."
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons",
+            "description": "Why this school scored well, from the score's own factors."
+          },
+          "score_breakdown": {
+            "items": {
+              "$ref": "#/components/schemas/ScoreFactor"
+            },
+            "type": "array",
+            "title": "Score Breakdown",
+            "description": "Points earned and possible for each factor behind match_score."
           }
         },
         "type": "object",
@@ -1963,6 +2750,30 @@
             "type": "boolean",
             "title": "Free Only",
             "default": false
+          },
+          "radius_mi": {
+            "type": "number",
+            "maximum": 25.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Radius Mi",
+            "description": "How far the family will travel; only schools within it are suggested.",
+            "default": 3.0
+          },
+          "priorities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Priorities",
+            "description": "Programs the family wants (STEM, Arts, ...); same meaning as on /schools."
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Values",
+            "description": "What matters most (academics, programs, popularity, proximity); same meaning as on /schools."
           }
         },
         "type": "object",
@@ -2342,6 +3153,74 @@
           "source"
         ],
         "title": "Provenance"
+      },
+      "ReadinessMetric": {
+        "properties": {
+          "metric": {
+            "type": "string",
+            "enum": [
+              "algebra1",
+              "ap_enrolled",
+              "dual_enrolled",
+              "ib_enrolled",
+              "sat_act_takers",
+              "calculus_enrolled",
+              "physics_enrolled",
+              "chemistry_enrolled",
+              "computer_science"
+            ],
+            "title": "Metric"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pct",
+            "description": "Share of the school's whole enrollment."
+          }
+        },
+        "type": "object",
+        "required": [
+          "metric",
+          "count"
+        ],
+        "title": "ReadinessMetric"
+      },
+      "ReadinessYear": {
+        "properties": {
+          "year": {
+            "type": "string",
+            "title": "Year",
+            "description": "School year, e.g. 2023-24."
+          },
+          "enrollment": {
+            "type": "integer",
+            "title": "Enrollment"
+          },
+          "metrics": {
+            "items": {
+              "$ref": "#/components/schemas/ReadinessMetric"
+            },
+            "type": "array",
+            "title": "Metrics"
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "enrollment",
+          "metrics"
+        ],
+        "title": "ReadinessYear"
       },
       "SchoolDetail": {
         "properties": {
@@ -2793,6 +3672,141 @@
           "password"
         ],
         "title": "SignupRequest"
+      },
+      "SurveyAnswer": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "technology",
+              "healthcare",
+              "education",
+              "business_finance",
+              "engineering",
+              "arts_media",
+              "law_government",
+              "skilled_trades",
+              "military_safety",
+              "science_research",
+              "hospitality_retail",
+              "other",
+              "student_or_not_working"
+            ],
+            "title": "Field"
+          },
+          "grad_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2100.0,
+                "minimum": 1950.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grad Year",
+            "description": "The year they graduated or left. Optional."
+          }
+        },
+        "type": "object",
+        "required": [
+          "field"
+        ],
+        "title": "SurveyAnswer"
+      },
+      "SurveyResponse": {
+        "properties": {
+          "place_id": {
+            "type": "string",
+            "title": "Place Id"
+          },
+          "responses": {
+            "type": "integer",
+            "title": "Responses"
+          },
+          "min_responses": {
+            "type": "integer",
+            "title": "Min Responses",
+            "default": 10
+          },
+          "enough": {
+            "type": "boolean",
+            "title": "Enough",
+            "description": "False until `min_responses` people answered; the split is withheld until then."
+          },
+          "breakdown": {
+            "items": {
+              "$ref": "#/components/schemas/SurveyShare"
+            },
+            "type": "array",
+            "title": "Breakdown",
+            "description": "Share of answers per field, largest first. Empty until `enough`."
+          },
+          "mine": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SurveyAnswer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The signed-in person's own answer, if any."
+          },
+          "fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Fields",
+            "default": [
+              "technology",
+              "healthcare",
+              "education",
+              "business_finance",
+              "engineering",
+              "arts_media",
+              "law_government",
+              "skilled_trades",
+              "military_safety",
+              "science_research",
+              "hospitality_retail",
+              "other",
+              "student_or_not_working"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "place_id",
+          "responses",
+          "enough"
+        ],
+        "title": "SurveyResponse"
+      },
+      "SurveyShare": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "pct": {
+            "type": "number",
+            "title": "Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "count",
+          "pct"
+        ],
+        "title": "SurveyShare"
       },
       "User": {
         "properties": {

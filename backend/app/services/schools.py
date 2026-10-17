@@ -8,7 +8,7 @@ from datetime import date
 
 from ..domain import GRADE_ORDER, STAGES, bbox_for_radius, haversine_mi, norm_text
 from ..i18n import t as tr  # `t` is a common loop variable in this module
-from ..schemas import (ApplyStep, Field, Nearby, Provenance, ScoreFactor, SchoolDetail, SchoolSummary, SearchMeta,
+from ..schemas import (ApplyStep, LookupHit, LookupResponse, Field, Nearby, Provenance, ScoreFactor, SchoolDetail, SchoolSummary, SearchMeta,
                        SearchResponse, ZonesResult)
 from .context import Navigator
 from .errors import ApiError
@@ -446,6 +446,30 @@ def search(nav: Navigator, *, lat: float, lon: float, radius_mi: float = 3.0, ki
     return SearchResponse(results=results, meta=SearchMeta(origin={"lat": lat, "lon": lon}, total_matching=len(scored), returned=len(results),
                                                            filters_applied=applied, excluded=excluded, notes=notes, zones=zones,
                                                            data_available=data_available(nav)))
+
+
+# ---------------------------------------------------------------- lookup by name
+KIND_ORDER = {"public": 0, "charter": 1, "private": 2, "early_learning": 3}
+
+
+def lookup(nav: Navigator, q: str, lat: float | None = None, lon: float | None = None, limit: int = 8) -> LookupResponse:
+    """Find schools by name anywhere in the county (no radius, no filters), to jump the map to one. Every word typed must appear in the
+    name. Best first: names that start with the query, then public/charter before private and child care, then nearest."""
+    tokens = norm_text(q).split()
+    if not tokens:
+        raise ApiError(422, "bad_query")
+    norm_q = " ".join(tokens)
+    hits = []
+    for r in nav.conn.execute("SELECT * FROM places"):
+        p = row_to_place(r)
+        name = norm_text(p["name"])
+        if all(tk in name for tk in tokens):
+            d = haversine_mi(lat, lon, p["lat"], p["lon"]) if lat is not None and lon is not None else None
+            hits.append((not name.startswith(norm_q), KIND_ORDER.get(p["kind"], 9), d if d is not None else 0, len(name), p, d))
+    hits.sort(key=lambda h: h[:4])
+    return LookupResponse(total=len(hits), results=[
+        LookupHit(id=p["id"], name=p["name"], kind=p["kind"], address=p.get("address"), city=p.get("city"), lat=p["lat"], lon=p["lon"],
+                  distance_mi=round(d, 2) if d is not None else None) for *_, p, d in hits[:max(1, min(limit, 20))]])
 
 
 # ---------------------------------------------------------------- detail

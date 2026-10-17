@@ -164,6 +164,9 @@ class CompareRequest(BaseModel):
     ids: list[str] = PField(min_length=1, max_length=3)
     lat: float | None = None
     lon: float | None = None
+    radius_mi: float = PField(3.0, gt=0, le=25, description="Travel distance used for the distance part of the match score.")
+    priorities: list[str] = PField(default_factory=list)
+    values: list[str] = PField(default_factory=list)
 
 
 class CompareRow(BaseModel):
@@ -174,9 +177,16 @@ class CompareRow(BaseModel):
     best_rule: str | None = None
 
 
+class CompareScore(BaseModel):
+    id: str
+    match_score: int
+    breakdown: list["ScoreFactor"]
+
+
 class CompareResponse(BaseModel):
     schools: list[dict[str, Any]]
     rows: list[CompareRow]
+    scores: list[CompareScore] = PField(default_factory=list, description="Match score and per-factor points for each school, same order as `schools`. Empty without a location.")
     notes: list[str] = []
 
 
@@ -190,6 +200,9 @@ class PathwayRequest(BaseModel):
     lon: float
     children: list[Child] = PField(min_length=1, max_length=6)
     free_only: bool = False
+    radius_mi: float = PField(3.0, gt=0, le=25, description="How far the family will travel; only schools within it are suggested.")
+    priorities: list[str] = PField(default_factory=list, description="Programs the family wants (STEM, Arts, ...); same meaning as on /schools.")
+    values: list[str] = PField(default_factory=list, description="What matters most (academics, programs, popularity, proximity); same meaning as on /schools.")
 
 
 class PathwayOption(BaseModel):
@@ -197,6 +210,9 @@ class PathwayOption(BaseModel):
     name: str
     kind: str | None = None
     label: Field
+    match_score: int | None = PField(None, description="0-100 match score, the same one /schools uses. Options are ordered by it.")
+    reasons: list[str] = PField(default_factory=list, description="Why this school scored well, from the score's own factors.")
+    score_breakdown: list["ScoreFactor"] = PField(default_factory=list, description="Points earned and possible for each factor behind match_score.")
 
 
 class KeyDate(BaseModel):
@@ -260,6 +276,7 @@ class ChatProfile(BaseModel):
 class ChatRequest(BaseModel):
     messages: list[ChatMessage] = PField(min_length=1)
     profile: ChatProfile = PField(default_factory=ChatProfile)
+    map_available: bool = PField(False, description="True when the chat is shown next to the map, so Jarvis may change the map filters (reply `map_update`).")
     lang: Literal["en", "es", "ht"] | None = PField(None, description="Language of the answer. Omit to use the X-Lang header (English when absent). Translations are AI-written and not yet reviewed by a native speaker.")
 
 
@@ -280,6 +297,7 @@ class ChatResponse(BaseModel):
     usage: dict[str, int] = PField(default_factory=dict, description="Model calls and tokens used by this turn (for quota monitoring).")
     degraded: bool = PField(False, description="True when the AI model was unavailable and only structured results are returned.")
     warnings: list[str] = []
+    map_update: dict[str, Any] | None = PField(None, description="Filters the family asked Jarvis to put on the map (radius_mi, kinds, free_only, grade_min, programs, only_programs, ese, values, view, reset). Set only when they asked for a change.")
 
 
 # ---------------------------------------------------------------------------------------------------------------- choice planner
@@ -350,3 +368,75 @@ class PlanResponse(BaseModel):
     scholarship_guide: list[GuideEntry]
     scholarship_intro: Field | None = None
     notes: list[str] = []
+
+
+# ---------------------------------------------------------------- outcomes: what graduates go on to do
+class CollegeYear(BaseModel):
+    year: int = PField(description="Graduating class (the year it graduated).")
+    graduates: int | None = None
+    with_outcome_data: int | None = PField(None, description="Graduates the state could find an outcome for; the percentages below are shares of this.")
+    enrolled_pct: float | None = PField(None, description="Enrolled in any college or postsecondary program.")
+    florida_college_pct: float | None = None
+    state_university_pct: float | None = None
+    private_college_pct: float | None = None
+    employed_pct: float | None = PField(None, description="Employed in Florida (can overlap with enrolled).")
+
+
+class ReadinessMetric(BaseModel):
+    metric: Literal["algebra1", "ap_enrolled", "dual_enrolled", "ib_enrolled", "sat_act_takers", "calculus_enrolled", "physics_enrolled", "chemistry_enrolled", "computer_science"]
+    count: int
+    pct: float | None = PField(None, description="Share of the school's whole enrollment.")
+
+
+class ReadinessYear(BaseModel):
+    year: str = PField(description="School year, e.g. 2023-24.")
+    enrollment: int
+    metrics: list[ReadinessMetric]
+
+
+class OutcomeSource(BaseModel):
+    key: Literal["fldoe", "crdc", "wikidata"]
+    name: str
+    url: str
+    years: str | None = None
+    note: str
+
+
+class AlumniGroup(BaseModel):
+    group: str
+    count: int
+
+
+class AlumniPerson(BaseModel):
+    name: str
+    group: str
+    birth_decade: int | None = None
+    url: str | None = None
+
+
+class LookupHit(BaseModel):
+    id: str
+    name: str
+    kind: Kind
+    address: str | None = None
+    city: str | None = None
+    lat: float
+    lon: float
+    distance_mi: float | None = PField(None, description="Straight-line miles from the lat/lon given, when one was.")
+
+
+class LookupResponse(BaseModel):
+    results: list[LookupHit]
+    total: int = PField(description="How many schools match; `results` holds the best few.")
+
+
+class OutcomesResponse(BaseModel):
+    place_id: str
+    applies: bool = PField(True, description="False for child care and other places with no K-12 grades, where this section does not make sense.")
+    empty_reason: str | None = PField(None, description="Why a K-12 school has no outcome data, in the request language. Set only when every list is empty.")
+    college: list[CollegeYear] = []
+    readiness: list[ReadinessYear] = []
+    alumni_total: int = 0
+    alumni_groups: list[AlumniGroup] = []
+    alumni: list[AlumniPerson] = PField(default_factory=list, description="Up to 12 notable alumni. Notable people only: not a representative sample.")
+    sources: list[OutcomeSource] = []

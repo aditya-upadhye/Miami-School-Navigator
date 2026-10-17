@@ -101,7 +101,7 @@ function Message({ m }) {
         <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
           {m.results.slice(0, 6).map((r) => (
             <li key={r.id}>
-              <Link
+              <Link viewTransition
                 to={`/school/${r.id}`}
                 style={{
                   display: 'inline-block',
@@ -134,8 +134,8 @@ function Message({ m }) {
 }
 
 /** Message list + input for Navi (POST /api/chat). Used by the floating panel on Explore and by the Onboarding chat. */
-export default function NaviConversation({ height = 360, autoFocus = false, blankProfile = false }) {
-  const { messages, send, loading, error } = useChat({ blankProfile });
+export default function NaviConversation({ height = 360, autoFocus = false, mapEnabled = false }) {
+  const { messages, send, loading, error, reset } = useChat({ mapEnabled });
   const { t } = useI18n();
   const [draft, setDraft] = useState('');
   const end = useRef(null);

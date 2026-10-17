@@ -28,7 +28,7 @@ export default function AuthPage({ mode }) {
 
   const onSuccess = () => {
     // A new account that is still on the demo family goes on to tell us about their family.
-    navigate(signup && profile.isDemo && !next ? '/onboarding' : (next ?? '/explore'), { replace: true });
+    navigate(signup && profile.isDemo && !next ? '/onboarding' : (next ?? '/explore'), { replace: true, viewTransition: true });
   };
 
   return (
@@ -86,12 +86,12 @@ export default function AuthPage({ mode }) {
           />
           <p style={{ margin: 0, fontSize: 15, color: 'var(--ink2)' }}>
             {t(signup ? 'auth.haveAccount' : 'auth.noAccount')}{' '}
-            <Link to={other} style={{ fontWeight: 700 }}>
+            <Link viewTransition to={other} style={{ fontWeight: 700 }}>
               {t(signup ? 'auth.goLogin' : 'auth.goSignup')}
             </Link>
           </p>
           <p style={{ margin: 0, fontSize: 15 }}>
-            <Link to="/onboarding" style={{ fontWeight: 700 }}>
+            <Link viewTransition to="/onboarding" style={{ fontWeight: 700 }}>
               {t('auth.guest')}
             </Link>
           </p>

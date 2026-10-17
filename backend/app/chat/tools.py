@@ -1,4 +1,4 @@
-"""The seven tools the chat agent may call. They wrap the same service functions as the REST API, and return compact,
+"""The tools the chat agent may call. They wrap the same service functions as the REST API, and return compact,
 citation-tagged JSON so the model can cite every claim."""
 from __future__ import annotations
 
@@ -55,10 +55,26 @@ TOOLS: list[dict] = [
                      "Call this first for any question about deadlines, eligibility or how to apply; never answer those from memory."),
      "input_schema": {"type": "object", "properties": {}}},
     {"name": "get_pathway",
-     "description": "Preschool-to-high-school pathway for each child at an address: zoned elementary, estimated middle/high feeders, key dates.",
+     "description": "Preschool-to-high-school pathway for each child at an address: for every stage the best-scoring schools within the travel distance (same match score as search_schools), plus key dates.",
      "input_schema": {"type": "object", "properties": {**LOC, "children": {"type": "array", "items": {"type": "object", "properties": {
-         "age": {"type": "integer"}, "name": {"type": "string"}}, "required": ["age"]}}, "free_only": {"type": "boolean"}},
+         "age": {"type": "integer"}, "name": {"type": "string"}}, "required": ["age"]}}, "free_only": {"type": "boolean"}, "radius_mi": {"type": "number"}},
          "required": ["lat", "lon", "children"]}},
+    {"name": "update_map_filters",
+     "description": ("Change the filters on the family's map (the Explore page next to this chat). Call it ONLY when the family clearly tells you to apply, set, show, "
+                     "filter, change, update or reset something on the map, or says yes to your offer to apply filters. For a question or when they are just exploring, "
+                     "do NOT call it: answer, then offer to apply. Pass only the filters the family asked for; anything you leave out stays as it is."),
+     "input_schema": {"type": "object", "properties": {
+         "reset": {"type": "boolean", "description": "Clear every filter first, then apply the others"},
+         "radius_mi": {"type": "number", "description": "Travel distance in miles, 1 to 25"},
+         "kinds": {"type": "array", "items": {"type": "string", "enum": ["public", "charter", "private", "early_learning"]}, "description": "Which kinds of school to show"},
+         "free_only": {"type": "boolean"},
+         "grade_min": {"type": "string", "enum": ["A", "B", "C", "D", "F"], "description": "State grade floor. A or B turns on the 'B or better' filter; C or lower turns it off"},
+         "programs": {"type": "array", "items": {"type": "string", "enum": ["STEM", "Arts", "Bilingual", "IB", "Montessori"]}},
+         "only_programs": {"type": "boolean", "description": "True to show only schools with those programs; false to just rank them higher"},
+         "ese": {"type": "boolean", "description": "Schools with exceptional student education (special needs) support"},
+         "values": {"type": "array", "items": {"type": "string", "enum": ["academics", "programs", "popularity", "proximity"]}, "description": "What matters most"},
+         "view": {"type": "string", "enum": ["top", "all"], "description": "top = the 5 best matches, all = everything nearby by distance"}},
+         "required": []}},
 ]
 
 TOOL_NAMES = {t["name"] for t in TOOLS}
@@ -79,6 +95,7 @@ class ToolBox:
         self.results: list[SchoolSummary] = []
         self.filters_applied: dict[str, Any] = {}
         self.calls: list[dict] = []
+        self.map_update: dict[str, Any] | None = None  # filters the family asked to put on the map (the UI applies them)
 
     # ---- compact views ----
     def _school(self, s: SchoolSummary) -> dict:
@@ -180,6 +197,33 @@ class ToolBox:
                 "filters_applied": resp.meta.filters_applied, "excluded_by_filter": resp.meta.excluded, "notes": resp.meta.notes,
                 "zones": self._zones(resp.meta.zones) if resp.meta.zones else None}
 
+    def _t_update_map_filters(self, reset=None, radius_mi=None, kinds=None, free_only=None, grade_min=None, programs=None, only_programs=None,
+                              ese=None, values=None, view=None) -> dict:
+        upd: dict[str, Any] = {}
+        if reset:
+            upd["reset"] = True
+        if radius_mi is not None:
+            upd["radius_mi"] = min(25.0, max(1.0, float(radius_mi)))
+        if kinds is not None:
+            clean = [k for k in kinds if k in ("public", "charter", "private", "early_learning")]
+            if clean:  # an empty list would hide every school
+                upd["kinds"] = clean
+        for key, val in (("free_only", free_only), ("ese", ese), ("only_programs", only_programs)):
+            if val is not None:
+                upd[key] = bool(val)
+        if grade_min is not None and grade_min in ("A", "B", "C", "D", "F"):
+            upd["grade_min"] = grade_min
+        if programs is not None:
+            upd["programs"] = [p for p in programs if p in ("STEM", "Arts", "Bilingual", "IB", "Montessori")]
+        if values is not None:
+            upd["values"] = [v for v in values if v in schools_svc.VALUES]
+        if view in ("top", "all"):
+            upd["view"] = view
+        if not upd:
+            return {"error": "No valid filter was given. Pass at least one filter to apply."}
+        self.map_update = {**(self.map_update or {}), **upd}
+        return {"applied": upd, "note": "The map updates as soon as your answer is shown. Tell the family in one sentence what you changed."}
+
     def _t_get_school(self, school_id: str, lat=None, lon=None) -> dict:
         lat = lat if lat is not None else self.profile.lat
         lon = lon if lon is not None else self.profile.lon
@@ -212,15 +256,16 @@ class ToolBox:
         return {"dates": [{"label": k.label, "date": k.date, "approximate": k.approximate, "days_until": k.days_until,
                            "cite": self.book.field(k.field)["cite"], "verification": k.field.method} for k in d.dates], "rules": rules, "notes": d.notes}
 
-    def _t_get_pathway(self, lat=None, lon=None, children=None, free_only=None) -> dict:
+    def _t_get_pathway(self, lat=None, lon=None, children=None, free_only=None, radius_mi=None) -> dict:
         lat, lon = self._loc(lat, lon)
         kids = children or [c.model_dump() for c in self.profile.children]
-        req = PathwayRequest(lat=lat, lon=lon, children=[Child(**c) for c in kids], free_only=bool(free_only if free_only is not None else self.profile.free_only))
+        req = PathwayRequest(lat=lat, lon=lon, children=[Child(**c) for c in kids], free_only=bool(free_only if free_only is not None else self.profile.free_only),
+                             radius_mi=float(radius_mi or 3.0), priorities=list(self.profile.priorities), values=list(self.profile.values))
         p = pathway_svc.pathway(self.nav, req)
         return {"zones": self._zones(p.zones), "notes": p.notes, "children": [
             {"age": c.age, "name": c.name, "grade": c.grade_label, "stages": [
                 {"stage": s.stage, "status": s.status, "estimate_note": s.estimate_note,
-                 "options": [{"name": o.name, "place_id": o.place_id, "info": self.book.field(o.label)} for o in s.options],
+                 "options": [{"name": o.name, "place_id": o.place_id, "match_score": o.match_score, "reasons": o.reasons, "info": self.book.field(o.label)} for o in s.options],
                  "key_dates": [{"label": k.label, "date": k.date, "days_until": k.days_until, "cite": self.book.field(k.field)["cite"]} for k in s.key_dates]}
                 for s in c.stages if s.status != "past"]} for c in p.children]}
 

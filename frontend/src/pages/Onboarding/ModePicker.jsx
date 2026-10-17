@@ -122,7 +122,7 @@ export default function ModePicker({
           </span>
         </span>
       </button>
-      <Link
+      <Link viewTransition
         to="/explore"
         style={{
           flex: '1 1 300px',

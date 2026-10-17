@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Query, Request
 
-from .schemas import (ChatRequest, ChatResponse, CompareRequest, CompareResponse, DatesResponse, GeocodeResult, PathwayRequest,
+from .schemas import (ChatRequest, ChatResponse, CompareRequest, CompareResponse, DatesResponse, GeocodeResult, LookupResponse, OutcomesResponse, PathwayRequest,
                       PathwayResponse, PlanRequest, PlanResponse, SchoolDetail, SearchResponse, ZoneShapes, ZonesResult)
 from .services import compare as compare_svc
 from .services import dates as dates_svc
 from .services import geocode as geocode_svc
 from .services import meta as meta_svc
+from .services import outcomes as outcomes_svc
 from .services import pathway as pathway_svc
 from .services import plan as plan_svc
 from .services import schools as schools_svc
@@ -75,15 +76,28 @@ def schools(
                               scholarship=scholarship, sort=sort, limit=limit, priorities=_csv(priorities) or None, q=q, values=_csv(values) or None)
 
 
+@router.get("/schools/lookup", response_model=LookupResponse, tags=["schools"])
+def school_lookup(q: str = Query(..., min_length=1, max_length=100, description="Words from the school's name."),
+                  lat: float | None = None, lon: float | None = None, limit: int = Query(8, ge=1, le=20), nav: Navigator = Depends(get_nav)):
+    """Find schools by name across the whole county, best match first. Used by the map's search box to jump to a school."""
+    return schools_svc.lookup(nav, q, lat, lon, limit)
+
+
 @router.get("/schools/{school_id}", response_model=SchoolDetail, tags=["schools"])
 def school_detail(school_id: str, lat: float | None = Query(None, ge=-90, le=90), lon: float | None = Query(None, ge=-180, le=180),
                   nav: Navigator = Depends(get_nav)):
     return schools_svc.detail(nav, school_id, lat, lon)
 
 
+@router.get("/schools/{school_id}/outcomes", response_model=OutcomesResponse, tags=["schools"])
+def school_outcomes(school_id: str, nav: Navigator = Depends(get_nav)):
+    """What graduates of this school go on to do: college and employment trend, course participation, notable alumni. Empty lists where a source has nothing."""
+    return outcomes_svc.outcomes(nav, school_id)
+
+
 @router.post("/compare", response_model=CompareResponse, tags=["schools"])
 def compare(body: CompareRequest, nav: Navigator = Depends(get_nav)):
-    return compare_svc.compare(nav, body.ids, body.lat, body.lon)
+    return compare_svc.compare(nav, body.ids, body.lat, body.lon, body.radius_mi, body.priorities, body.values)
 
 
 @router.post("/pathway", response_model=PathwayResponse, tags=["planning"])

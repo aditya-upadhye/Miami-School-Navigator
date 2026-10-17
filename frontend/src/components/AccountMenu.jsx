@@ -26,7 +26,7 @@ export default function AccountMenu() {
 
   if (!user) {
     return (
-      <Link
+      <Link viewTransition
         to={`/account?next=${encodeURIComponent(pathname + search)}`}
         aria-label={t('account.guestAria')}
         style={{

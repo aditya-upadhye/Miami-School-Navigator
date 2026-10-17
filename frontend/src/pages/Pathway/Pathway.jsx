@@ -27,7 +27,7 @@ export default function Pathway() {
         {!p.hasChildren && (
           <p style={{ color: 'var(--ink2)' }}>
             {t('pathway.addAges')}{' '}
-            <Link to="/onboarding" style={{ fontWeight: 700 }}>
+            <Link viewTransition to="/onboarding?mode=form" style={{ fontWeight: 700 }}>
               {t('pathway.tellUs')}
             </Link>
           </p>

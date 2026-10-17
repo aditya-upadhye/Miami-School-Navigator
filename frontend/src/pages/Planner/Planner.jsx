@@ -48,7 +48,7 @@ export default function Planner() {
         {children.length === 0 && (
           <p>
             {t('planner.addChildren')}{' '}
-            <Link to="/onboarding" style={{ fontWeight: 700 }}>
+            <Link viewTransition to="/onboarding?mode=form" style={{ fontWeight: 700 }}>
               {t('planner.tellUs')}
             </Link>
           </p>

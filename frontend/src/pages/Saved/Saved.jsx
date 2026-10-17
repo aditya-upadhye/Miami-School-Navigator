@@ -65,7 +65,7 @@ export default function Saved() {
         {saved.length === 0 && (
           <p style={{ margin: 0, color: 'var(--ink2)' }}>
             {t('saved.empty')}{' '}
-            <Link to="/explore" style={{ fontWeight: 700 }}>
+            <Link viewTransition to="/explore" style={{ fontWeight: 700 }}>
               {t('saved.browse')}
             </Link>
           </p>
@@ -99,7 +99,7 @@ export default function Saved() {
                   <span style={{ fontSize: 13.5, color: 'var(--ink2)' }}>{t('saved.loading')}</span>
                 )}
                 <div style={{ display: 'flex', gap: 8, marginTop: 'auto' }}>
-                  <Link
+                  <Link viewTransition
                     to={`/school/${s.id}`}
                     style={{
                       flex: 1,

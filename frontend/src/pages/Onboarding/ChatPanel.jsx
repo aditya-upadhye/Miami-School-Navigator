@@ -34,11 +34,11 @@ export default function ChatPanel() {
           <span style={{ fontWeight: 700 }}>Jarvis</span>
           <span style={{ fontSize: 13, color: 'var(--ink2)' }}>{t('onboarding.chat.intro')}</span>
         </span>
-        <Link to="/explore" style={{ fontWeight: 700 }}>
+        <Link viewTransition to="/explore" style={{ fontWeight: 700 }}>
           {t('onboarding.chat.map')}
         </Link>
       </div>
-      <JarvisConversation height={380} blankProfile />
+      <JarvisConversation height={380} />
     </section>
   );
 }

@@ -11,8 +11,16 @@ a {
 a:hover {
   color: var(--ink);
 }
-input::placeholder {
-  color: #8a7566;
+input,
+textarea,
+select {
+  background: var(--surface);
+  color: var(--ink);
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink3);
+  opacity: 1;
 }
 input:focus-visible,
 select:focus-visible,
@@ -111,6 +119,13 @@ button:focus-visible {
   --cta-ink: #1b1830; /* welcome page: one flat colour, nothing behind the text */
   --surface: #ffffff;
   --surface-line: #dcd6ee;
+  --danger: #c0263a;
+  --f1: #2a78d6;
+  --f2: #eb6834;
+  --f3: #1baf7a;
+  --f4: #eda100;
+  --f5: #e87ba4;
+  --f6: #008300;
   --teal: #5a6fd6;
   --teal-ink: #3f4fb3;
   --teal-tint: #e0e5fb;
@@ -204,6 +219,13 @@ button:focus-visible {
   --cta-ink: #1b1830;
   --surface: #1f1b3d;
   --surface-line: #3a3466;
+  --danger: #ff8a96;
+  --f1: #3987e5;
+  --f2: #d95926;
+  --f3: #199e70;
+  --f4: #c98500;
+  --f5: #d55181;
+  --f6: #008300;
   --teal: #5a6fd6;
   --teal-ink: #aab6ff;
   --teal-tint: rgba(120, 140, 240, 0.2);
@@ -251,9 +273,18 @@ button:focus-visible {
     opacity: 1;
   }
 }
-.theme-root section,
-.theme-root main > * {
-  animation: snfade 0.55s ease both;
+/* Pages cross-fade into each other through the browser's View Transitions (links and navigate() ask for one). Browsers without it get the
+   older per-section fade-in instead. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+@supports not (view-transition-name: none) {
+  .theme-root section,
+  .theme-root main > * {
+    animation: snfade 0.55s ease both;
+  }
 }
 .theme-root article,
 .theme-root li {
@@ -265,6 +296,11 @@ button:focus-visible {
   transform: translateY(-3px);
 }
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
   .theme-root * {
     animation: none !important;
     transition: none !important;

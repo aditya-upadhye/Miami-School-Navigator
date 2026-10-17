@@ -29,6 +29,9 @@ export const account = {
     'account.privacy': 'Passwords are stored only as salted hashes.',
     'account.landing.title': 'Sign in or create an account',
     'account.landing.body': 'Free for every family. Your name then shows in the top corner.',
+    'account.profile.saving': 'Saving your profile…',
+    'account.profile.saved': 'Your profile is saved to your account.',
+    'account.profile.error': 'Could not save your profile. We will try again.',
   },
   es: {
     'account.signIn': 'Iniciar sesión',
@@ -59,6 +62,9 @@ export const account = {
     'account.privacy': 'Las contraseñas se guardan solo como hashes con sal.',
     'account.landing.title': 'Iniciar sesión o crear una cuenta',
     'account.landing.body': 'Gratis para todas las familias. Su nombre aparecerá en la esquina superior.',
+    'account.profile.saving': 'Guardando su perfil…',
+    'account.profile.saved': 'Su perfil está guardado en su cuenta.',
+    'account.profile.error': 'No se pudo guardar su perfil. Lo intentaremos de nuevo.',
   },
   ht: {
     'account.signIn': 'Konekte',
@@ -89,5 +95,8 @@ export const account = {
     'account.privacy': 'Nou sere modpas yo sèlman kòm hash ak sèl.',
     'account.landing.title': 'Konekte oswa kreye yon kont',
     'account.landing.body': 'Gratis pou tout fanmi. Non ou ap parèt nan kwen anwo a.',
+    'account.profile.saving': 'Y ap sove pwofil ou…',
+    'account.profile.saved': 'Pwofil ou sove nan kont ou.',
+    'account.profile.error': 'Nou pa t kapab sove pwofil ou. N ap eseye ankò.',
   },
 };

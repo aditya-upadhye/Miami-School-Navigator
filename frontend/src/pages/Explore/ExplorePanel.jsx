@@ -65,8 +65,8 @@ function AddressPrompt({ onSubmit }) {
       </button>
       <span style={{ textAlign: 'center', fontSize: 13, color: 'var(--ink3)' }}>{t('explore.needAddress.or')}</span>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center' }}>
-        <Link to="/onboarding?mode=chat" style={{ fontWeight: 700, color: 'var(--accent-ink)' }}>{t('onboarding.mode.chat.title')}</Link>
-        <Link to="/onboarding?mode=form" style={{ fontWeight: 700, color: 'var(--accent-ink)' }}>{t('onboarding.mode.form.title')}</Link>
+        <Link viewTransition to="/onboarding?mode=chat" style={{ fontWeight: 700, color: 'var(--accent-ink)' }}>{t('onboarding.mode.chat.title')}</Link>
+        <Link viewTransition to="/onboarding?mode=form" style={{ fontWeight: 700, color: 'var(--accent-ink)' }}>{t('onboarding.mode.form.title')}</Link>
       </div>
     </form>
   );

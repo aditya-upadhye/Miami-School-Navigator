@@ -340,7 +340,7 @@ export default function MapStage({
             </div>
             <p style={{ margin: 0, fontSize: 14, color: 'var(--ink2)' }}>{pop.fits}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              <Link
+              <Link viewTransition
                 to={`/school/${pop.id}`}
                 style={{
                   flex: '1 1 auto',

@@ -60,22 +60,22 @@ export default function SignupCard() {
           <p role="status" style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>
             {t('auth.signedInAs', { who: user.name || user.email })}
           </p>
-          <Link to={profile.isDemo ? '/onboarding' : '/explore'} style={primaryButton}>
+          <Link viewTransition to={profile.isDemo ? '/onboarding' : '/explore'} style={primaryButton}>
             {t(profile.isDemo ? 'auth.continueOnboarding' : 'auth.goExplore')}
           </Link>
-          <Link to="/account" style={secondaryButton}>
+          <Link viewTransition to="/account" style={secondaryButton}>
             {t('auth.account')}
           </Link>
         </div>
       ) : (
         <>
-          <AuthForm mode="signup" onSuccess={() => navigate(profile.isDemo ? '/onboarding' : '/explore')} />
+          <AuthForm mode="signup" onSuccess={() => navigate(profile.isDemo ? '/onboarding' : '/explore', { viewTransition: true })} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 13, color: 'var(--ink3)' }}>
             <span style={{ flexGrow: 1, height: 1, background: 'var(--line)' }} />
             {t('landing.signup.or')}
             <span style={{ flexGrow: 1, height: 1, background: 'var(--line)' }} />
           </div>
-          <Link
+          <Link viewTransition
             to="/onboarding"
             style={{ ...secondaryButton, minHeight: 48, fontSize: 16, borderRadius: 14 }}
           >
@@ -83,7 +83,7 @@ export default function SignupCard() {
           </Link>
           <p style={{ margin: 0, fontSize: 14, color: 'var(--ink2)', textAlign: 'center' }}>
             {t('landing.signup.have')}{' '}
-            <Link to="/login" style={{ fontWeight: 700 }}>
+            <Link viewTransition to="/login" style={{ fontWeight: 700 }}>
               {t('landing.signIn')}
             </Link>
           </p>

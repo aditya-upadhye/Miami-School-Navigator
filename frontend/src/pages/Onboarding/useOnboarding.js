@@ -9,6 +9,9 @@ import { gradeLabelForAge } from '../../utils/stages';
 
 const MAX_KIDS = 6;
 
+/** Grades a child can enter next. The value is the age that grade corresponds to, which is what the backend and the stage rules use. */
+const GRADE_AGES = [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+
 /** State and derived view values for the "Tell us about your family" screen. Submitting saves the profile for every screen. */
 export function useOnboarding() {
   const { profile, setLocation, updateProfile } = useProfile();
@@ -20,9 +23,11 @@ export function useOnboarding() {
 
   const [s, setState] = useSetState(() => ({
     where: profile.address ?? '',
-    kids: (profile.children.length ? profile.children : [{ name: '', age: 5 }]).map((c) => ({
+    // No default age or grade: families pick them, since a child may have skipped a year or be rejoining school.
+    kids: (profile.children.length ? profile.children : [{ name: '' }]).map((c) => ({
       name: c.name ?? '',
-      age: c.age,
+      age: c.actualAge ?? '',
+      grade: c.age ?? '',
       support: !!c.support,
     })),
     radius: profile.radius ?? 3,
@@ -44,18 +49,27 @@ export function useOnboarding() {
       setError(t('onboarding.error.where'));
       return;
     }
+    if (s.kids.some((k) => k.grade === '')) {
+      setError(t('onboarding.error.grade'));
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
       await setLocation(s.where.trim());
       updateProfile({
-        children: s.kids.map((k) => ({ name: k.name.trim() || undefined, age: k.age, support: k.support })),
+        children: s.kids.map((k) => ({
+          name: k.name.trim() || undefined,
+          age: k.grade, // the age that matches the grade entering next: it decides the school stage
+          actualAge: k.age === '' ? undefined : k.age,
+          support: k.support,
+        })),
         freeOnly: s.budget === 'free',
         priorities: s.prio,
         values: s.values,
         radius: s.radius,
       });
-      navigate('/explore');
+      navigate('/explore', { viewTransition: true });
     } catch (e) {
       setError(`${e.message} ${e.suggestedAction ?? ''}`.trim());
     } finally {
@@ -77,7 +91,7 @@ export function useOnboarding() {
     kidCount: tp('onboarding.kids', n),
     addKid: () =>
       setState((st) =>
-        st.kids.length < MAX_KIDS ? { kids: [...st.kids, { name: '', age: 5, support: false }] } : {},
+        st.kids.length < MAX_KIDS ? { kids: [...st.kids, { name: '', age: '', grade: '', support: false }] } : {},
       ),
     removeKid: () => setState((st) => (st.kids.length > 1 ? { kids: st.kids.slice(0, -1) } : {})),
     kids: s.kids.map((k, i) => ({
@@ -87,14 +101,17 @@ export function useOnboarding() {
       supId: `kid-sup-${i}`,
       name: k.name,
       age: String(k.age),
+      gradeId: `kid-grade-${i}`,
+      grade: String(k.grade),
+      gradeOptions: GRADE_AGES.map((a) => ({ value: String(a), label: gradeLabelForAge(a, lang) })),
       support: k.support,
-      grade: gradeLabelForAge(k.age, lang),
       onName: (e) => updateKid(i, { name: e.target.value }),
-      onAge: (e) => updateKid(i, { age: Number(e.target.value) }),
+      onAge: (e) => updateKid(i, { age: e.target.value === '' ? '' : Number(e.target.value) }),
+      onGrade: (e) => updateKid(i, { grade: e.target.value === '' ? '' : Number(e.target.value) }),
       onSupport: (e) => updateKid(i, { support: e.target.checked }),
     })),
     kidsSummary: s.kids
-      .map((k, i) => `${k.name || t('child', { n: i + 1 })} (${gradeLabelForAge(k.age, lang)})`)
+      .map((k, i) => `${k.name || t('child', { n: i + 1 })} (${k.grade === '' ? t('onboarding.form.selectGrade') : gradeLabelForAge(k.grade, lang)})`)
       .join(', '),
 
     radius: s.radius,

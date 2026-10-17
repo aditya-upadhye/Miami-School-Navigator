@@ -1,3 +1,7 @@
 Backend-Spec.md
 ARCHIE_PROMPT.md
 /grok_research
+# large raw downloads for the outcome data; rebuild with backend/scripts/fetch_*.py
+backend/data/outcomes/fldoe/
+backend/data/outcomes/federal/
+backend/data/outcomes/notable_alumni_cache/

@@ -18,8 +18,8 @@ export function describe(o, t) {
   return kind ?? '';
 }
 
-/** Pathway from infant care to 12th grade for each child (POST /api/pathway). Elementary is the official zone; middle and high
- *  school are estimates from overlapping attendance zones, and are labelled as such. */
+/** Pathway from infant care to 12th grade for each child (POST /api/pathway). Every stage lists the best-scoring schools inside the
+ *  family's travel distance, ranked with the same match score as Explore. Nothing is estimated. */
 export function usePathway() {
   const { profile } = useProfile();
   const { t, tp, date } = useI18n();
@@ -32,6 +32,9 @@ export function usePathway() {
     lon: profile.lon,
     children: children.map((c) => ({ age: c.age, name: c.name || undefined })),
     free_only: !!profile.freeOnly,
+    radius_mi: profile.radius ?? 3,
+    priorities: profile.priorities ?? [],
+    values: profile.values ?? [],
   };
   const { data, error, loading } = useApi((signal) => api.pathway(body, { signal }), [JSON.stringify(body)], {
     enabled: children.length > 0 && profile.hasLocation,
@@ -82,10 +85,8 @@ export function usePathway() {
     headline:
       sel.status === 'past'
         ? t('pathway.headline.past')
-        : sel.estimate_note
-          ? t('pathway.headline.estimated')
-          : t('pathway.headline.near'),
-    note: sel.estimate_note,
+        : t('pathway.headline.best', { n: profile.radius ?? 3 }),
+    note: sel.status === 'past' ? '' : t('pathway.rankNote'),
     empty:
       sel.status === 'past'
         ? ''
@@ -94,17 +95,20 @@ export function usePathway() {
             ? t('pathway.empty.freeInfant')
             : t('pathway.empty.none')
           : '',
-    options: sel.options.map((o) => ({
+    options: sel.options.map((o, i) => ({
       name: o.name,
-      picked: o.label.status === 'official',
-      tag: t('pathway.zoned'),
-      meta: describe(o, t),
-      why: provenance(o.label),
+      picked: i === 0,
+      tag: t('pathway.best'),
+      meta: [describe(o, t), t('pathway.score', { n: o.match_score ?? 0 })].join(' · '),
+      why: o.reasons?.length ? o.reasons.join(' · ') : provenance(o.label),
       cta: t('pathway.details'),
       href: o.place_id ? `/school/${o.place_id}` : null,
-      border: o.label.status === 'official' ? 'var(--accent)' : 'var(--line)',
-      bg: o.label.status === 'official' ? 'var(--accent-tint)' : 'var(--glass2)',
+      border: i === 0 ? 'var(--accent)' : 'var(--line)',
+      bg: i === 0 ? 'var(--accent-tint)' : 'var(--glass2)',
     })),
+    chart: sel.options
+      .filter((o) => o.score_breakdown?.length)
+      .map((o) => ({ name: o.name, match_score: o.match_score, breakdown: o.score_breakdown })),
     dates: sel.key_dates.map((d) => ({
       label: d.label,
       line: t('pathway.dateLine', {

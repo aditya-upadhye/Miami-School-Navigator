@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { api } from '../api/client';
+import { resetChat } from '../hooks/chatStore';
 import { setCurrentLang } from '../i18n/current';
 
 // What we know about a family before they tell us anything: nothing. There is no sample family, address or children; every screen shows
@@ -108,6 +109,7 @@ export function ProfileProvider({ children }) {
     } catch {
       /* ignore */
     }
+    resetChat(); // the conversation may hold the address and children's details that were just forgotten
     setProfile((p) => ({ ...EMPTY_PROFILE, lang: p.lang }));
   }, [setRemember]);
   const setLang = useCallback((lang) => setProfile((p) => ({ ...p, lang })), []);

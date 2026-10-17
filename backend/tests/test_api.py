@@ -133,19 +133,22 @@ def test_compare_validation(client):
     assert client.post("/api/compare", json={"ids": ["pub-nope"]}).status_code == 404
 
 
-def test_pathway_labels_estimates(client):
-    j = client.post("/api/pathway", json={"lat": LAT, "lon": LON, "children": [{"age": 3, "name": "Leo"}, {"age": 7, "name": "Maya"}]}).json()
+def test_pathway_ranks_real_schools_within_radius(client):
+    j = client.post("/api/pathway", json={"lat": LAT, "lon": LON, "radius_mi": 3, "children": [{"age": 3, "name": "Leo"}, {"age": 7, "name": "Maya"}]}).json()
     assert_fields(j)
     leo, maya = j["children"]
     assert leo["current_stage"] == "pre_k" and maya["current_stage"] == "elementary" and maya["grade_label"] == "Grade 2"
-    mid = next(s for s in maya["stages"] if s["stage"] == "middle")
-    assert "overlapping attendance zones" in mid["estimate_note"] and mid["options"]
-    assert any(o["label"]["status"] == "derived" for o in mid["options"])
-    elem = next(s for s in maya["stages"] if s["stage"] == "elementary")
-    assert elem["options"][0]["name"].startswith("Paul Laurence Dunbar") and elem["options"][0]["label"]["status"] == "official"
+    for st in maya["stages"]:
+        assert st["estimate_note"] is None  # nothing is estimated any more
+        scores = [o["match_score"] for o in st["options"]]
+        assert scores == sorted(scores, reverse=True) and len(scores) <= 3
+        for o in st["options"]:
+            assert o["place_id"] and o["label"]["value"] <= 3
+    assert next(s for s in maya["stages"] if s["stage"] == "elementary")["options"]
     assert next(s for s in maya["stages"] if s["stage"] == "infant_toddler")["status"] == "past"
     free = client.post("/api/pathway", json={"lat": LAT, "lon": LON, "children": [{"age": 1}], "free_only": True}).json()
     assert next(s for s in free["children"][0]["stages"] if s["stage"] == "infant_toddler")["options"] == []
+    assert client.post("/api/pathway", json={"lat": LAT, "lon": LON, "radius_mi": 99, "children": [{"age": 1}]}).status_code == 422
 
 
 def test_dates_carry_verification(client):
@@ -238,3 +241,65 @@ def test_search_reports_which_optional_data_is_loaded(client, rclient, bare_nav,
     app.state.nav = rich_nav
     rich = client.get("/api/schools", params={"lat": LAT, "lon": LON, "limit": 1}).json()["meta"]["data_available"]
     assert rich["state_grades"] and rich["learning_gains"] and rich["scholarship_flags"] and rich["magnet_themes"]
+
+
+def test_compare_returns_score_breakdown_that_matches_search(client):
+    top = client.get("/api/schools", params={"lat": LAT, "lon": LON, "radius_mi": 3, "sort": "match", "limit": 2}).json()["results"]
+    ids = [r["id"] for r in top]
+    j = client.post("/api/compare", json={"ids": ids, "lat": LAT, "lon": LON, "radius_mi": 3}).json()
+    assert [s["id"] for s in j["scores"]] == ids
+    for r, sc in zip(top, j["scores"]):
+        assert sc["match_score"] == r["match_score"] and sc["breakdown"] and all(f["points"] <= f["max_points"] for f in sc["breakdown"])
+    assert client.post("/api/compare", json={"ids": ids}).json()["scores"] == []  # no location, no distance, no score
+
+
+def test_outcomes_shape_and_percentages(client):
+    from app.services import outcomes as svc
+    fl, fed, alumni = svc._data()
+    if not fl:
+        import pytest
+        pytest.skip("outcome files not built (run scripts/fetch_*.py)")
+    pid = next(p for p, years in fl.items() if len(years) >= 3)
+    j = client.get(f"/api/schools/{pid}/outcomes").json()
+    assert j["place_id"] == pid and j["college"] and j["sources"][0]["key"] == "fldoe"
+    years = [c["year"] for c in j["college"]]
+    assert years == sorted(years)
+    for c in j["college"]:
+        for k in ("enrolled_pct", "florida_college_pct", "state_university_pct", "private_college_pct", "employed_pct"):
+            assert c[k] is None or 0 <= c[k] <= 100
+    assert all(len(j["alumni"]) <= 12 for _ in [0])
+
+
+def test_outcomes_unknown_school_and_school_without_data(client):
+    assert client.get("/api/schools/pub-nope/outcomes").status_code == 404
+    kinder = client.get("/api/schools", params={"lat": LAT, "lon": LON, "radius_mi": 3, "kinds": "early_learning", "limit": 1}).json()["results"][0]["id"]
+    j = client.get(f"/api/schools/{kinder}/outcomes").json()
+    assert j["college"] == [] and j["readiness"] == [] and j["alumni"] == [] and j["sources"] == []
+
+
+def test_outcomes_cover_every_k12_kind_and_explain_gaps(client):
+    from app.services import outcomes as svc
+    fl, fed, _ = svc._data()
+    if not fl:
+        import pytest
+        pytest.skip("outcome files not built")
+    def first(kind, stage):
+        return client.get("/api/schools", params={"lat": LAT, "lon": LON, "radius_mi": 25, "kinds": kind, "stages": stage, "limit": 100}).json()["results"]
+    private = client.get(f"/api/schools/{first('private', 'elementary')[0]['id']}/outcomes").json()
+    assert private["applies"] and private["empty_reason"] and "Private" in private["empty_reason"]
+    elem = next(client.get(f"/api/schools/{r['id']}/outcomes").json() for r in first("public", "elementary") if not {"middle", "high"} & set(r["stages"]["value"]))
+    assert elem["applies"] and elem["college"] == [] and elem["readiness"] == [] and elem["empty_reason"]
+    mid = [client.get(f"/api/schools/{r['id']}/outcomes").json() for r in first("public", "middle") if "high" not in r["stages"]["value"]]
+    assert any(m["readiness"] and m["readiness"][-1]["metrics"][0]["metric"] == "algebra1" for m in mid)
+    ecl = client.get(f"/api/schools/{first('early_learning', 'pre_k')[0]['id']}/outcomes").json()
+    assert ecl["applies"] is False and ecl["empty_reason"] is None
+
+
+def test_school_lookup_by_name(client):
+    j = client.get("/api/schools/lookup", params={"q": "coral reef", "lat": LAT, "lon": LON}).json()
+    assert j["total"] >= 1 and all("coral" in r["name"].lower() and "reef" in r["name"].lower() for r in j["results"])
+    assert all(r["distance_mi"] is not None for r in j["results"])
+    first = j["results"][0]
+    assert client.get("/api/schools/lookup", params={"q": first["name"].upper()}).json()["results"][0]["id"] == first["id"]  # case-insensitive, exact name first
+    assert client.get("/api/schools/lookup", params={"q": "zzzz-no-such-school"}).json() == {"results": [], "total": 0}
+    assert client.get("/api/schools/lookup", params={"q": "  !!  "}).status_code == 422
