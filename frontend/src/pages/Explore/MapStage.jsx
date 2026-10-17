@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import LeafletMap from '../../components/LeafletMap';
+import Map3D from '../../components/Map3D';
 import { useI18n } from '../../i18n';
+import { HOME_VIEW } from '../../utils/mapScene';
 
 const glass = {
   background: 'var(--glass)',
@@ -22,6 +23,12 @@ const mapButton = {
   justifyContent: 'center',
   cursor: 'pointer',
 };
+
+// A toggle looks pressed with the brand gradient, so it is clear at a glance whether 3D / rotation is on.
+const toggleButton = (on) => ({
+  ...mapButton,
+  ...(on ? { background: 'var(--accent-grad)', color: 'var(--on-accent)', boxShadow: 'var(--accent-shadow)' } : null),
+});
 
 function Stat({ label, value }) {
   return (
@@ -53,6 +60,7 @@ export default function MapStage({
   const { t } = useI18n();
   const map = useRef(null);
   const [tilesFailed, setTilesFailed] = useState(false);
+  const [view, setView] = useState({ bearing: HOME_VIEW.bearing, tilted: true, orbiting: false });
   return (
     <section
       id="map"
@@ -73,7 +81,7 @@ export default function MapStage({
           isolation: 'isolate',
         }}
       >
-        <LeafletMap
+        <Map3D
           ref={map}
           home={home}
           radiusMi={radiusMi}
@@ -84,6 +92,7 @@ export default function MapStage({
           zoneLevels={zoneLevels}
           onPick={onPick}
           onTilesFailed={setTilesFailed}
+          onView={setView}
         />
 
         <span
@@ -172,6 +181,73 @@ export default function MapStage({
             >
               <circle cx="12" cy="12" r="4" />
               <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            aria-label={t('explore.map.north')}
+            onClick={() => map.current?.resetNorth()}
+            style={mapButton}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              style={{ transform: `rotate(${-view.bearing}deg)`, transition: 'transform 0.15s linear' }}
+            >
+              <circle cx="12" cy="12" r="9.5" />
+              <path d="M12 5.5 15 12h-6z" fill="#DC2626" stroke="#DC2626" />
+              <path d="M9 12h6l-3 6.5z" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            aria-label={view.tilted ? t('explore.map.flat') : t('explore.map.tilt')}
+            aria-pressed={view.tilted}
+            onClick={() => map.current?.toggleTilt()}
+            style={toggleButton(view.tilted)}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z" />
+              <path d="M4 7.5 12 12l8-4.5M12 12v9" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            aria-label={view.orbiting ? t('explore.map.stopOrbit') : t('explore.map.orbit')}
+            aria-pressed={view.orbiting}
+            onClick={() => map.current?.toggleOrbit()}
+            style={toggleButton(view.orbiting)}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 12a8 8 0 1 1-2.6-5.9" />
+              <path d="M20 4v4.5h-4.5" />
             </svg>
           </button>
         </div>

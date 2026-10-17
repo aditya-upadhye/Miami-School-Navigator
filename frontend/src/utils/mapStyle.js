@@ -1,9 +1,11 @@
-// Map configuration. Tiles come from OpenStreetMap by default (no Google). OSM's public tile servers are meant for light use:
-// for real traffic point VITE_MAP_TILE_URL at a provider or your own tile server (see .env.example).
-export const TILE_URL = import.meta.env.VITE_MAP_TILE_URL || 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+// Map configuration. The 3D map draws free OpenFreeMap vector tiles (OpenStreetMap data, no key, no Google). Their public server is meant
+// for light use: for real traffic point VITE_MAP_TILES_URL at a hosted TileJSON in the OpenMapTiles schema (see .env.example).
+export const VECTOR_TILES_URL = import.meta.env.VITE_MAP_TILES_URL || 'https://tiles.openfreemap.org/planet';
+export const GLYPHS_URL =
+  import.meta.env.VITE_MAP_GLYPHS_URL || 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf';
 export const TILE_ATTRIBUTION =
   import.meta.env.VITE_MAP_ATTRIBUTION ||
-  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors';
+  '<a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener noreferrer">OpenMapTiles</a> data from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>';
 
 export const METERS_PER_MILE = 1609.344;
 export const milesToMeters = (mi) => mi * METERS_PER_MILE;
