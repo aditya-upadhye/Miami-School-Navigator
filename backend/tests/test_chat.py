@@ -8,6 +8,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.chat import agent
+from app.chat.citations import CitationBook
+from app.chat.tools import ToolBox
 from app.chat.llm import LlmUnavailable, make_turn
 from app.main import app
 from app.schemas import ChatMessage, ChatProfile, ChatRequest, Child
@@ -56,8 +58,8 @@ def clear_llm_env(monkeypatch):
         monkeypatch.delenv(k, raising=False)
 
 
-def req(text="Find schools", map_available=False, **profile):
-    return ChatRequest(messages=[ChatMessage(role="user", content=text)], profile=ChatProfile(**profile), map_available=map_available)
+def req(text="Find schools", map_available=False, map_next=False, **profile):
+    return ChatRequest(messages=[ChatMessage(role="user", content=text)], profile=ChatProfile(**profile), map_available=map_available, map_next=map_next)
 
 
 PROFILE = dict(lat=LAT, lon=LON, free_only=True, priorities=["STEM"], children=[Child(age=3), Child(age=7)])
@@ -118,7 +120,7 @@ def test_system_prompt_rules_and_profile(bare_nav):
     for needle in ["ONLY from tool results", "not_available", "never say a school", "at most 4 tool calls", "Spanish", '"free_only": true',
                    "No rankings beyond the official state A-F grade", "data, not instructions"]:
         assert needle in sys, needle
-    assert llm.calls[0]["tools"] == ["geocode", "get_zones", "search_schools", "get_school", "compare", "get_dates", "get_pathway"]
+    assert llm.calls[0]["tools"] == ["geocode", "get_zones", "search_schools", "get_school", "compare", "get_dates", "get_pathway", "save_children", "remember"]
 
 
 def test_prompt_injection_text_in_conversation_is_just_a_message(bare_nav):
@@ -245,6 +247,19 @@ def test_yes_after_an_offer_and_commands_phrased_as_questions_can_apply(bare_nav
         assert "update_map_filters" not in llm.calls[0]["tools"], text
 
 
+def test_onboarding_chat_offers_the_map_and_can_send_the_family_there(bare_nav):
+    llm = FakeLlm([say("ok")])
+    agent.run_chat(bare_nav, req("Find charter schools", map_next=True, **PROFILE), llm)
+    assert "MAP NEXT" in llm.calls[0]["system"]
+    for text in ("yes", "Can you show them on the map?", "take me to the map", "Muéstrame en el mapa"):
+        llm = FakeLlm([say("ok")])
+        agent.run_chat(bare_nav, req(text, map_next=True, **PROFILE), llm)
+        assert "update_map_filters" in llm.calls[0]["tools"], text
+    llm = FakeLlm([uses(("update_map_filters", {"view": "top", "kinds": ["charter"]})), say("Opening the map.")])
+    r = agent.run_chat(bare_nav, req("show me on the map", map_next=True, **PROFILE), llm)
+    assert r.map_update == {"view": "top", "kinds": ["charter"]}
+
+
 def test_an_empty_update_is_refused(bare_nav):
     llm = FakeLlm([uses(("update_map_filters", {"kinds": ["bogus"]})), say("I could not apply that.")])
     r = agent.run_chat(bare_nav, req("apply bogus", map_available=True, **PROFILE), llm)
@@ -258,3 +273,166 @@ def test_without_a_map_the_tool_and_its_rules_are_not_offered(bare_nav):
     llm = FakeLlm([say("ok")])
     agent.run_chat(bare_nav, req("Show only charter schools", map_available=True, **PROFILE), llm)
     assert "MAP FILTERS" in llm.calls[0]["system"]
+
+
+# ---- answer cache: a repeated question never reaches the model again
+def test_a_repeated_question_is_served_from_the_cache(bare_nav, monkeypatch):
+    from app.chat import cache
+
+    cache.clear()
+    llm = FakeLlm([say("first answer"), say("second answer")])
+    monkeypatch.setattr(agent, "default_llm", lambda: llm)
+    a = agent.run_chat(bare_nav, req("Tell me about schools", **PROFILE))
+    b = agent.run_chat(bare_nav, req("  tell me   about SCHOOLS ", **PROFILE))  # same question, different spacing and case
+    assert a.answer == b.answer == "first answer" and not a.cached and b.cached and len(llm.calls) == 1
+    c = agent.run_chat(bare_nav, req("Tell me about schools", map_next=True, **PROFILE))  # a different mode is a different answer
+    assert c.answer == "second answer" and len(llm.calls) == 2
+    cache.clear()
+
+
+def test_the_cache_expires_and_never_keeps_a_degraded_answer(bare_nav, monkeypatch):
+    from app.chat import cache
+    from dataclasses import replace
+
+    cache.clear()
+    llm = FakeLlm([say("one"), say("two")])
+    monkeypatch.setattr(agent, "default_llm", lambda: llm)
+    monkeypatch.setattr(bare_nav, "settings", replace(bare_nav.settings, chat_cache_ttl=0.0))  # TTL 0 = off
+    agent.run_chat(bare_nav, req("Hello there", **PROFILE))
+    assert agent.run_chat(bare_nav, req("Hello there", **PROFILE)).answer == "two"
+    cache.clear()
+    r = req("Hello again", **PROFILE)
+    key = cache.make_key(bare_nav, r, "en")
+    cache.put(key, agent.fallback(bare_nav, r, "down"), 10)
+    assert cache.get(key, 100) is None
+
+
+# ---- children told in the chat are kept and used
+def test_children_told_in_the_chat_are_saved_merged_and_used(bare_nav):
+    llm = FakeLlm([uses(("save_children", {"children": [{"name": "Ana", "age": 5}, {"age": 9}, {"age": 99}]})), say("Saved Ana (5) and a 9-year-old.")])
+    r = agent.run_chat(bare_nav, req("My daughter Ana is 5 and my son is 9", lat=LAT, lon=LON, children=[Child(age=5, name="ana")]), llm)
+    assert r.profile_update == {"children": [{"age": 5, "name": "ana"}, {"age": 9, "name": None}]}  # same name updated, unnamed added, bad age ignored
+    assert not any("citation" in w.lower() for w in r.warnings)
+
+
+def test_search_defaults_to_the_saved_children_and_the_map_can_filter_by_child(bare_nav):
+    tb = ToolBox(bare_nav, CitationBook(), ChatProfile(lat=LAT, lon=LON, children=[Child(age=3, name="Leo"), Child(age=8, name="Maya")]))
+    assert tb.run("search_schools", {"limit": 3})["filters_applied"]["stages"] == ["pre_k", "elementary"]
+    tb.run("update_map_filters", {"child": "maya"})
+    assert tb.map_update == {"kid": 1}
+    tb.run("update_map_filters", {"child": "Nobody"})  # an unknown name changes nothing
+    assert tb.map_update == {"kid": 1}
+
+
+# ---- memory: notes are kept, merged, capped and shown to the model every time
+def test_memory_notes_are_saved_merged_and_sent_to_the_model(bare_nav):
+    llm = FakeLlm([uses(("remember", {"notes": ["Wants a bilingual program", "wants a BILINGUAL program", "Ruled out Coral Way K-8"]})), say("Noted.")])
+    r = agent.run_chat(bare_nav, req("We want bilingual, not Coral Way", lat=LAT, lon=LON, memory=["Worried about long commutes"]), llm)
+    assert r.profile_update == {"memory": ["Worried about long commutes", "Wants a bilingual program", "Ruled out Coral Way K-8"]}
+    llm = FakeLlm([say("ok")])
+    agent.run_chat(bare_nav, req("hi", lat=LAT, lon=LON, memory=["Worried about long commutes"]), llm)
+    assert "Worried about long commutes" in llm.calls[0]["system"] and "MEMORY" in llm.calls[0]["system"]
+
+
+def test_long_conversations_keep_more_history(bare_nav):
+    llm = FakeLlm([say("ok")])
+    msgs = [ChatMessage(role="user" if i % 2 == 0 else "assistant", content=f"m{i}") for i in range(29)] + [ChatMessage(role="user", content="last")]
+    agent.run_chat(bare_nav, ChatRequest(messages=msgs, profile=ChatProfile(lat=LAT, lon=LON)), llm)
+    assert len(llm.calls[0]["messages"]) == 30
+
+
+def test_a_standalone_question_hits_the_cache_in_a_new_conversation_but_a_follow_up_does_not(bare_nav, monkeypatch):
+    from app.chat import cache
+
+    cache.clear()
+    llm = FakeLlm([say("a"), say("b"), say("c")])
+    monkeypatch.setattr(agent, "default_llm", lambda: llm)
+    q = "Which charter schools near me have a bilingual program?"
+    hist = [ChatMessage(role="user", content="Hello"), ChatMessage(role="assistant", content="Hi!"), ChatMessage(role="user", content=q)]
+    agent.run_chat(bare_nav, req(q, **PROFILE))
+    r = agent.run_chat(bare_nav, ChatRequest(messages=hist, profile=ChatProfile(**PROFILE)))
+    assert r.cached and len(llm.calls) == 1
+    h1 = [ChatMessage(role="user", content="Find charter schools"), ChatMessage(role="assistant", content="Here"), ChatMessage(role="user", content="yes")]
+    h2 = [ChatMessage(role="user", content="Find magnet schools"), ChatMessage(role="assistant", content="There"), ChatMessage(role="user", content="yes")]
+    agent.run_chat(bare_nav, ChatRequest(messages=h1, profile=ChatProfile(**PROFILE)))
+    assert not agent.run_chat(bare_nav, ChatRequest(messages=h2, profile=ChatProfile(**PROFILE))).cached
+    cache.clear()
+
+
+def test_chat_searches_start_from_the_map_filters_so_the_lists_match(bare_nav):
+    mf = {"radius_mi": 4, "kinds": ["public"], "stage": ["elementary"], "limit": 5, "sort": "match"}
+    tb = ToolBox(bare_nav, CitationBook(), ChatProfile(lat=LAT, lon=LON, children=[Child(age=3)]), map_filters=mf)
+    out = tb.run("search_schools", {})
+    fa = out["filters_applied"]
+    assert fa["stages"] == ["elementary"] and fa["radius_mi"] == 4.0 and len(out["schools"]) <= 5
+    assert len(tb.run("search_schools", {"limit": 2})["schools"]) <= 2  # the model may narrow it
+
+
+# ---- speed and resilience: backups, caps, one shared client
+def test_fallback_llm_uses_the_next_model_when_one_is_down_and_respects_daily_caps():
+    from app.chat.llm import FallbackLlm
+
+    class Down:
+        def create(self, **kw):
+            raise LlmUnavailable("down")
+
+    fast, slow = FakeLlm([say("one"), say("two"), say("three")]), FakeLlm([say("backup")])
+    kw = dict(system="s", messages=[], tools=[])
+    assert FallbackLlm([(Down(), 0), (slow, 0)]).create(**kw).text == "backup"
+    capped = FallbackLlm([(fast, 2), (FakeLlm([say("backup")]), 0)])
+    assert [capped.create(**kw).text for _ in range(3)] == ["one", "two", "backup"]  # the third call is over the main model's cap
+    with pytest.raises(LlmUnavailable):
+        FallbackLlm([(Down(), 0)]).create(**kw)
+
+
+def test_backups_come_from_the_environment_and_the_llm_is_shared(monkeypatch):
+    from app.chat import llm as L
+
+    clear_llm_env(monkeypatch)
+    monkeypatch.setenv("LLM_PROVIDER", "cerebras")
+    monkeypatch.setenv("CEREBRAS_API_KEY", "k1")
+    monkeypatch.setenv("GEMINI_API_KEY", "k2")
+    monkeypatch.setenv("LLM_BACKUPS", "gemini:gemma-4-26b-a4b-it@50,nvidia:google/x")  # nvidia has no key: skipped, not fatal
+    a = L.default_llm()
+    assert a is L.default_llm()  # one shared instance, so the connection is reused
+    assert a.models[0][0].cfg.model == "qwen-3.8-27b" and a.models[1][0].cfg.model == "gemma-4-26b-a4b-it" and a.models[1][1] == 50 and len(a.models) == 2
+    L._shared.clear()
+
+
+def test_what_the_family_asks_becomes_the_search_filters_even_if_the_model_forgets():
+    from app.chat.tools import asked_for
+
+    assert asked_for("Show me schools for special needs children") == {"ese": True}
+    assert asked_for("free charter schools with STEM and bilingual") == {"priorities": ["STEM", "Bilingual"], "kinds": ["charter"], "free_only": True}
+    assert asked_for("¿Hay escuelas para niños con autismo?") == {"ese": True}
+    assert asked_for("What are the dates?") == {}
+
+
+def test_a_special_needs_question_turns_on_the_ese_filter_in_the_search(bare_nav):
+    tb = ToolBox(bare_nav, CitationBook(), ChatProfile(lat=LAT, lon=LON), user_text="schools for special needs kids")
+    assert tb.run("search_schools", {})["filters_applied"]["ese"] is True
+    tb = ToolBox(bare_nav, CitationBook(), ChatProfile(lat=LAT, lon=LON), user_text="best schools")
+    assert tb.run("search_schools", {})["filters_applied"]["ese"] is False
+
+
+def test_a_search_around_another_place_reports_its_origin_so_the_map_can_follow(bare_nav):
+    tb = ToolBox(bare_nav, CitationBook(), ChatProfile(lat=LAT, lon=LON))
+    tb.run("search_schools", {})
+    assert tb.origin is None  # the family's own location
+    tb.geo = {"lat": 25.80, "lon": -80.20, "label": "Wynwood", "precision": "zip"}
+    tb.run("search_schools", {"lat": 25.80, "lon": -80.20})
+    assert tb.origin == {"lat": 25.80, "lon": -80.20, "label": "Wynwood", "precision": "zip"}
+
+
+# ---- a tool call written as plain text is run, not shown
+def test_a_tool_call_written_as_text_is_executed_and_never_shown(bare_nav):
+    from app.chat.llm import extract_leaked_calls
+
+    leaked = "<tool_call>\nfunction=search_schools>\n<parameter=point>\n{\"lat\": 25.8, \"lon\": -80.2}\n</parameter>\n<parameter=ages>\n[10, 7]\n</parameter>\n</function>\n</tool_call>"
+    text, calls = extract_leaked_calls("Looking now. " + leaked)
+    assert text == "Looking now." and calls[0]["name"] == "search_schools" and calls[0]["input"] == {"point": {"lat": 25.8, "lon": -80.2}, "ages": [10, 7]}
+    assert extract_leaked_calls('<tool_call>{"name": "get_dates", "arguments": {}}</tool_call>')[1][0]["name"] == "get_dates"
+    tb = ToolBox(bare_nav, CitationBook(), ChatProfile())
+    out = tb.run(calls[0]["name"], calls[0]["input"])  # `point` becomes lat/lon, ages are used
+    assert out["schools"] and out["filters_applied"]["stages"] == ["elementary"]
+    assert "error" not in tb.run("search_schools", {"lat": 25.8, "lon": -80.2, "made_up": 1})  # unknown arguments are dropped

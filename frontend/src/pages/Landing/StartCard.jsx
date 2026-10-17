@@ -19,9 +19,9 @@ const ICONS = {
 
 // The three ways to start, as pastel cards (pink, lavender, yellow). Dark text on every card, so it reads the same in both themes.
 const OPTIONS = [
-  { key: 'explore', to: '/explore', icon: 'map', bg: 'var(--pastel-pink)', title: 'landing.explore.title', body: 'onboarding.mode.skip.body' },
-  { key: 'chat', to: '/onboarding?mode=chat', icon: 'chat', bg: 'var(--pastel-lav)', title: 'onboarding.mode.chat.title', body: 'onboarding.mode.chat.body' },
-  { key: 'form', to: '/onboarding?mode=form', icon: 'form', bg: 'var(--pastel-yellow)', title: 'onboarding.mode.form.title', body: 'onboarding.mode.form.body' },
+  { key: 'explore', to: '/explore', icon: 'map', bg: 'var(--pastel-pink)', neon: '#ff2d9b', title: 'landing.explore.title', body: 'onboarding.mode.skip.body' },
+  { key: 'chat', to: '/onboarding?mode=chat', icon: 'chat', bg: 'var(--pastel-lav)', neon: '#8b5cff', title: 'onboarding.mode.chat.title', body: 'onboarding.mode.chat.body' },
+  { key: 'form', to: '/onboarding?mode=form', icon: 'form', bg: 'var(--pastel-yellow)', neon: '#ffb400', title: 'onboarding.mode.form.title', body: 'onboarding.mode.form.body' },
 ];
 
 export default function StartCard() {
@@ -46,7 +46,8 @@ export default function StartCard() {
               gap: 8,
               padding: 22,
               borderRadius: 24,
-              border: '1.5px solid transparent',
+              border: '1.5px solid color-mix(in srgb, var(--neon) 75%, transparent)',
+              '--neon': o.neon,
               background: o.bg,
               textDecoration: 'none',
               color: 'var(--ink)',

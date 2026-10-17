@@ -3,6 +3,11 @@
 export const shared = {
   en: {
     'shared.navi.mapApplied': 'Applied to your map',
+    'shared.navi.showMap': 'Show these on the map',
+    'shared.navi.showMapN': 'Show these {n} on the map',
+    'shared.navi.pin': 'Show on map',
+    'shared.navi.childrenSaved': 'Children in your profile: {n}',
+    'shared.navi.remembered': 'Noted for next time',
     'shared.navi.clear': 'Clear chat',
     'shared.factor.state_grade': 'Grade',
     'shared.factor.zoned': 'Zoned',
@@ -68,6 +73,11 @@ export const shared = {
   },
   es: {
     'shared.navi.mapApplied': 'Aplicado a su mapa',
+    'shared.navi.showMap': 'Mostrar en el mapa',
+    'shared.navi.showMapN': 'Mostrar estas {n} en el mapa',
+    'shared.navi.pin': 'Mostrar en el mapa',
+    'shared.navi.childrenSaved': 'Hijos en su perfil: {n}',
+    'shared.navi.remembered': 'Anotado para la próxima vez',
     'shared.navi.clear': 'Borrar el chat',
     'shared.factor.state_grade': 'Calificación',
     'shared.factor.zoned': 'Zona',
@@ -134,6 +144,11 @@ export const shared = {
   },
   ht: {
     'shared.navi.mapApplied': 'Aplike sou kat ou a',
+    'shared.navi.showMap': 'Montre yo sou kat la',
+    'shared.navi.showMapN': 'Montre {n} sa yo sou kat la',
+    'shared.navi.pin': 'Montre sou kat la',
+    'shared.navi.childrenSaved': 'Timoun nan pwofil ou: {n}',
+    'shared.navi.remembered': 'Nou note l pou pwochen fwa a',
     'shared.navi.clear': 'Efase chat la',
     'shared.factor.state_grade': 'Nòt',
     'shared.factor.zoned': 'Zòn',

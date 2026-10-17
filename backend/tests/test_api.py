@@ -303,3 +303,9 @@ def test_school_lookup_by_name(client):
     assert client.get("/api/schools/lookup", params={"q": first["name"].upper()}).json()["results"][0]["id"] == first["id"]  # case-insensitive, exact name first
     assert client.get("/api/schools/lookup", params={"q": "zzzz-no-such-school"}).json() == {"results": [], "total": 0}
     assert client.get("/api/schools/lookup", params={"q": "  !!  "}).status_code == 422
+
+
+def test_a_neighborhood_name_geocodes_to_its_zip(client):
+    r = client.get("/api/geocode", params={"q": "Wynwood"})
+    assert r.status_code == 200 and r.json()["precision"] == "zip" and "33127" in r.json()["matched_address"]
+    assert client.get("/api/geocode", params={"q": "wynwood, Miami"}).status_code == 200

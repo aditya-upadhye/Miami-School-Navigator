@@ -8,7 +8,7 @@ from __future__ import annotations
 import datetime as _dt
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field as PField
+from pydantic import BaseModel, ConfigDict, Field as PField, field_validator
 
 Status = Literal["official", "derived", "reported_by_school", "curated", "not_available"]
 Kind = Literal["public", "charter", "private", "early_learning"]
@@ -262,7 +262,7 @@ class ChatMessage(BaseModel):
 
 
 class ChatProfile(BaseModel):
-    """What the family has already told us. Held for the request only; nothing is stored."""
+    """What the family has already told us. Held for the request only; the server stores nothing (the app keeps it on the family's device)."""
 
     address: str | None = None
     lat: float | None = None
@@ -271,12 +271,20 @@ class ChatProfile(BaseModel):
     free_only: bool = False
     priorities: list[str] = []
     values: list[str] = []  # what matters most: academics, programs, popularity, proximity
+    memory: list[str] = PField(default_factory=list, max_length=30, description="Notes Jarvis kept from earlier chats (preferences, worries, schools the family liked), in short sentences. The app stores them on the family's device and sends them back.")
+
+    @field_validator("memory")
+    @classmethod
+    def _short_notes(cls, v: list[str]) -> list[str]:
+        return [" ".join(n.split())[:200] for n in v if n and n.strip()]
 
 
 class ChatRequest(BaseModel):
     messages: list[ChatMessage] = PField(min_length=1)
     profile: ChatProfile = PField(default_factory=ChatProfile)
     map_available: bool = PField(False, description="True when the chat is shown next to the map, so Jarvis may change the map filters (reply `map_update`).")
+    map_next: bool = PField(False, description="True when the map is on the next page (the onboarding chat): Jarvis offers to show the results on the map and, when asked, returns `map_update` so the app opens the map with those filters.")
+    map_filters: dict[str, Any] | None = PField(None, description="The family's current map search (radius_mi, kinds, stage, free_only, grade_min, specialties, ese, priorities, values, sort, limit). Jarvis's school searches default to it, so the schools it names are the schools on the map.")
     lang: Literal["en", "es", "ht"] | None = PField(None, description="Language of the answer. Omit to use the X-Lang header (English when absent). Translations are AI-written and not yet reviewed by a native speaker.")
 
 
@@ -297,7 +305,10 @@ class ChatResponse(BaseModel):
     usage: dict[str, int] = PField(default_factory=dict, description="Model calls and tokens used by this turn (for quota monitoring).")
     degraded: bool = PField(False, description="True when the AI model was unavailable and only structured results are returned.")
     warnings: list[str] = []
-    map_update: dict[str, Any] | None = PField(None, description="Filters the family asked Jarvis to put on the map (radius_mi, kinds, free_only, grade_min, programs, only_programs, ese, values, view, reset). Set only when they asked for a change.")
+    origin: dict[str, Any] | None = PField(None, description="Where Jarvis's school search was centred (lat, lon, label, precision) when the family asked about a place other than their own location, so the app can move the map there.")
+    cached: bool = PField(False, description="True when this answer was served from the answer cache instead of being generated again.")
+    profile_update: dict[str, Any] | None = PField(None, description="Details the family told Jarvis in the chat, for the app to keep on their device: `children` (the full list of {name, age}). Set only when they mentioned a child.")
+    map_update: dict[str, Any] | None = PField(None, description="Filters the family asked Jarvis to put on the map (radius_mi, kinds, free_only, grade_min, programs, only_programs, ese, values, view, kid, reset). Set only when they asked for a change.")
 
 
 # ---------------------------------------------------------------------------------------------------------------- choice planner

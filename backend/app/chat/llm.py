@@ -23,6 +23,7 @@ missing ids) and strips <think>/<thought> blocks.
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
 import time
@@ -31,12 +32,16 @@ from typing import Any, Protocol
 
 import httpx
 
+log = logging.getLogger("chat")
+
 # ---------------------------------------------------------------------------------------------------------- presets
 PRESETS: dict[str, dict[str, Any]] = {
     # Tested 2026-10-15: gemma-4-26b-a4b-it answered in ~2s with native tool calls. gemma-4-31b-it was listed but did not respond
     # within 110s on a free-tier key.
     "gemini": {"base_url": "https://generativelanguage.googleapis.com/v1beta/openai", "key_env": ["GEMINI_API_KEY", "GOOGLE_API_KEY"],
                "model": "gemma-4-26b-a4b-it", "needs_key": True},
+    # Measured 2026-10-17: the same two-call chat turn took 21s on gemma-4-26b (Google free tier), 1.7s on cerebras qwen-3.8-27b.
+    "cerebras": {"base_url": "https://api.cerebras.ai/v1", "key_env": ["CEREBRAS_API_KEY"], "model": "qwen-3.8-27b", "needs_key": True},
     "nvidia": {"base_url": "https://integrate.api.nvidia.com/v1", "key_env": ["NVIDIA_API_KEY"], "model": None, "needs_key": True},
     "groq": {"base_url": "https://api.groq.com/openai/v1", "key_env": ["GROQ_API_KEY"], "model": None, "needs_key": True},
     "openrouter": {"base_url": "https://openrouter.ai/api/v1", "key_env": ["OPENROUTER_API_KEY"], "model": None, "needs_key": True},
@@ -136,6 +141,35 @@ class Llm(Protocol):
 
 
 _THINK = re.compile(r"<(think|thinking|thought)>.*?</\1>", re.S | re.I)
+
+
+_LEAK_BLOCK = re.compile(r"<tool_call>.*?(?:</tool_call>|$)", re.S | re.I)
+_LEAK_FN = re.compile(r"function=([A-Za-z_][\w]*)>?(.*?)(?=</function>|</tool_call>|function=|$)", re.S)
+_LEAK_PARAM = re.compile(r"<parameter=([A-Za-z_][\w]*)>\s*(.*?)\s*</parameter>", re.S)
+
+
+def extract_leaked_calls(text: str) -> tuple[str, list[dict]]:
+    """Some models write a tool call as plain text (`<tool_call>function=search_schools><parameter=ages>[7]</parameter>...`) instead of using
+    the tool-call channel. Turn that into real calls and remove it from the answer, so the family never sees it and the search still runs."""
+    calls: list[dict] = []
+    for block in _LEAK_BLOCK.findall(text or ""):
+        body = block[len("<tool_call>"):]
+        try:  # the JSON flavour: {"name": "...", "arguments": {...}}
+            obj = json.loads(re.sub(r"</?tool_call>", "", body).strip())
+            if isinstance(obj, dict) and obj.get("name"):
+                calls.append({"id": f"leak_{len(calls)}", "name": obj["name"], "input": obj.get("arguments") or obj.get("parameters") or {}, "invalid": None})
+                continue
+        except ValueError:
+            pass
+        for name, rest in _LEAK_FN.findall(body):
+            args = {}
+            for k, v in _LEAK_PARAM.findall(rest):
+                try:
+                    args[k] = json.loads(v)
+                except ValueError:
+                    args[k] = v
+            calls.append({"id": f"leak_{len(calls)}", "name": name, "input": args, "invalid": None})
+    return _LEAK_BLOCK.sub("", text or "").strip(), calls
 
 
 def strip_reasoning(text: str) -> str:
@@ -312,10 +346,78 @@ class OpenAICompatLlm:
                     args, invalid = {}, str(raw)[:200]
             calls.append({"id": tc.get("id") or f"call_{i}", "name": fn.get("name", ""), "input": args, "invalid": invalid})
         usage = data.get("usage") or {}
-        return make_turn(strip_reasoning(msg.get("content") or ""), calls,
+        text = strip_reasoning(msg.get("content") or "")
+        if "<tool_call>" in text.lower():
+            text, leaked = extract_leaked_calls(text)
+            if not calls:
+                calls = leaked
+        return make_turn(text, calls,
                          "length" if choice.get("finish_reason") == "length" else None,
                          {"input_tokens": usage.get("prompt_tokens"), "output_tokens": usage.get("completion_tokens")})
 
 
+class FallbackLlm:
+    """Tries the main model, then each backup in order when one is down, rate limited or over its daily cap (LLM_BACKUPS)."""
+
+    def __init__(self, models: list[tuple[Llm, int]], clock=time.time) -> None:
+        self.models, self._clock = models, clock
+        self._day, self._used = "", [0] * len(models)
+
+    def create(self, **kw) -> LlmTurn:
+        day = time.strftime("%Y-%m-%d", time.localtime(self._clock()))
+        if day != self._day:
+            self._day, self._used = day, [0] * len(self.models)
+        last: Exception | None = None
+        for i, (llm, cap) in enumerate(self.models):
+            if cap and self._used[i] >= cap:
+                continue
+            try:
+                turn = llm.create(**kw)
+            except LlmUnavailable as exc:
+                last = exc
+                log.warning("model %d unavailable (%s), trying the next one", i, exc)
+                continue
+            self._used[i] += 1
+            return turn
+        raise last or LlmUnavailable("every configured model is over its daily cap")
+
+
+_shared: dict[str, Llm] = {}
+
+
+def _backup_cfgs(env) -> list[tuple[LlmConfig, int]]:
+    """LLM_BACKUPS="provider:model@daily_calls,provider:model": each backup uses its own provider's key and URL."""
+    out = []
+    for item in (env.get("LLM_BACKUPS") or "").split(","):
+        item = item.strip()
+        if not item:
+            continue
+        spec, _, cap = item.partition("@")
+        provider, _, model = spec.partition(":")
+        e = {k: v for k, v in env.items() if k not in ("LLM_API_KEY", "LLM_BASE_URL", "LLM_RPM", "LLM_TPM", "LLM_BACKUPS")}
+        e["LLM_PROVIDER"] = provider.strip().lower()
+        if model.strip():
+            e["LLM_MODEL"] = model.strip()
+        else:
+            e.pop("LLM_MODEL", None)
+        out.append((LlmConfig.from_env(e), int(cap) if cap.strip().isdigit() else 0))
+    return out
+
+
 def default_llm(cfg: LlmConfig | None = None, client: httpx.Client | None = None) -> Llm:
-    return OpenAICompatLlm(cfg or LlmConfig.from_env(), client)
+    if cfg is not None or client is not None:
+        return OpenAICompatLlm(cfg or LlmConfig.from_env(), client)
+    # One shared instance per configuration: it keeps the HTTP connection open (no new TLS handshake for every chat turn) and the rate-limit state.
+    cfg = LlmConfig.from_env()
+    key = repr((cfg, os.environ.get("LLM_BACKUPS")))
+    if key not in _shared:
+        _shared.clear()
+        primary = OpenAICompatLlm(cfg)
+        backups = []
+        for bcfg, cap in _backup_cfgs(os.environ):
+            try:
+                backups.append((OpenAICompatLlm(bcfg), cap))
+            except LlmUnavailable as exc:
+                log.warning("backup model skipped: %s", exc)
+        _shared[key] = FallbackLlm([(primary, 0), *backups]) if backups else primary
+    return _shared[key]
