@@ -37,7 +37,6 @@ describe('message catalogs', () => {
     ]) {
       for (const lang of LANGS) {
         expect(messages[lang][`verify.${level}.label`]).toBeTruthy();
-        expect(messages[lang][`verify.${level}.note`]).toBeTruthy();
       }
     }
   });

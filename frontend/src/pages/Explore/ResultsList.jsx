@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { api } from '../../api/client';
+import { useApi } from '../../hooks/useApi';
 import { useI18n } from '../../i18n';
 import SaveButton from '../../saved/SaveButton';
 
@@ -14,6 +17,33 @@ const small = {
   textDecoration: 'none',
   cursor: 'pointer',
 };
+
+/** The "Why this match" fold-out. The one-to-two sentence summary is written by the language model, and only once the family opens the card. */
+function WhyDetails({ r }) {
+  const { t } = useI18n();
+  const [open, setOpen] = useState(false);
+  const summary = useApi((signal) => api.whyMatch(r.id, r.whyBody, { signal }), [r.id, JSON.stringify(r.whyBody)], { enabled: open && !!r.whyBody.lat });
+  const text = summary.data?.summary;
+  return (
+    <details onToggle={(e) => setOpen(e.currentTarget.open)}>
+      <summary style={{ cursor: 'pointer', fontSize: 13, fontWeight: 700, color: 'var(--accent-ink)' }}>{t('menu.panel.why')}</summary>
+      <div aria-live="polite" style={{ margin: '8px 0 6px', fontSize: 13.5, lineHeight: 1.45, color: 'var(--ink)' }}>
+        {/* the plain reasons show at once; the model's sentences replace them when they arrive (or stay if it is slow or unavailable) */}
+        {text || r.reasons}
+        {!text && summary.loading && !summary.error && (
+          <div style={{ marginTop: 4, fontSize: 12.5, fontStyle: 'italic', color: 'var(--ink2)' }}>{t('explore.why.loading')}</div>
+        )}
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, margin: '8px 0 6px' }}>
+        {r.chips.map((c, k) => (
+          <span key={k} title={c.title} style={{ padding: '3px 9px', borderRadius: 999, background: 'var(--glass3)', fontSize: 12.5, fontWeight: 600 }}>
+            {c.label}
+          </span>
+        ))}
+      </div>
+    </details>
+  );
+}
 
 /** Compact list of matches for the side panel. Clicking "Map" selects the pin; "Why" folds out the score reasons. */
 export default function ResultsList({ results, resultsTitle, sortLabel, loading, error, empty, notes = [] }) {
@@ -84,19 +114,7 @@ export default function ResultsList({ results, resultsTitle, sortLabel, loading,
               </button>
               <SaveButton id={r.id} name={r.name} style={{ minHeight: 36, padding: '0 12px', fontSize: 13.5, borderRadius: 10 }} />
             </div>
-            {(r.chips.length > 0 || r.reasons) && (
-              <details>
-                <summary style={{ cursor: 'pointer', fontSize: 13, fontWeight: 700, color: 'var(--accent-ink)' }}>{t('menu.panel.why')}</summary>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, margin: '8px 0 6px' }}>
-                  {r.chips.map((c, k) => (
-                    <span key={k} title={c.title} style={{ padding: '3px 9px', borderRadius: 999, background: 'var(--glass3)', fontSize: 12.5, fontWeight: 600 }}>
-                      {c.label}
-                    </span>
-                  ))}
-                </div>
-                {r.reasons && <div style={{ fontSize: 12.5, lineHeight: 1.4, color: 'var(--ink2)' }}>{r.reasons}</div>}
-              </details>
-            )}
+            <WhyDetails r={r} />
           </li>
         ))}
       </ol>

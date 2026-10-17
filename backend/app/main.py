@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 
 from .alumni_routes import router as alumni_router
 from .auth import router as auth_router
+from .fit_routes import router as fit_router
 from .config import get_settings
 from .i18n import MESSAGES, LanguageMiddleware, current_lang, t
 from .routes import router
@@ -116,3 +117,4 @@ async def validation_error(_: Request, exc: RequestValidationError):
 app.include_router(router)
 app.include_router(auth_router)
 app.include_router(alumni_router)
+app.include_router(fit_router)

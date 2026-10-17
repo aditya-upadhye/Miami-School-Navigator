@@ -36,7 +36,9 @@ PRESETS: dict[str, dict[str, Any]] = {
     # Tested 2026-10-15: gemma-4-26b-a4b-it answered in ~2s with native tool calls. gemma-4-31b-it was listed but did not respond
     # within 110s on a free-tier key.
     "gemini": {"base_url": "https://generativelanguage.googleapis.com/v1beta/openai", "key_env": ["GEMINI_API_KEY", "GOOGLE_API_KEY"],
-               "model": "gemma-4-26b-a4b-it", "needs_key": True},
+               "model": "gemma-4-26b-a4b-it", "needs_key": True,
+               # Gemma 4 always "thinks" and can spend a small token cap on that and return nothing (2-80 s). Short card notes use this non-thinking model.
+               "fast_model": "gemini-flash-lite-latest"},
     "nvidia": {"base_url": "https://integrate.api.nvidia.com/v1", "key_env": ["NVIDIA_API_KEY"], "model": None, "needs_key": True},
     "groq": {"base_url": "https://api.groq.com/openai/v1", "key_env": ["GROQ_API_KEY"], "model": None, "needs_key": True},
     "openrouter": {"base_url": "https://openrouter.ai/api/v1", "key_env": ["OPENROUTER_API_KEY"], "model": None, "needs_key": True},

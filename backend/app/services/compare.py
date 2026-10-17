@@ -60,6 +60,8 @@ def compare(nav: Navigator, ids: list[str], lat: float | None = None, lon: float
             cells = []
             for s in sums:
                 f = getattr(s, attr)
+                if f is None and key == "zoned" and origin and s.kind != "public":  # zoning only exists for district schools
+                    f = nav.not_applicable(t("na.zoned.why"), t("act.zoned_none"))
                 cells.append(f if f is not None else nav.not_available(t("cmp.needs_location.why"), t("cmp.needs_location.action")))
         best_index = None
         if best:

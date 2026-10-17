@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { verificationInfo } from '../../api/fields';
 import AppHeader from '../../components/AppHeader';
 import ThemeShell from '../../components/ThemeShell';
 import { useI18n } from '../../i18n';
@@ -12,7 +11,6 @@ import { usePlanner } from './usePlanner';
 export default function Planner() {
   const { t, date, days } = useI18n();
   const { profile, children, data, error, loading, setBirthDate, events, nextDeadline } = usePlanner();
-  const nextVerification = nextDeadline ? verificationInfo(nextDeadline.field) : null;
   return (
     <ThemeShell paddingBottom={72}>
       <AppHeader active="planner" />
@@ -101,7 +99,6 @@ export default function Planner() {
                     </span>
                     <span style={{ color: '#ECE8FA' }}>
                       {date(nextDeadline.date)}
-                      {nextVerification ? ` · ${t(`verify.${nextVerification.key}.note`)}` : ''}
                     </span>
                   </>
                 ) : (

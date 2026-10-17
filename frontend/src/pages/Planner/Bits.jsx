@@ -1,5 +1,3 @@
-import { provenance, verificationInfo } from '../../api/fields';
-import FieldBadge from '../../components/FieldBadge';
 import { useI18n } from '../../i18n';
 
 const TONES = {
@@ -30,10 +28,9 @@ export function Pill({ tone = 'muted', children, title }) {
   );
 }
 
-/** How well the claim is confirmed (for curated rules) or where it came from (for data fields), with a source link. */
+/** A caveat for rules that need checking, plus a source link and the date it was checked. */
 export function Confidence({ field }) {
   const { t, date } = useI18n();
-  const v = verificationInfo(field);
   return (
     <span
       style={{
@@ -45,14 +42,6 @@ export function Confidence({ field }) {
         color: 'var(--ink2)',
       }}
     >
-      {v ? (
-        <Pill tone={v.tone} title={provenance(field)}>
-          {t(`verify.${v.key}.label`)}
-        </Pill>
-      ) : (
-        <FieldBadge field={field} label={t(`field.${field.status}`)} />
-      )}
-      {v && v.tone !== 'good' && <span>{t(`verify.${v.key}.note`)}</span>}
       {field.url && (
         <a href={field.url} target="_blank" rel="noopener noreferrer">
           {t('conf.source')}
